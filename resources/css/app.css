@@ -1,0 +1,229 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.logo{
+    max-width: 120px;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.open-menu-button {
+  background-color: #333;
+  color: #fff;
+  border: none;
+  padding: 10px;
+  cursor: pointer;
+  position: absolute;
+  top: 10px;
+  left: 10px; /* Ajusta la posición horizontal inicial del botón */
+  transition: left 0.3s; /* Agrega una transición para suavizar el movimiento */
+  font-size: 16px;
+  font-weight: 900;
+  z-index: 2;
+}
+
+/* Estilos para el menú */
+ #menu {
+      background-color: #000;
+      color: #fff;
+      width: 40%; /* O ajusta el valor según tus necesidades */
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: -40%; /* Asegúrate de ajustar el valor izquierdo para que el menú esté oculto inicialmente */
+      transition: left 0.3s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      z-index: 2; /* Asegura que el menú esté por encima del overlay */
+    }
+
+#menu.active {
+    left: 0;
+}
+
+#menu img {
+    width: 100px;
+    margin: 20px 0;
+}
+
+#menu h1 {
+    font-size: 24px;
+    margin: 20px 0;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.main-menu {
+    margin: 10px 0;
+    width: 100%;
+}
+
+.main-menu i {
+    margin-right: 10px;
+    width: 100%;
+}
+
+.sub-menu {
+    display: none;
+}
+
+/*.main-menu:hover .sub-menu {
+    display: block;
+}*/
+
+.sub-menu a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 10px;
+}
+
+.sub-menu a:hover {
+    background-color: #555;
+}
+
+#btn-menu-proyectos, #btn-menu-inscripciones {
+  background: #000;
+  color: #fff;
+  padding: 10px 0; /* Elimina el espacio horizontal y permite que el botón ocupe todo el ancho */
+  border: none;
+  width: 100%; /* Establece el ancho del botón al 100% del ancho disponible */
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 14px;
+  display: flex; /* Utiliza flexbox para alinear el icono y el texto horizontalmente */
+  align-items: center; /* Centra verticalmente el icono y el texto en el botón */
+}
+
+
+#btn-menu-proyectos i, #btn-menu-inscripciones i {
+  margin-right: 10px; /* Agrega un espacio entre el icono y el texto */
+}
+
+#btn-menu-proyectos, #btn-menu-inscripciones {
+  width: 150px; /* Tamaño fijo en píxeles */
+  height: 40px; /* Tamaño fijo en píxeles */
+}
+
+
+#btn-menu-proyectos:hover, #btn-menu-inscripciones:hover {
+  background-color: #333;
+}
+
+#btn-menu-proyectos i {
+  color: orange; /* Cambia el color del icono aquí */
+  margin-right: 10px; /* Agrega un espacio entre el icono y el texto del botón si lo deseas */
+}
+
+#btn-menu-inscripciones i {
+  color: lightskyblue; /* Cambia el color del icono aquí */
+  margin-right: 10px; /* Agrega un espacio entre el icono y el texto del botón si lo deseas */
+}
+
+.overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para oscurecer el contenido */
+      z-index: 1;
+      display: none;
+    }
+
+/* Estilo para oscurecer el contenido de la página */
+.content-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente para oscurecer el contenido */
+  z-index: 2; /* Asegura que la capa esté por encima del contenido */
+}
+
+/* Estilos para dispositivos más pequeños (ancho menor a 768px) */
+@media screen and (max-width: 768px) {
+  #menu {
+    width: 40%; /* Menú más ancho para dispositivos más pequeños */
+  }
+}
+
+/* Estilos para dispositivos más grandes (ancho mayor a 768px) */
+@media screen and (min-width: 769px) {
+  #menu {
+    width: 30%; /* Menú más estrecho para dispositivos más grandes */
+  }
+}
+
+/* Tamaño y posición del icono para todos los iconos */
+.card .card-icon-large .fas,
+.card .card-icon-large .far,
+.card .card-icon-large .fab,
+.card .card-icon-large .fal {
+  font-size: 80px;
+  margin-left: -110px; /* Ajusta la posición del icono a la izquierda */
+}
+
+/* Estilos de los cards */
+.card {
+  background-color: #fff;
+  border-radius: 10px;
+  border: none;
+  position: relative;
+  margin-bottom: 30px;
+  box-shadow: 0 0.46875rem 2.1875rem rgba(90, 97, 105, 0.1), 0 0.9375rem 1.40625rem rgba(90, 97, 105, 0.1), 0 0.25rem 0.53125rem rgba(90, 97, 105, 0.12), 0 0.125rem 0.1875rem rgba(90, 97, 105, 0.1);
+}
+
+/* Colores gradientes */
+.l-bg-blue-dark {
+  background: linear-gradient(to right, #373b44, #4286f4) !important;
+  color: #fff;
+}
+
+.l-bg-green-dark {
+  background: linear-gradient(to right, #0a504a, #38ef7d) !important;
+  color: #fff;
+}
+
+.l-bg-orange-dark {
+  background: linear-gradient(to right, #a86008, #ffba56) !important;
+  color: #fff;
+}
+
+.card .card-statistic-3 .card-icon {
+  text-align: center;
+  line-height: 50px;
+  margin-left: 15px;
+  color: #000;
+  position: absolute;
+  right: -5px;
+  top: 20px;
+  opacity: 0.1;
+}
+
+/* Colores gradientes adicionales */
+.l-bg-cyan {
+  background: linear-gradient(135deg, #289cf5, #84c0ec) !important;
+  color: #fff;
+}
+
+.l-bg-green {
+  background: linear-gradient(135deg, #23bdb8 0%, #43e794 100%) !important;
+  color: #fff;
+}
+
+.l-bg-orange {
+  background: linear-gradient(to right, #f9900e, #ffba56) !important;
+  color: #fff;
+}
+
