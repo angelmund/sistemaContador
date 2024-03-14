@@ -6,7 +6,12 @@ import './inscripcion';
 import './updateproyecto';
 import './updateinscripcion';
 import './eventosNPago';
+import './roles';
+import './Permisos';
+import './AltaPagos';
+// import './scriptNavbar';
 // import './alertas';
+import './editarPago';
 
 
 import Alpine from 'alpinejs';

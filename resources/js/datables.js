@@ -8,6 +8,8 @@ if ($('#example').length > 0) {
         $('.select2').select2();
         // var table = $('#example');
         var dt;
+        // const fechaInicio = document.querySelector('#fechaInicio');
+        // const fechaFinal = document.querySelector('#fechaFinal');
         $(".fechaDivs").hide();
         $(".folioDivs").hide();
         function cargarDatos() {
@@ -15,7 +17,7 @@ if ($('#example').length > 0) {
                 language: {
                     sProcessing: 'Procesando...',
                     //remove: sLengthMenu,
-                    sLengthMenu: 'Mostrar _MENU_ personas inscritas',
+                    sLengthMenu: 'Mostrar _MENU_ ',
                     sZeroRecords: 'No se encontraron resultados que coincidan con lo que escribió',
                     sEmptyTable: 'Ningún dato disponible en esta tabla',
                     sInfo: 'Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros',
@@ -69,102 +71,126 @@ if ($('#example').length > 0) {
                 responsive: true,
                 autoWidth: false
             });
-    
-            // Inicializar el rango de fechas con flatpickr
-            flatpickr("#fechaIncio, #fechaFinal", {
-                dateFormat: "d/m/Y",
-                allowInput: true,
-            });
-    
+
+            // // Inicializar el rango de fechas con flatpickr
+            // flatpickr("#fechaIncio, #fechaFinal", {
+            //     dateFormat: "d/m/Y",
+            //     allowInput: true,
+            // });
+
             // Agrega un evento change al select
             $(".status_id").on("change", function () {
                 // Obtén el valor seleccionado
                 var tipoBusqueda = $(this).val();
-    
+
                 // Oculta todos los divs por defecto
                 $(".fechaDivs").hide();
                 $(".folioDivs").hide();
-    
+
                 // Muestra u oculta los divs según la opción seleccionada
                 if (tipoBusqueda === "Fecha") {
-               
-    
+
+
                     $(".fechaDivs").show();
                 }
-                if (tipoBusqueda === "Folio"){
-    
+                if (tipoBusqueda === "Folio") {
+
                     $(".folioDivs").show();
                 }
-                
+
             });
-    
-            
-    
-    
+
             // Manejar el evento de clic en el botón de filtrar
             $("#filtrar").on("click", function () {
-                // Obtener los valores de las fechas y el tipo de búsqueda
                 var fechaInicio = $("#fechaIncio").val();
                 var fechaFinal = $("#fechaFinal").val();
+                console.log(fechaInicio, fechaFinal);
                 var tipoBusqueda = $(".status_id").val();
                 var folioI = $("#folioI").val();
                 var folioF = $("#folioF").val();
-    
+
                 if (tipoBusqueda === "seleccione") {
                     $(".fechaDivs").hide();
                     alertaInfo('Seleccione una opción para hacer una búsqueda')
                 }
-    
-                // Formatear las fechas al formato esperado por DataTable
-                var fechaInicioFormatted = moment(fechaInicio, "d/m/Y").format("Y-m-d");
-                var fechaFinalFormatted = moment(fechaFinal, "d/m/Y").format("Y-m-d");
-    
+
                 // Filtrar la tabla según el tipo de búsqueda
                 if (tipoBusqueda === "Fecha") {
-                    
-                    if (fechaInicio == '' && fechaFinal == '') {
-                        //alertainfo se define en alertas
+                    if (fechaInicio === '' || fechaFinal === '') {
                         alertaInfo('Debe seleccionar una fecha inicio y fin');
                     } else {
-                        // Filtrar por rango de fechas
-                        dt.columns(6).search(fechaInicioFormatted + " to " + fechaFinalFormatted).draw();
+                        // Eliminar la búsqueda anterior
+                        $.fn.dataTable.ext.search.pop();
+
+                        // Agregar la nueva búsqueda por rango de fechas
+                        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+                            var fechaRegistro = moment(data[5], 'DD/MM/YYYY'); // Convertir la fecha de la tabla a un objeto moment
+                        
+                            if (fechaRegistro.isValid()) { // Verificar si la fecha es válida
+                                return fechaRegistro.isSameOrAfter(fechaInicio, 'day') && fechaRegistro.isSameOrBefore(fechaFinal, 'day');
+                            } else {
+                                return true; // Si la fecha no es válida, mostrar todos los registros
+                            }
+                        });
+                        // Volver a dibujar la tabla con el nuevo filtro
+                        dt.draw();
                     }
-    
                 } else if (tipoBusqueda === "Inscripcion") {
-                    
                     // Agregar lógica para otros tipos de búsqueda si es necesario
                 } else if (tipoBusqueda === "Folio") {
-                    if (folioI == '' && folioF == '') {
-                        //alertainfo se define en alertas
+                    if (folioI === '' || folioF === '') {
                         alertaInfo('Ingrese un folio de inicio y fin');
+                    } else {
+                        // Eliminar la búsqueda anterior
+                        $.fn.dataTable.ext.search.pop();
+            
+                        // Agregar la nueva búsqueda por rango de folio
+                        $.fn.dataTable.ext.search.push(function (settings, data, dataIndex) {
+                            var folio = parseInt(data[0]); // Suponiendo que el folio está en la primera columna
+            
+                            if (!isNaN(folio)) { // Verificar si el folio es un número
+                                var folioInicio = parseInt(folioI);
+                                var folioFin = parseInt(folioF);
+                                return folio >= folioInicio && folio <= folioFin;
+                            } else {
+                                return true; // Si el folio no es un número, mostrar todos los registros
+                            }
+                        });
+            
+                        // Volver a dibujar la tabla con el nuevo filtro
+                        dt.draw();
                     }
-                    
-                    // Agregar lógica para otros tipos de búsqueda si es necesario
                 }
-                
             });
-    
+
+            // Restaurar el filtro cuando se cambia el tipo de búsqueda
+            $(".status_id").on("change", function () {
+                dt.search('').draw(); // Limpiar el filtro
+            });
+
+
+
             // Asignar eventos a los botones
             $('#excelButton').on('click', function () {
                 confirmarInfo("¿Quiere descargar el archivo Excel?", function () {
                     dt.button('.buttons-csv').trigger();
                 });
             });
-    
-    
+
+
             $('#pdfButton').on('click', function () {
                 confirmarInfo("¿Quiere descargar el archivo Pdf?", function () {
                     dt.button('.buttons-pdf').trigger();
                 });
             });
-    
+
             $('#printButton').on('click', function () {
                 confirmarInfo("¿Desea imprimir el archivo?", function () {
                     dt.button('.buttons-print').trigger();
                 });
             });
         }
-    
+
         cargarDatos();
     });
 }

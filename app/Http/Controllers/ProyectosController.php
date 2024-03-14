@@ -17,9 +17,10 @@ class ProyectosController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            $proyectos = Proyecto::all();
+            // $proyectos = Proyecto::all();
             // $proyectos = Proyecto::pluck('nombre');
             // return response()->json(Inscripcione::all());
+            $proyectos = Proyecto::with('cheques', 'pagos')->get();
 
             return View::make('proyectos.index', compact('proyectos')); //
         } else {
@@ -159,13 +160,7 @@ class ProyectosController extends Controller
                     'mensaje' => 'Proyecto Editado con éxito',
                     'idnotificacion' => 1
                 ]);
-            } catch (QueryException $e) {
-
-                DB::rollback();
-                return response()->json([
-                    'mensaje' => 'Error al actualizar: ' . $e->getMessage(),
-                    'idnotificacion' => 2
-                ]);
+           
             } catch (\Exception $e) {
                 DB::rollback();
                 return response()->json([
@@ -205,13 +200,7 @@ class ProyectosController extends Controller
                     'mensaje' => 'Eliminado con éxito',
                     'idnotificacion' => 1
                 ]);
-            } catch (QueryException $e) {
-
-                DB::rollback();
-                return response()->json([
-                    'mensaje' => 'Error al eliminar: ' . $e->getMessage(),
-                    'idnotificacion' => 2
-                ]);
+           
             } catch (\Exception $e) {
                 DB::rollback();
                 return response()->json([

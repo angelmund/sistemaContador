@@ -62,13 +62,29 @@ Route::group(['middleware' => ['auth']], function(){
 //Ruta pagos
 Route::group(['middleware' => ['auth']], function(){
     Route::get('/altaPagos/{id}', [App\Http\Controllers\PagosController::class, 'formulario'])->name('pagos.alta');
+    Route::get('/listaPagos', [App\Http\Controllers\PagosController::class, 'index'])->name('pagos.lista');
+    Route::post('/listaPagos/ingreso', [App\Http\Controllers\PagosController::class, 'nuevoIngreso'])->name('pagos.ingreso');
 })->middleware(['auth', 'verified'])->name('pagos');
 
-//Ruta pagos
+//Ruta cheques 
+Route::group(['middleware' => ['auth']], function(){
+    Route::get('/listaCheques', [App\Http\Controllers\PagosController::class, 'Cheques'])->name('cheques.lista');
+    Route::get('/pagosPersona/{tipo}/{id}', [App\Http\Controllers\PagosController::class, 'mostrarPagoPersona'])->name('cheques.persona');
+    Route::post('/cancelar/pago/{id}', [App\Http\Controllers\PagosController::class, 'cancelarPago'])->name('pagos.cancelar');
+    Route::post('/cancelar/cheque/{id}', [App\Http\Controllers\PagosController::class, 'cancelarCheque'])->name('cheques.cancelar');
+})->middleware(['auth', 'verified'])->name('pagos');
+
+
+
+//Ruta admin
 Route::group(['middleware' => ['auth']], function(){
 Route::get('/usuarios', [App\Http\Controllers\AdminController::class, 'usuarios'])->name('usuarios.index');
 Route::get('/usuarios/create', [App\Http\Controllers\AdminController::class, 'create'])->name('usuarios.create');
-})->middleware(['auth', 'verified'])->name('pagos');
+Route::resource('/usuario/roles', App\Http\Controllers\RolesController::class)->names('usuarios.roles');
+Route::resource('/usuario/permisos', App\Http\Controllers\PermisosController::class)->names('usuarios.permisos');
+// Route::get('/usuario/asignarRol/{id}', [App\Http\Controllers\AdminController::class, 'asignarRolEdit'])->name('usuario.rol');
+Route::resource('/usuario/asignarRol', App\Http\Controllers\AsignarController::class)->names('usuario.RolAsignado');
+})->middleware(['auth', 'verified'])->name('admin');
 
 
 

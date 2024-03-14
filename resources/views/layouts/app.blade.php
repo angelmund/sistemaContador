@@ -14,6 +14,7 @@
     <!-- Incluir Font Awesome en tu archivo Blade principal -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
         integrity="sha384-GLhlTQ8iN17Sme8k0I7jn0OomlGT73bz9qDf+5t5uGPAAeISSbsqE8/dJ6p7MVI" crossorigin="anonymous">
+    
    
     {{--  @include('proyectos.edit')  --}}
 
@@ -44,6 +45,8 @@
             @include('proyectos.edit')
         </main>
     </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
 </body>
 
 </html>

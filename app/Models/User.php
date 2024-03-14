@@ -13,6 +13,8 @@ use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Spatie\Permission\Traits\HasRoles;
+
 /**
  * Class User
  * 
@@ -34,6 +36,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
 {
 	use Notifiable;
+	use HasRoles;
 
 	protected $table = 'users';
 

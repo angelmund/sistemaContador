@@ -11,6 +11,7 @@ use App\Http\controllers\QueryException;
 use Illuminate\Http\Request;
 use App\Models\Inscripcione;
 use App\Models\User;
+use Spatie\Permission\Models\Role;
 
 class AdminController extends Controller
 {
@@ -32,4 +33,26 @@ class AdminController extends Controller
             return redirect()->to('/');
         }
     }
+
+    public function asignarRolEdit($id)
+    {
+        if (Auth::check()) {
+            $user = User::find($id);
+            $roles = Role::all(); // trae todos los roles que se hayan creado para poder asignar
+            return view::make('admin.UserPermiso', compact('user', 'roles'));
+        } else {
+            return redirect()->to('/');
+        }
+    }
+
+    // public function asignarRolGuardar(Request $request, $id)
+    // {
+    //     if (Auth::check()) {
+    //         $user = User::find($id);
+    //         $user->role()->sync($request->roles); // trae todos los roles que se hayan creado para poder asignar
+    //         // return view::make('admin.UserPermiso', compact('user', 'roles'));
+    //     } else {
+    //         return redirect()->to('/');
+    //     }
+    // }
 }

@@ -32,15 +32,15 @@
 
                 <div class="col-md-4 fechaDivs">
                     <label for="fechafinal">Fecha Final</label>
-                    <input type="text" name="fechaFinal"  id="fechaFinal" class="form-control fechaFinal" readonly />
+                    <input type="text" name="fechaFinal" id="fechaFinal" class="form-control fechaFinal" readonly />
                 </div>
                 <div class="col-md-2 folioDivs">
                     <label for="folioI">Desde Folio</label>
-                    <input type="text" name="folioI"  id="folioI" class="form-control folioI"  />
+                    <input type="text" name="folioI" id="folioI" class="form-control folioI" />
                 </div>
                 <div class="col-md-2 folioDivs">
                     <label for="folioF">Hasta Folio</label>
-                    <input type="text" name="folioF"  id="folioF" class="form-control folioF"/>
+                    <input type="text" name="folioF" id="folioF" class="form-control folioF" />
                 </div>
 
                 <div class="col-md-2 col-sm-6">
@@ -52,7 +52,7 @@
                         <option value="Folio">Folio</option>
                     </select>
                 </div>
-                
+
                 <div class="col-md-1 mt-4">
                     <button id="filtrar" class="btn btn-danger"><i class="fas fa-filter"></i> Filtrar</button>
                 </div>
@@ -67,7 +67,7 @@
                         <th class="centrar">Encargado</th>
                         <th class="centrar">Presupuesto</th>
                         <th class="centrar">Acumulado</th>
-                        
+
                         <th class="centrar">Estado</th>
                         <th class="centrar">
                             <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
@@ -84,34 +84,42 @@
                         <td>{{$proyecto->nombre}}</td>
                         <td>{{$proyecto->encargado}}</td>
                         <td>${{$proyecto->presupuesto}}</td>
-                        <td> <span>$0</span> </td>
-                        
+                        <td> <span>${{ $proyecto->cheques->sum('monto') + $proyecto->pagos->sum('monto') }}</span> </td>
+
                         <td>
-                            <span class="badge rounded-pill" style="background-color: {{ $proyecto->estado == 1 ? 'green' : 'red' }}; color: white;">
+                            <span class="badge rounded-pill"
+                                style="background-color: {{ $proyecto->estado == 1 ? 'green' : 'red' }}; color: white;">
                                 {{ $proyecto->estado == 1 ? 'Activo' : 'Inactivo' }}
                             </span>
                         </td>
 
                         <td>
                             <button type="button" class="btn btn-warning"><i class="fas fa-download"></i></button>
-                            <button type="button" id="editButton" class="btn btn-primary abrir-modal" data-bs-toggle="modal" 
-                                data-bs-target="#editModal" data-remote="{{route('proyectos.edit',$proyecto->id)}}"><i class="fas fa-eye"></i></button>
+                            <button type="button" id="editButton" class="btn btn-primary abrir-modal"
+                                data-bs-toggle="modal" data-bs-target="#editModal"
+                                data-remote="{{route('proyectos.edit',$proyecto->id)}}"><i
+                                    class="fas fa-eye"></i></button>
                             <button type="button" class="btn btn-success"><i class="fas fa-dollar-sign"></i></button>
 
+                            @can('Eliminar')
                             <button type="button" id="btn_delete" class="btn btn-danger eliminar-modal"
                                 data-target="#DeleteModal" data-toggle="modal" data-idcategoria="#">
                                 <i class="fas fa-trash"></i>
                             </button>
-                            <a type="button" href="{{ route('proyectos.tableProyectos', $proyecto->id) }}" class="btn btn-info">
+                            @endcan
+
+                            <a type="button" href="{{ route('proyectos.tableProyectos', $proyecto->id) }}"
+                                class="btn btn-info">
                                 <i class="fas fa-table"></i>
                             </a>
-                            
-                            
+
+
                         </td>
                     </tr>
-                      <!-- Editar Modal -->
-                        @include('proyectos.edit', ['proyecto' => $proyecto, 'table' => 'table'.$proyecto->id])
-                        {{--  @include('proyectos.proyectosTable', ['proyecto' => $proyecto, 'table' => 'table'.$proyecto->id])  --}}
+                    <!-- Editar Modal -->
+                    @include('proyectos.edit', ['proyecto' => $proyecto, 'table' => 'table'.$proyecto->id])
+                    {{-- @include('proyectos.proyectosTable', ['proyecto' => $proyecto, 'table' =>
+                    'table'.$proyecto->id]) --}}
 
                     @endforeach
 
@@ -119,7 +127,7 @@
 
             </table>
         </div>
-        {{--  @include('proyectos.edit');  --}}
+        {{-- @include('proyectos.edit'); --}}
     </div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>

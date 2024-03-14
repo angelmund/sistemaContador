@@ -15,16 +15,15 @@
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 
 <x-app-layout>
-    <h1 class="text-center mt-2">Tabla de Inscripciones</h1>
+    <h1 class="text-center mt-2">Lista de pagos y cheques</h1>
     <div class="card mt-5">
         <input type="hidden" value="{{ url('/') }}" id="url">
         <div class="card-body">
             <div class="text-center mb-3">
-                <a href="{{route('inscripciones.form')}}" type="button" class="btn btn-primary"><i
-                        class="fas fa-plus"></i> Nueva Inscripción</a>
                 <button id="excelButton" class="btn btn-success"><i class="fas fa-file-excel"></i> Exportar a
                     Excel</button>
-                <button id="pdfButton" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Exportar a PDF</button>
+                {{-- <button id="pdfButton" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Exportar a
+                    PDF</button> --}}
                 <button id="printButton" class="btn btn-info"><i class="fas fa-print"></i> Imprimir</button>
             </div>
             <div class="row mb-3 ">
@@ -65,61 +64,83 @@
             <table id="example" class="table table-striped responsive" style="width:100%">
                 <thead>
                     <tr>
-                        <th class="centrar">Folio</th>
-                        <th class="centrar">Nombre</th>
-                        <th class="centrar">Dirección</th>
-                        <th class="centrar">Clave Proyecto</th>
-                        <th class="centrar">Nombre del Proyecto</th>
-                        <th class="centrar">Fecha de registro</th>
+                        <th class="centrar">Folio del cliente</th>
+                        <th class="centrar">Cliente</th>
+                        <th class="centrar">Fecha del pago</th>
+                        <th class="centrar">Monto</th>
+                        <th class="centrar">Clave de proyecto</th>
+                        <th class="centrar">Nombre de proyecto</th>
                         <th class="centrar">Estado</th>
-                        <th class="centrar">
-
-                        </th>
+                        <th class="centrar">Usuario que dio de alta</th>
+                        <th class="centrar"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($inscripciones as $inscripcion)
+                    @if(isset($cheques))
+                    @foreach ($cheques as $cheque)
                     <tr>
-                        <td>{{$inscripcion->id}}</td>
-                        <td>{{$inscripcion->proyecto->encargado}}</td>
-                        <td>{{$inscripcion->direccion}}</td>
-                        <td>{{$inscripcion->clave_proyecto}}</td>
-                        <td> {{$inscripcion->proyecto->nombre}}</td>
-                        <td>{{ \Carbon\Carbon::parse($inscripcion->fecha_registro)->format('d/m/Y') }}</td>
+                        <td>{{ $cheque->inscripcione->id }}</td>
+                        <td>{{ $cheque->inscripcione->nombre_completo }}</td>
+                        <td>{{ \Carbon\Carbon::parse($cheque->fecha)->format('d/m/Y') }}</td>
+                        <td>{{ $cheque->monto }}</td>
+                        <td>{{ $cheque->proyecto->clave_proyecto }}</td>
+                        <td>{{ $cheque->proyecto->nombre }}</td>
                         <td>
                             <span class="badge rounded-pill"
-                                style="background-color: {{ $inscripcion->estado == 1 ? 'green' : 'red' }}; color: white;">
-                                {{ $inscripcion->estado == 1 ? 'Activo' : 'Inactivo' }}
+                                style="background-color: {{ $cheque->estado == 1 ? 'green' : 'red' }}; color: white;">
+                                {{ $cheque->estado == 1 ? 'Activo' : 'Inactivo' }}
                             </span>
                         </td>
-
+                        <td>{{ $cheque->user->name }}</td>
                         <td>
-                            <button type="button" class="btn btn-warning"><i class="fas fa-download"></i></button>
-                            <!-- Botón para abrir el modal -->
-                            <button type="button" class="btn btn-primary abrir-inscripcion" data-bs-toggle="modal"
-                                data-bs-target="#EditModal{{$inscripcion->id}}" data-remote="{{route('inscripciones.edit', $inscripcion->id)}}">
-                                <i class="fas fa-eye"></i>
-                            </button>
-
-                            <a type="button" href="{{route('pagos.alta', $inscripcion->id)}}" class="btn btn-success"><i
-                                    class="fas fa-dollar-sign"></i></a>
+                            <a href="#"
+                                class="btn btn-primary">
+                                <i class="fas fa-eye"></i> Ver pago
+                            </a>
                             @can('Eliminar')
-                            <button type="button" id="btn_delete" class="btn btn-danger eliminar-modal"
-                                data-target="#DeleteModal" data-toggle="modal" data-idcategoria="#">
-                                <i class="fas fa-trash"></i>
+                            <button type="button" id="btn_delete" class="btn btn-danger eliminartipoPago"
+                                data-id="{{ $cheque->id }}" data-tipo="cheque" data-target="#DeleteModal" data-toggle="modal">
+                                <i class="fas fa-ban"></i> Cancelar
                             </button>
                             @endcan
-
                         </td>
                     </tr>
-                    @include('incripciones.edit', ['modalId' => $inscripcion->id])
-
-                    @yield('pagos.altaPagos')
                     @endforeach
-
+                    
+                    @elseif(isset($pagos))
+                    @foreach ($pagos as $pago)
+                    <tr>
+                        <td>{{ $pago->inscripcione->id }}</td>
+                        <td>{{ $pago->inscripcione->nombre_completo }}</td>
+                        <td>{{ \Carbon\Carbon::parse($pago->fecha)->format('d/m/Y') }}</td>
+                        <td>{{ $pago->monto }}</td>
+                        <td>{{ $pago->proyecto->clave_proyecto }}</td>
+                        <td>{{ $pago->proyecto->nombre }}</td>
+                        <td>
+                            <span class="badge rounded-pill"
+                                style="background-color: {{ $pago->estado == 1 ? 'green' : 'red' }}; color: white;">
+                                {{ $pago->estado == 1 ? 'Activo' : 'Inactivo' }}
+                            </span>
+                        </td>
+                        <td>{{ $pago->user->name }}</td>
+                        <td>
+                            <a href="{{ route('ruta.ver_pago', ['tipo' => 'pago', 'id' => $pago->id]) }}" class="btn btn-primary">
+                                <i class="fas fa-eye"></i> Ver pago
+                            </a>
+                            @can('Eliminar')
+                            <button type="button" id="btn_delete" class="btn btn-danger eliminartipoPago"
+                                data-id="{{ $pago->id }}" data-tipo="pago" data-target="#DeleteModal" data-toggle="modal">
+                                <i class="fas fa-ban"></i> Cancelar
+                            </button>
+                            @endcan
+                        </td>
+                    </tr>
+                    @endforeach
+                    @endif
                 </tbody>
-
             </table>
+            
+
         </div>
         {{-- @include('incripciones.edit'); --}}
     </div>

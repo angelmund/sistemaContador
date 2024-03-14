@@ -251,6 +251,38 @@ class InscripcionesController extends Controller
         }
     }
 
+    
+    public function editInscripcion($id)
+    {
+        if (Auth::check()) {
+            try {
+
+                if (Auth::check()) {
+                    $proyecto = Proyecto::select('clave_proyecto', 'nombre')->where('id', $id)->first();
+                    $selectclaveproyecto = Proyecto::where('estado', true)->orderBy('clave_proyecto', 'asc')->pluck('clave_proyecto', 'id');
+                    $inscripcion = Inscripcione::find($id);
+                    return view('incripciones.edit', compact('proyecto', 'inscripcion', 'selectclaveproyecto'));
+                } else {
+                    return redirect()->to('/');
+                }
+            } catch (\Exception $e) {
+                return response()->json(['error' => $e->getMessage()], 500);
+            }
+        } else {
+            return redirect()->to('/');
+        }
+    }
+    // public function editInscripcion($id)
+    // {
+    //     $inscripcion = Inscripcione::find($id);
+
+    //     if ($inscripcion) {
+    //         return response()->json($inscripcion);
+    //     } else {
+    //         return response()->json(['error' => 'Proyecto no encontrada'], 404);
+    //     }
+    // }
+
     public function actualizarInscripcion($id, Request $request)
     {
 
@@ -358,34 +390,6 @@ class InscripcionesController extends Controller
             }
         } else {
             return redirect()->to('/');
-        }
-    }
-    // public function editInscripcion($id)
-    // {
-    //     if (Auth::check()) {
-    //         try {
-
-    //             if (Auth::check()) {
-    //                 $proyecto = Proyecto::select('clave_proyecto', 'nombre')->where('id', $id)->first();
-    //                 return View::make('incripciones.edit', compact('proyecto')); //
-    //             } else {
-    //                 return redirect()->to('/');
-    //             }
-    //         } catch (\Exception $e) {
-    //             return response()->json(['error' => $e->getMessage()], 500);
-    //         }
-    //     } else {
-    //         return redirect()->to('/');
-    //     }
-    // }
-    public function editInscripcion($id)
-    {
-        $inscripcion = Inscripcione::find($id);
-
-        if ($inscripcion) {
-            return response()->json($inscripcion);
-        } else {
-            return response()->json(['error' => 'Proyecto no encontrada'], 404);
         }
     }
 
