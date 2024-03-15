@@ -66,12 +66,9 @@
                     <tr>
                         <th class="centrar">Folio del cliente</th>
                         <th class="centrar">Cliente</th>
-                        <th class="centrar">Fecha del pago</th>
+                        {{--  <th class="centrar">Fecha del pago</th>  --}}
                         <th class="centrar">Monto</th>
-                        <th class="centrar">Clave de proyecto</th>
-                        <th class="centrar">Nombre de proyecto</th>
-                        <th class="centrar">Estado</th>
-                        <th class="centrar">Usuario que dio de alta</th>
+                        
                         <th class="centrar"></th>
                     </tr>
                 </thead>
@@ -79,63 +76,22 @@
                     @if(isset($cheques))
                     @foreach ($cheques as $cheque)
                     <tr>
-                        <td>{{ $cheque->inscripcione->id }}</td>
-                        <td>{{ $cheque->inscripcione->nombre_completo }}</td>
-                        <td>{{ \Carbon\Carbon::parse($cheque->fecha)->format('d/m/Y') }}</td>
+                        <td>{{ $cheque->id }}</td>
+                        <td>{{ $cheque->fecha }}</td>
                         <td>{{ $cheque->monto }}</td>
-                        <td>{{ $cheque->proyecto->clave_proyecto }}</td>
-                        <td>{{ $cheque->proyecto->nombre }}</td>
-                        <td>
-                            <span class="badge rounded-pill"
-                                style="background-color: {{ $cheque->estado == 1 ? 'green' : 'red' }}; color: white;">
-                                {{ $cheque->estado == 1 ? 'Activo' : 'Inactivo' }}
-                            </span>
-                        </td>
-                        <td>{{ $cheque->user->name }}</td>
-                        <td>
-                            <a href="#"
-                                class="btn btn-primary">
-                                <i class="fas fa-eye"></i> Ver pago
-                            </a>
-                            @can('Eliminar')
-                            <button type="button" id="btn_delete" class="btn btn-danger eliminartipoPago"
-                                data-id="{{ $cheque->id }}" data-tipo="cheque" data-target="#DeleteModal" data-toggle="modal">
-                                <i class="fas fa-ban"></i> Cancelar
-                            </button>
-                            @endcan
-                        </td>
+                        <!-- Agrega más celdas según sea necesario -->
                     </tr>
-                    @endforeach
+                @endforeach
                     
-                    @elseif(isset($pagos))
-                    @foreach ($pagos as $pago)
+                @elseif(isset($pagos))
+                @foreach ($pagos as $pago)
                     <tr>
-                        <td>{{ $pago->inscripcione->id }}</td>
-                        <td>{{ $pago->inscripcione->nombre_completo }}</td>
-                        <td>{{ \Carbon\Carbon::parse($pago->fecha)->format('d/m/Y') }}</td>
+                        <td>{{ $pago->id }}</td>
+                        <td>{{ $pago->fecha }}</td>
                         <td>{{ $pago->monto }}</td>
-                        <td>{{ $pago->proyecto->clave_proyecto }}</td>
-                        <td>{{ $pago->proyecto->nombre }}</td>
-                        <td>
-                            <span class="badge rounded-pill"
-                                style="background-color: {{ $pago->estado == 1 ? 'green' : 'red' }}; color: white;">
-                                {{ $pago->estado == 1 ? 'Activo' : 'Inactivo' }}
-                            </span>
-                        </td>
-                        <td>{{ $pago->user->name }}</td>
-                        <td>
-                            <a href="{{ route('ruta.ver_pago', ['tipo' => 'pago', 'id' => $pago->id]) }}" class="btn btn-primary">
-                                <i class="fas fa-eye"></i> Ver pago
-                            </a>
-                            @can('Eliminar')
-                            <button type="button" id="btn_delete" class="btn btn-danger eliminartipoPago"
-                                data-id="{{ $pago->id }}" data-tipo="pago" data-target="#DeleteModal" data-toggle="modal">
-                                <i class="fas fa-ban"></i> Cancelar
-                            </button>
-                            @endcan
-                        </td>
+                        <!-- Agrega más celdas según sea necesario -->
                     </tr>
-                    @endforeach
+                @endforeach
                     @endif
                 </tbody>
             </table>

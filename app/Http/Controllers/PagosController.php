@@ -184,11 +184,10 @@ class PagosController extends Controller
     {
         if (Auth::check()) {
             if ($tipo === 'cheque') {
-                $cheques = Cheque::with('inscripcione')->get();
+                $cheques = Cheque::where('id_cliente', $id)->get();
                 return view('cheques.pagosPersonas', compact('cheques'));
             } elseif ($tipo === 'pago') {
-                $pagos = Pago::with('inscripcione')->get();
-                // Aquí puedes retornar la vista para mostrar los detalles del pago
+                $pagos = Pago::where('id_cliente', $id)->get();
                 return view('cheques.pagosPersonas', compact('pagos'));
             } else {
                 // Manejar caso de tipo de pago no válido, por ejemplo, redireccionar a una página de error
@@ -200,6 +199,6 @@ class PagosController extends Controller
         } else {
             return redirect()->to('/');
         }
-       
     }
+    
 }
