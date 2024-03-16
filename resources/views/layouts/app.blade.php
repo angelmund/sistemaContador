@@ -14,12 +14,15 @@
     <!-- Incluir Font Awesome en tu archivo Blade principal -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
         integrity="sha384-GLhlTQ8iN17Sme8k0I7jn0OomlGT73bz9qDf+5t5uGPAAeISSbsqE8/dJ6p7MVI" crossorigin="anonymous">
-    
+    <link rel="stylesheet" href="{{asset('bootstrap-5.2.3-dist/css/bootstrap.min.css')}}">
+  
+    <link rel="stylesheet" href="{{asset('DataTables/datatables.min.css')}}">
+   
    
     {{--  @include('proyectos.edit')  --}}
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css' ,'resources/css/datatables.css','resources/js/app.js'])
+    @vite(['resources/css/app.css' ,'resources/js/app.js'])
     {{--  @vite(['css/app.css', 'css/datatables.css', 'js/app.js'])  stylesPagos--}}
 
 </head>
@@ -46,7 +49,8 @@
         </main>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-
+    <link rel="stylesheet" href="{{asset('DataTables/datatables.min.js')}}">
+    <link rel="stylesheet" href="{{asset('bootstrap-5.2.3-dist/js/bootstrap.min.js')}}">
 </body>
 
 </html>
