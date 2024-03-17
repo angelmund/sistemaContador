@@ -209,11 +209,17 @@ class PagosController extends Controller
         if (Auth::check()) {
             $inscripcion = Inscripcione::findOrFail($id);
             $cheques = $inscripcion->cheques;
-            $pagos = $inscripcion->pagos;
+            $numCheques = $cheques->count(); // Contar la cantidad de cheques
     
-            return view('cheques.pagosPersonas', compact('cheques', 'pagos', 'inscripcion'));
+            $pagos = $inscripcion->pagos;
+            $numPagos = $pagos->count(); // Contar la cantidad de pagos
+    
+            // Sumar la cantidad de cheques y pagos
+            $total = $numCheques + $numPagos;
+    
+            return view('cheques.pagosPersonas', compact('cheques', 'numCheques', 'pagos', 'numPagos', 'total', 'inscripcion'));
         } else {
             return redirect()->to('/');
         }
     }
-}
+}    

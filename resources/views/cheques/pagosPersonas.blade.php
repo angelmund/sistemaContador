@@ -26,8 +26,7 @@
                 {{-- <button id="pdfButton" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Exportar a
                     PDF</button> --}}
                 <button id="printButton" class="btn btn-info"><i class="fas fa-print"></i> Imprimir</button>
-                <h2>{{$inscripcion->id }}</h2>
-                <h3>{{$inscripcion->nombre_completo}}</h3>
+                <h1>Total de cheques y pagos: {{ $total }}</h1>
             </div>
             <div class="row mb-3 ">
                 <div class="col-md-4 fechaDivs">
