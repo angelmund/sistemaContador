@@ -100,8 +100,9 @@
                         </td>
                         <td>{{$cheque->user->name}}</td>
                         <td>
-                            <a type="button" href="{{ route('cheques.persona', ['tipo' => 'cheque', 'id' => $cheque->id]) }}" class="btn btn-primary">
-                                <i class="fas fa-eye"></i> Ver pago
+                            <!-- Para los cheques -->
+                            <a href="{{ route('personaPagos.inscripcion', ['id' => $cheque->inscripcione->id]) }}" class="btn btn-primary">
+                                <i class="fas fa-eye"></i> Ver
                             </a>
                         
                             @can('Eliminar')
@@ -141,8 +142,8 @@
                         </td>
                         <td>{{$pago->user->name}}</td>
                         <td>
-                            <a href="{{ route('cheques.persona', ['tipo' => 'pago', 'id' => $pago->id]) }}" class="btn btn-primary">
-                                <i class="fas fa-eye"></i> Ver pago
+                            <a href="{{ route('personaPagos.inscripcion', ['id' => $pago->inscripcione->id]) }}" class="btn btn-primary">
+                                <i class="fas fa-eye"></i> Ver
                             </a>
                             @can('Eliminar')
                             <button type="button" id="btn_delete" class="btn btn-danger eliminartipoPago"

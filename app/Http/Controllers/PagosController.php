@@ -15,6 +15,7 @@ use App\Models\Pago;
 use App\Models\Proyecto;
 use App\Models\User;
 use Exception;
+
 class PagosController extends Controller
 {
     //muestra la lista de pagos
@@ -66,12 +67,12 @@ class PagosController extends Controller
                 'monto.required' => 'El campo es requerido',
                 'monto.numeric' => 'El campo debe ser numérico',
             ]);
-    
+
             try {
                 DB::beginTransaction();
-    
+
                 $conceptoPago = $request->input('conceptoPago');
-    
+
                 if ($conceptoPago === 'pago') {
                     // Guardar en la tabla de pagos 
                     $pago = new Pago();
@@ -83,11 +84,11 @@ class PagosController extends Controller
                     $pago->id_cliente = $request->input('id_cliente');
                     $pago->id_proyecto = $request->input('id_proyecto');
                     $pago->id_usuario = Auth::id();
-                    $pago->estado =1;
+                    $pago->estado = 1;
                     $pago->save();
-    
+
                     DB::commit();
-    
+
                     return response()->json([
                         'mensaje' => 'Pago agregado con éxito',
                         'idnotificacion' => 1
@@ -105,7 +106,7 @@ class PagosController extends Controller
                     $cheque->id_usuario = Auth::id();
                     $cheque->save();
                     DB::commit();
-    
+
                     return response()->json([
                         'mensaje' => 'Cheque agregado con éxito',
                         'idnotificacion' => 1
@@ -122,16 +123,17 @@ class PagosController extends Controller
             return redirect()->to('/');
         }
     }
-    
+
     //cancelar cheque
-    public function cancelarCheque($id){
+    public function cancelarCheque($id)
+    {
         if (Auth::check()) {
-           
+
             if (Auth::check()) {
                 DB::beginTransaction();
                 try {
                     $cheque = Cheque::FindOrFail($id);
-                    $cheque->estado= 0;
+                    $cheque->estado = 0;
                     $cheque->save();
                     DB::commit();
                     return response()->json([
@@ -141,7 +143,7 @@ class PagosController extends Controller
                 } catch (Exception $e) {
                     DB::rollBack();
                     return response()->json([
-                        'mensaje' => 'Error al cancelar' ,
+                        'mensaje' => 'Error al cancelar',
                         'idnotificacion' => 8
                     ]);
                 }
@@ -151,15 +153,16 @@ class PagosController extends Controller
         }
     }
 
-     //cancelar Pago
-     public function cancelarPago($id){
+    //cancelar Pago
+    public function cancelarPago($id)
+    {
         if (Auth::check()) {
-           
+
             if (Auth::check()) {
                 DB::beginTransaction();
                 try {
                     $pago = Pago::FindOrFail($id);
-                    $pago->estado= 0;
+                    $pago->estado = 0;
                     $pago->save();
                     DB::commit();
                     return response()->json([
@@ -169,7 +172,7 @@ class PagosController extends Controller
                 } catch (Exception $e) {
                     DB::rollBack();
                     return response()->json([
-                        'mensaje' => 'Error al cancelar' ,
+                        'mensaje' => 'Error al cancelar',
                         'idnotificacion' => 8
                     ]);
                 }
@@ -200,5 +203,17 @@ class PagosController extends Controller
             return redirect()->to('/');
         }
     }
+
+    public function Pagos($id)
+    {
+        if (Auth::check()) {
+            $inscripcion = Inscripcione::findOrFail($id);
+            $cheques = $inscripcion->cheques;
+            $pagos = $inscripcion->pagos;
     
+            return view('cheques.pagosPersonas', compact('cheques', 'pagos', 'inscripcion'));
+        } else {
+            return redirect()->to('/');
+        }
+    }
 }

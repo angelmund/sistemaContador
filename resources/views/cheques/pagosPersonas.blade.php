@@ -16,6 +16,7 @@
 
 <x-app-layout>
     <h1 class="text-center mt-2">Lista de pagos y cheques</h1>
+
     <div class="card mt-5">
         <input type="hidden" value="{{ url('/') }}" id="url">
         <div class="card-body">
@@ -25,6 +26,8 @@
                 {{-- <button id="pdfButton" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Exportar a
                     PDF</button> --}}
                 <button id="printButton" class="btn btn-info"><i class="fas fa-print"></i> Imprimir</button>
+                <h2>{{$inscripcion->id }}</h2>
+                <h3>{{$inscripcion->nombre_completo}}</h3>
             </div>
             <div class="row mb-3 ">
                 <div class="col-md-4 fechaDivs">
@@ -46,6 +49,7 @@
                 </div>
 
                 <div class="col-md-2 col-sm-6">
+
                     <label for="Estado">Buscar por:</label>
                     <select name="estatus_id" class="form-control status_id select2">
                         <option value="seleccione">Seleccione una opción</option>
@@ -66,36 +70,82 @@
                     <tr>
                         <th class="centrar">Folio del cliente</th>
                         <th class="centrar">Cliente</th>
-                        {{--  <th class="centrar">Fecha del pago</th>  --}}
+                        <th class="centrar">Fecha del pago</th>
                         <th class="centrar">Monto</th>
-                        
-                        <th class="centrar"></th>
+                        <th class="centrar">Estado</th>
+                        <th class="centrar">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @if(isset($cheques))
+
                     @foreach ($cheques as $cheque)
                     <tr>
-                        <td>{{ $cheque->id }}</td>
-                        <td>{{ $cheque->fecha }}</td>
-                        <td>{{ $cheque->monto }}</td>
-                        <!-- Agrega más celdas según sea necesario -->
+                        <td>{{$inscripcion->id }}</td>
+                        <td>{{$inscripcion->nombre_completo}}</td>
+                        <td>{{ \Carbon\Carbon::parse($cheque->fecha)->format('d/m/Y') }}</td>
+                        <td>
+                            <span style="color: {{ $cheque->estado == 1 ? 'red' : 'green' }};">
+                                @if($cheque->estado == 1)
+                                - ${{$cheque->monto}}
+                                @else
+                                ${{$cheque->monto}}
+                                @endif
+                            </span>
+                        </td>
+                        <td><span class="badge rounded-pill"
+                                style="background-color: {{ $cheque->estado == 1 ? 'green' : 'red' }}; color: white;">
+                                {{ $cheque->estado == 1 ? 'Activo' : 'Anulado' }}
+                            </span>
+                        </td>
+                        <td>
+                               
+                            @can('Eliminar')
+                            <button type="button" id="btn_delete" class="btn btn-danger eliminartipoPago"
+                                data-id="{{ $cheque->id }}" data-tipo="cheque" data-target="#DeleteModal"
+                                data-toggle="modal">
+                                <i class="fas fa-ban"></i>Cancelar
+                            </button>
+                            @endcan
+                        </td>
+
                     </tr>
-                @endforeach
-                    
-                @elseif(isset($pagos))
-                @foreach ($pagos as $pago)
+                    @endforeach
+
+
+                    @foreach ($pagos as $pago)
                     <tr>
-                        <td>{{ $pago->id }}</td>
-                        <td>{{ $pago->fecha }}</td>
-                        <td>{{ $pago->monto }}</td>
-                        <!-- Agrega más celdas según sea necesario -->
+                        <td>{{$inscripcion->id }}</td>
+                        <td>{{$inscripcion->nombre_completo}}</td>
+                        <td>{{ \Carbon\Carbon::parse($pago->fecha)->format('d/m/Y') }}</td>
+                        <td>
+                            <span style="color: {{ $pago->estado == 1 ? 'green' : 'blue' }};">
+                                @if($pago->estado == 1)
+                                ${{$pago->monto}}
+                                @else
+                                ${{$pago->monto}}
+                                @endif
+                            </span>
+                        </td>
+                        <td> <span class="badge rounded-pill"
+                                style="background-color: {{ $pago->estado == 1 ? 'green' : 'red' }}; color: white;">
+                                {{ $pago->estado == 1 ? 'Activo' : 'Anulado' }}
+                            </span>
+                        </td>
+                        <td>
+                            @can('Eliminar')
+                            <button type="button" id="btn_delete" class="btn btn-danger eliminartipoPago"
+                                data-id="{{ $pago->id }}" data-tipo="pago" data-target="#DeleteModal"
+                                data-toggle="modal">
+                                <i class="fas fa-ban"></i>Cancelar
+                            </button>
+                            @endcan
+                        </td>
                     </tr>
-                @endforeach
-                    @endif
+                    @endforeach
+
                 </tbody>
             </table>
-            
+
 
         </div>
         {{-- @include('incripciones.edit'); --}}
