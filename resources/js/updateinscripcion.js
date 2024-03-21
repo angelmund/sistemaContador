@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
         var originalValues = {};
 
         // Al cargar la página, almacenar los valores originales de los campos del formulario
-        $('#EditModal').on('show.bs.modal', function () {
+        $('.edit-modal').on('show.bs.modal', function () {
             $(this).find('input').each(function () {
                 var fieldName = $(this).attr('name');
                 originalValues[fieldName] = $(this).val();
@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', function () {
         });
 
         // Al abrir el modal, rellenar los campos con los valores originales almacenados
-        $('#EditModal').on('show.bs.modal', function () {
+        $('.edit-modal').on('show.bs.modal', function () {
             $(this).find('input').each(function () {
                 var fieldName = $(this).attr('name');
                 $(this).val(originalValues[fieldName]);
@@ -117,6 +117,58 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
             } catch (error) {
                 console.error("Error al procesar la solicitud:", error);
+            }
+        }
+        ///inscripciones/delete/
+
+        const btnEliminar = document.querySelectorAll('.eliminar-inscripcion');
+
+        btnEliminar.forEach(btn => {
+            btn.addEventListener('click', eliminarTipoPago);
+        });
+
+        function eliminarTipoPago(event) {
+            const id = event.target.dataset.id; // Obtener el ID
+            // const tipo = event.target.dataset.tipo; // Obtener el tipo (cheque o pago)
+            const url = `/inscripciones/delete/${id}`; // Construir la URL con el tipo y el ID
+
+            eliminar("¿Seguro que quiere eliminar la inscripción?", function () {
+                console.log(id);
+                enviarSolicitudDelete(url); // Llamar a la función que envía la solicitud DELETE
+            });
+        }
+
+        async function enviarSolicitudDelete(url) {
+            try {
+                const response = await fetch(url, {
+                    method: 'post',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                });
+
+                const data = await response.json();
+
+                if (data.idnotificacion == 1) {
+                    Swal.fire({
+                        title: "Cancelado con éxito",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true
+                    });
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Ocurrió un error al cancelar"
+                    });
+                }
+            } catch (error) {
+                console.error('Error en try-catch:', error);
             }
         }
     }

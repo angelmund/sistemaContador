@@ -19,6 +19,8 @@
     <div class="card mt-5">
         <div class="card-body">
             <div class="text-center mb-3">
+                <a href="{{route('proyectos.create')}}" type="button" class="btn btn-primary"><i class='fas fa-plus'></i> Agregar proyecto</a>
+                <a href="{{route('inscripciones.form')}}" type="button" class="btn btn-primary"><i class='fas fa-plus'></i> Nueva inscripci&oacute;n</a>
                 <button id="excelButton" class="btn btn-success"><i class="fas fa-file-excel"></i> Exportar a
                     Excel</button>
                 <button id="pdfButton" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Exportar a PDF</button>
@@ -70,10 +72,7 @@
 
                         <th class="centrar">Estado</th>
                         <th class="centrar">
-                            <button type="button" class="btn btn-success btn-sm" data-toggle="modal"
-                                data-target="#CreateModal">
-                                <i class="fas fa-plus"></i> Nuevo
-                            </button>
+                            
                         </th>
                     </tr>
                 </thead>
@@ -94,12 +93,12 @@
                         </td>
 
                         <td>
-                            <button type="button" class="btn btn-warning"><i class="fas fa-download"></i></button>
+                            {{--  <button type="button" class="btn btn-warning"><i class="fas fa-download"></i></button>  --}}
                             <button type="button" id="editButton" class="btn btn-primary abrir-modal"
                                 data-bs-toggle="modal" data-bs-target="#editModal"
                                 data-remote="{{route('proyectos.edit',$proyecto->id)}}"><i
                                     class="fas fa-eye"></i></button>
-                            <button type="button" class="btn btn-success"><i class="fas fa-dollar-sign"></i></button>
+                            {{--  <button type="button" class="btn btn-success"><i class="fas fa-dollar-sign"></i></button>  --}}
 
                             @can('Eliminar')
                             <button type="button" id="btn_delete" class="btn btn-danger eliminar-modal"
@@ -110,7 +109,7 @@
 
                             <a type="button" href="{{ route('proyectos.tableProyectos', $proyecto->id) }}"
                                 class="btn btn-info">
-                                <i class="fas fa-table"></i>
+                                <i class="fas fa-table"></i>Inscritos a {{$proyecto->clave_proyecto}}
                             </a>
 
 

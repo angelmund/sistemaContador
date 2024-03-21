@@ -12,6 +12,7 @@ import './AltaPagos';
 // import './scriptNavbar';
 // import './alertas';
 import './editarPago';
+import './usuario';
 
 
 import Alpine from 'alpinejs';

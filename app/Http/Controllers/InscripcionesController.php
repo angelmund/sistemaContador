@@ -11,7 +11,9 @@ use App\Http\controllers\QueryException;
 use Illuminate\Http\Request;
 use App\Models\Inscripcione;
 use App\Models\Proyecto;
-
+use Exception;
+use PDF;
+use Luecano\NumeroALetras\NumeroALetras;
 class InscripcionesController extends Controller
 {
     public function index()
@@ -142,16 +144,32 @@ class InscripcionesController extends Controller
 
                 DB::commit();
 
-                // Después de guardar exitosamente
+
+                // // Generar PDF
+                // $pdf = PDF::loadView('incripciones.PdfIns', compact('inscripcion'));
+
+                // // Guardar el PDF en almacenamiento local
+                // $pdfPath = public_path('pdf/pdfs/') . $inscripcion->id . '.pdf';
+                // $pdf->save($pdfPath);
+
+                // // Descargar el PDF
+
+
+
                 return response()->json([
                     'mensaje' => 'Inscripción realizada con éxito',
-                    'idnotificacion' => 1
+                    'idnotificacion' => 1,
+                    'inscripcionId' => $inscripcion->id // Agrega el ID del registro guardado
                 ]);
+                
+                // return response()->download($pdfPath)->setContentDisposition('attachment');
+                // Después de guardar el registro, devuelve la vista
+                // return view('incripciones.PdfIns', compact('inscripcion'));
             } catch (\Exception $e) {
 
                 DB::rollback();
                 return response()->json([
-                    'mensaje' => 'Error al guardar: ' . $e->getMessage(),
+                    'mensaje' => 'Error al guardar: ' . $e->getmessage(),
                     'idnotificacion' => 2
                 ]);
             }
@@ -159,6 +177,21 @@ class InscripcionesController extends Controller
             return redirect()->to('/');
         }
     }
+    public function mostrarFormato($id)
+    {
+        // Recuperar el registro de la base de datos usando el ID proporcionado
+        $inscripcion = Inscripcione::find($id);
+        //instanciamos con NumeroALetras para pasar del número a como se escribe
+        $formatter = new NumeroALetras();
+
+        // Convertir el número a palabras
+        $importeEnPalabras = $formatter->toWords($inscripcion->importe);
+
+        // Pasar ambas variables a la vista
+        return view('incripciones.PdfIns', compact('inscripcion', 'importeEnPalabras'));
+    }
+    
+
 
     // public function nuevainscripcion(Request $request)
     // {
@@ -251,7 +284,7 @@ class InscripcionesController extends Controller
         }
     }
 
-    
+
     public function editInscripcion($id)
     {
         if (Auth::check()) {
@@ -317,7 +350,7 @@ class InscripcionesController extends Controller
                 'fechaDeposito_edit.required' => 'La fecha del depósito es requerida',
 
             ]);
-            
+
 
             DB::beginTransaction();
             try {
@@ -330,12 +363,12 @@ class InscripcionesController extends Controller
                 $proyecto = Proyecto::where('clave_proyecto', $claveProyecto)->first();
 
 
-                if (!$proyecto) {
-                    return response()->json([
-                        'mensaje' => 'Error al guardar: El proyecto con clave_proyecto ' . $claveProyecto . ' no existe.',
-                        'idnotificacion' => 3
-                    ]);
-                }
+                // if (!$proyecto) {
+                //     return response()->json([
+                //         'mensaje' => 'Error al guardar: El proyecto con clave_proyecto ' . $claveProyecto . ' no existe.',
+                //         'idnotificacion' => 3
+                //     ]);
+                // }
 
                 $inscripcion->clave_proyecto = $proyecto->clave_proyecto;
 
@@ -386,7 +419,6 @@ class InscripcionesController extends Controller
                     'mensaje' => 'Error al actualizar: ' . $e->getMessage(),
                     'idnotificacion' => 2
                 ]);
-                
             }
         } else {
             return redirect()->to('/');
@@ -396,9 +428,25 @@ class InscripcionesController extends Controller
     public function eliminarInscripcion($id)
     {
         if (Auth::check()) {
-            $inscripcion = Inscripcione::find($id);
 
-            $inscripcion->delete();
+            DB::beginTransaction();
+            try {
+                $inscripcion = Inscripcione::find($id);
+
+                $inscripcion->estado = 0;
+                $inscripcion->save();
+                DB::commit();
+                return response()->json([
+                    'mensaje' => 'Eliminado éxito',
+                    'idnotificacion' => 1
+                ]);
+            } catch (Exception $e) {
+                DB::rollBack();
+                return response()->json([
+                    'mensaje' => 'Error al eliminar' . $e->getMessage(),
+                    'idnotificacion' => 2
+                ]);
+            }
         } else {
             return redirect()->to('/');
         }

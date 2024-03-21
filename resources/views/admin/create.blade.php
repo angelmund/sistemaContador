@@ -9,17 +9,25 @@
                 <div class="card-body ">
                     <h1 class="text-center">Formulario de Inscripción</h1>
                     <input type="hidden" value="{{ url('/') }}" id="url">
-                    <form id="form-inscripciones" action="#" method="POST" enctype="multipart/form-data"
+                    <form id="form-usuario" action="#" method="POST" enctype="multipart/form-data"
                         class="bg-Light p-4 rounded">
                         <meta name="csrf-token" content="{{ csrf_token() }}">
                         @csrf
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre:</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre" >
+                            <input type="text" class="form-control" id="nombre" name="nombre" required>
+                            <div class="valid-feedback"></div>
+                            <div class="invalid-feedback">
+                                Por favor agregue un nombre.
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="direccion" class="form-label">Correo:</label>
-                            <input type="text" class="form-control" id="direccion" name="direccion" >
+                            <input type="email" class="form-control" id="direccion" name="direccion" required>
+                            <div class="valid-feedback"></div>
+                            <div class="invalid-feedback">
+                                Por favor agregue un correo.
+                            </div>
                         </div>
                         <div class="mb-3">
                             <label for="direccion" class="form-label">Rol:</label>
@@ -27,6 +35,9 @@
                                 <option value="Admin">Administrador</option>
                                 <option value="Usuario">Usuario</option>
                             </select>
+                            <div class="invalid-feedback">
+                                Por favor selecciona una opci&oacute;n.
+                            </div>
                         </div>
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary" id="btn_save"><i

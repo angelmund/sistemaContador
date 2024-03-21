@@ -148,13 +148,13 @@ if ($('#form-inscripciones').length > 0) {
             var nombreProyectoSeleccionado = this.options[this.selectedIndex].text; // Obtiene el texto de la opción seleccionada
             console.log("Has seleccionado: " + nombreProyectoSeleccionado);
 
-            $.get('/inscripciones/relacion/' + claveProyecto, function (data){
+            $.get('/inscripciones/relacion/' + claveProyecto, function (data) {
                 if (data && data.clave_proyecto) {
                     // Actualiza el valor del campo en el objeto inscripcion
                     inscripcion.claveProyecto = data.clave_proyecto; // Actualiza la clave del proyecto
                     inscripcion.nombreProyecto_n = data.nombre_proyecto; // Actualiza el nombre del proyecto
 
-                    var nombresProyectos = ''; 
+                    var nombresProyectos = '';
 
                     //  actualizar el valor de nombreProyectoInput si tienes un nombre
                     if (data.nombre_proyecto) {
@@ -257,10 +257,10 @@ if ($('#form-inscripciones').length > 0) {
         // document.getElementById("telefono").addEventListener("input", function() {
         //     var input = this;
         //     var value = input.value.replace(/\s/g, '').replace(/-/g, '');
-    
+
         //     // Elimina caracteres no numéricos
         //     value = value.replace(/\D/g, '');
-    
+
         //     // Limita la longitud a 10 caracteres
         //     if (value.length > 13) {
         //         value = value.substring(0, 13);
@@ -281,38 +281,33 @@ if ($('#form-inscripciones').length > 0) {
             const url = $('#url').val();
             try {
                 const formData = new FormData($('#form-inscripciones')[0]);
-                var claveProyecto = $('#claveProyecto').val(); // Cambio aquí
-                var nombreProyectoSeleccionado = $('#claveProyecto option:selected').text(); // Cambio aquí
-                
-                // Agrega el valor de nombreProyecto al formData eliminar claveProyecto para que  no siga mandando el post y get 
+                var claveProyecto = $('#claveProyecto').val();
+                var nombreProyectoSeleccionado = $('#claveProyecto option:selected').text();
+
                 formData.append('claveProyecto', nombreProyectoSeleccionado);
-                console.log(formData);
+
                 const response = await fetch(url + '/inscripciones/nuevo', {
                     method: 'POST',
                     mode: 'cors',
-                    redirect: 'manual',  // Desactiva las redirecciones automáticas
+                    redirect: 'manual',
                     headers: {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     },
                     body: formData
                 });
+
                 const data = await response.json();
-                // console.log(data); // Muestra los datos recibidos en la consola
-        
+
                 if (data.idnotificacion == 1) {
-                    Swal.fire({
-                        title: "Inscripción realizada con éxito",
-                        icon: "success",
-                        showConfirmButton: false,  // No mostrar el botón "Ok"
-                        timer: 1500,  // Cerrar automáticamente después de 1500 milisegundos (1.5 segundos)
-                        timerProgressBar: true  // Mostrar una barra de progreso durante el temporizador
-                    });
-                    // Espera 1500 milisegundos (1.5 segundos) antes de limpiar el formulario
+                    // Abre la URL de la vista en una nueva pestaña
+                    const vistaUrl = url + '/inscripciones/formato/' + data.inscripcionId;
+                    window.open(vistaUrl, '_blank');
+
+                    // Esperar un breve período de tiempo antes de recargar la página
                     setTimeout(function () {
-                        formulario.reset();  // Limpia el formulario
+                        document.getElementById('form-inscripciones').reset();
                         window.location.reload();
-                        // comprobarFormulario();  // Asegúrate de que el botón esté deshabilitado después de limpiar
-                    }, 1500);
+                    }, 1000); // Espera 1 segundo
                 } else {
                     Swal.fire({
                         icon: "error",
@@ -324,7 +319,8 @@ if ($('#form-inscripciones').length > 0) {
                 console.error("Error al procesar la solicitud:", error);
             }
         }
-        
+
+
 
 
     });

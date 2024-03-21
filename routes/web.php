@@ -34,9 +34,10 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/inscripciones/form', [App\Http\Controllers\InscripcionesController::class, 'vistaCrear'])->name('inscripciones.form');
     Route::post('/inscripciones/nuevo', [App\Http\Controllers\InscripcionesController::class, 'crearInscripcion'])->name('inscripciones.nuevo');
     Route::get('/inscripciones/relacion/{id}', [App\Http\Controllers\InscripcionesController::class, 'getClavePoryectoRelaciones'])->name('inscripciones.relacionClave');
-    // Route::get('/inscripciones/editar', [App\Http\Controllers\InscripcionesController::class, 'vistaEdit'])->name('inscripciones.editar');
+    // Route::get('/inscripciones/formato/{id}', [App\Http\Controllers\InscripcionesController::class, 'crearInscripcion'])->name('inscripciones.formato');
+    Route::get('/inscripciones/formato/{id}', [App\Http\Controllers\InscripcionesController::class, 'mostrarFormato'])->name('inscripciones.formato');
     Route::get('/inscripciones/edit/{id}', [App\Http\Controllers\InscripcionesController::class, 'editInscripcion'])->name('inscripciones.edit');
-    Route::get('/inscripciones/delete/{id}', [App\Http\Controllers\InscripcionesController::class, 'eliminarInscripcion'])->name('inscripciones.delete');
+    Route::post('/inscripciones/delete/{id}', [App\Http\Controllers\InscripcionesController::class, 'eliminarInscripcion'])->name('inscripciones.delete');
     Route::post('/inscripciones/update/{id}', [App\Http\Controllers\InscripcionesController::class, 'actualizarInscripcion'])->name('inscripciones.actualizar');
     // Route::get('/inscripciones/edit/{id}', [App\Http\Controllers\InscripcionesController::class, 'editInscripcion'])->name('inscripciones.edit');
 

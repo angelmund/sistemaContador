@@ -2,8 +2,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
     integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
 
-<div class="modal fade" id="EditModal{{$inscripcion->id}}" tabindex="-1" role="dialog" aria-labelledby="miModalLabel"
-    aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal fade edit-modal" id="EditModal{{$inscripcion->id}}" tabindex="-1" role="dialog" aria-labelledby="miModalLabel" aria-hidden="true" data-bs-backdrop="static">
     <div class="modal-dialog modal-dialog-scrollable" role="document">
         <div class="modal-content">
             <div class="modal-header text-center">
@@ -24,17 +23,13 @@
                         <label for="nombre_folio_edit" class="form-label">Folio</label>
                         <input type="text" class="form-control  @error ('nombre_folio_edit') border-red-500 @enderror"
                             id="nombre_folio_edit" name="nombre_folio_edit" value="{{ $inscripcion->id }}" readonly>
-                        @error('nombre_folio_edit')
-                        <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center"> {{$message}} </p>
-                        @enderror
+                       
                     </div>
                     <div class="mb-3">
                         <label for="nombre_edit" class="form-label">Nombre Completo</label>
                         <input type="text" class="form-control  @error ('nombre_edit') border-red-500 @enderror"
                             id="nombre_edit" name="nombre_edit" value="{{$inscripcion->nombre_completo}}" required>
-                        @error('nombre_edit')
-                        <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center"> {{$message}} </p>
-                        @enderror
+                        
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">
                             Por favor agregue un número de cheque.
@@ -45,9 +40,7 @@
                         <label for="direccion_edit" class="form-label">Dirección</label>
                         <input type="text" class="form-control  @error ('direccion_edit') border-red-500 @enderror"
                             id="direccion_edit" name="direccion_edit" value="{{$inscripcion->direccion}}" required>
-                        @error('direccion_edit')
-                        <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center"> {{$message}} </p>
-                        @enderror
+                       
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">
                             Por favor agregue un número de cheque.
@@ -55,31 +48,25 @@
                     </div>
                     <div class="mb-3">
                         <label for="claveProyecto_edit" class="form-label">Clave Proyecto</label>
-
                         <select name="claveProyecto" id="claveProyecto" class="form-select select2">
                             @foreach ($selectclaveproyecto as $id => $clave_proyecto)
-                            <option value="{{ $id }}" {{ $inscripcion->clave_proyecto == $id ? 'selected' : '' }}>{{
-                                $clave_proyecto }}</option>
+                                <option value="{{ $id }}" {{ $inscripcion->clave_proyecto == $id ? 'selected' : '' }}>
+                                    {{ $inscripcion->clave_proyecto }}
+                                </option>
                             @endforeach
                         </select>
-
                         <div class="invalid-feedback">
                             Por favor selecciona un concepto.
                         </div>
-
-                        @error('claveProyecto_edit')
-                        <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center"> {{$message}} </p>
-                        @enderror
                     </div>
+                    
 
                     <div class="mb-3">
                         <label for="nombreProyecto" class="form-label">Nombre Proyecto</label>
                         <input type="text" class="form-control  @error ('nombreProyecto') border-red-500 @enderror"
                             id="nombreProyecto" name="nombreProyecto" value="{{$inscripcion->proyecto->nombre}}"
                             readonly required>
-                        @error('nombreProyecto')
-                        <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center"> {{$message}} </p>
-                        @enderror
+                        
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">
                             Por favor agregue un nombre de proyecto.
@@ -89,9 +76,7 @@
                         <label for="comite_edit" class="form-label">Comité</label>
                         <input type="text" class="form-control  @error ('comite_edit') border-red-500 @enderror"
                             id="comite_edit" name="comite_edit" value="{{$inscripcion->comite}}" required>
-                        @error('comite_edit')
-                        <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center"> {{$message}} </p>
-                        @enderror
+                       
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">
                             Por favor agregue un comit&eacute;.
@@ -101,9 +86,7 @@
                         <label for="alcaldia_edit" class="form-label">Alcaldia</label>
                         <input type="text" class="form-control  @error ('alcaldia_edit') border-red-500 @enderror"
                             id="alcaldia_edit" name="alcaldia_edit" value="{{$inscripcion->alcaldia}}" required>
-                        @error('alcaldia_edit')
-                        <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center"> {{$message}} </p>
-                        @enderror
+                        
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">
                             Por favor agregue una alcald&iacute;a.
@@ -113,9 +96,7 @@
                         <label for="telefono_edit" class="form-label">Teléfono</label>
                         <input type="text" class="form-control  @error ('telefono_edit') border-red-500 @enderror"
                             id="telefono_edit" name="telefono_edit" value="{{$inscripcion->telefono}}" required>
-                        @error('telefono_edit')
-                        <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center"> {{$message}} </p>
-                        @enderror
+                        
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">
                             Por favor ingrese un n&uacute;mero telef&oacute;nico.
@@ -125,9 +106,7 @@
                         <label for="concepto_edit" class="form-label">Concepto</label>
                         <input type="text" class="form-control  @error ('concepto_edit') border-red-500 @enderror"
                             id="concepto_edit" name="concepto_edit" value="{{$inscripcion->concepto}}" required>
-                        @error('concepto_edit')
-                        <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center"> {{$message}} </p>
-                        @enderror
+                        
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">
                             Por favor agregue un concepto.
@@ -139,9 +118,7 @@
                             class="form-control  @error ('importeInscripcion_edit') border-red-500 @enderror"
                             id="importeInscripcion_edit" name="importeInscripcion_edit"
                             value="{{$inscripcion->importe}}" required>
-                        @error('importeInscripcion_edit')
-                        <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center"> {{$message}} </p>
-                        @enderror
+                        
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">
                             Por favor ingrese el importe.
@@ -152,9 +129,7 @@
                         <input type="text" class="form-control  @error ('noSolicitud_edit') border-red-500 @enderror"
                             id="noSolicitud_edit" name="noSolicitud_edit" value="{{$inscripcion->numero_solicitud }}"
                             required>
-                        @error('noSolicitud_edit')
-                        <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center"> {{$message}} </p>
-                        @enderror
+                      
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">
                             Por favor ingrese el n&uacute;mero de solicitud.
@@ -165,9 +140,7 @@
                         <input type="date" class="form-control @error('fechaDeposito_edit') border-red-500 @enderror"
                             id="fechaDeposito_edit" name="fechaDeposito_edit"
                             value="{{ \Carbon\Carbon::parse($inscripcion->fecha_deposito)->format('Y-m-d') }}">
-                        @error('fechaDeposito_edit')
-                        <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center"> {{$message}} </p>
-                        @enderror
+                        
                         <div class="valid-feedback"></div>
                         <div class="invalid-feedback">
                             Por favor seleccione una fecha.

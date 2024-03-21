@@ -21,7 +21,7 @@
             <div class="text-center mb-3">
                 <a href="{{route('usuarios.create')}}" type="button" class="btn btn-primary"><i class='bx bx-user-plus'></i> Nuevo Usuario</a>
                 <a type="button" href="{{route('usuarios.roles.index')}}" class="btn btn-warning"><i class='bx bxs-user-check'></i>
-                    Nuevo permiso</a>
+                    Nuevo Rol</a>
                 {{--  <button id="excelButton" class="btn btn-success"><i class="fas fa-file-excel"></i> Exportar a
                     Excel</button>
                 <button id="pdfButton" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Exportar a PDF</button>
@@ -80,11 +80,14 @@
                         <td>{{$usuario->name}}</td>
                         <td>{{$usuario->email}}</td>
                         <td>
-                            <span class="badge rounded-pill"
-                                style="background-color: {{ $usuario->estado == 1 ? 'green' : 'red' }}; color: white;">
-                                {{ $usuario->rol == 0 ? 'Administrador' : 'Inactivo' }}
-                            </span>
+                            @foreach($usuario->roles as $rol)
+                                <span class="badge rounded-pill"
+                                    style="background-color: {{ $rol->name == 'Administrador' ? 'green' : 'purple' }}; color: white;">
+                                    {{ $rol->name }}
+                                </span>
+                            @endforeach
                         </td>
+                        
                         <td>
                             <span class="badge rounded-pill"
                                 style="background-color: {{ $usuario->estado == 1 ? 'green' : 'red' }}; color: white;">
@@ -92,12 +95,10 @@
                             </span>
                         </td>
                         <td>
-                            
-                            <a href="{{route('usuario.RolAsignado.show', $usuario->id)}}" type="button" class="btn btn-primary"><i class="fas fa-pen"></i></a>
-                            
-                            
-                            <button type="button" id="btn_delete" class="btn btn-danger eliminar-modal"
-                                data-target="#DeleteModal" data-toggle="modal" data-idcategoria="#">
+                            <a href="{{route('usuario.RolAsignado.show', $usuario->id)}}" type="button" class="btn btn-primary"><i
+                                    class="fas fa-pen"></i></a>
+                            <button type="button" id="btn_delete" class="btn btn-danger eliminar-modal" data-target="#DeleteModal"
+                                data-toggle="modal" data-idcategoria="#">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>
@@ -105,8 +106,8 @@
                     {{--  @include('incripciones.edit')
                     @yield('pagos.altaPagos')  --}}
                     @endforeach
-
                 </tbody>
+                
 
             </table>
         </div>

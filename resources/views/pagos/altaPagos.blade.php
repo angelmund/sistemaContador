@@ -52,7 +52,7 @@
                             <label for="numeroChequePago">Numero Cheque:</label>
                             <input class="form-control" type="text" name="numeroChequePago" id="numeroChequePago"
                                 required>
-                            <div class="valid-feedback">Campo Ok</div>
+                            <div class="valid-feedback"></div>
                             <div class="invalid-feedback">
                                 Por favor agregue un número de cheque.
                             </div>
@@ -62,7 +62,7 @@
                             <label for="NumeroCuentaBancaria" class="form-label">Numero Cuenta Bancaria:</label>
                             <input type="text" class="form-control" id="NumeroCuentaBancaria"
                                 name="NumeroCuentaBancaria" required>
-                            <div class="valid-feedback">Campo Ok</div>
+                            <div class="valid-feedback"></div>
                             <div class="invalid-feedback">
                                 Por favor agregue un número de cuenta.
                             </div>
@@ -70,7 +70,7 @@
                         <div class="mb-3">
                             <label for="referencia" class="form-label">Referencia Pago:</label>
                             <input type="text" class="form-control" id="referencia" name="referencia" required>
-                            <div class="valid-feedback">Campo Ok</div>
+                            <div class="valid-feedback"></div>
                             <div class="invalid-feedback">
                                 Por favor ingrese una referencia de pago.
                             </div>
@@ -78,7 +78,7 @@
                         <div class="mb-3">
                             <label for="monto" class="form-label">Monto:</label>
                             <input type="text" class="form-control" id="monto" name="monto" required>
-                            <div class="valid-feedback">Campo Ok</div>
+                            <div class="valid-feedback"></div>
                             <div class="invalid-feedback">
                                 Por favor ingrese el monto.
                             </div>
@@ -91,7 +91,7 @@
                         <div class="mb-3">
                             <label for="observaciones" class="form-label">Observaciones:</label>
                             <textarea type="text" class="form-control" id="observaciones" name="observaciones" required></textarea>
-                            <div class="valid-feedback">Campo Ok</div>
+                            <div class="valid-feedback"></div>
                             <div class="invalid-feedback">
                                 Por favor ingrese la observación.
                             </div>

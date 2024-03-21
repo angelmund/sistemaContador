@@ -19,7 +19,8 @@
     <div class="card mt-5">
         <div class="card-body">
             <div class="text-center mb-3">
-                
+                <button id="excelButton" class="btn btn-success"><i class="fas fa-file-excel"></i> Exportar a
+                    Excel</button>
             </div>
             <div class="row mb-3 ">
                 
@@ -38,7 +39,7 @@
                         <th class="centrar">Folio</th>
                         <th class="centrar">Nombre</th>
                         <th class="centrar">Total Pago</th>
-                        <th class="centrar">Acciones</th>
+                        <th class="centrar"></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -51,7 +52,7 @@
                             <button type="button" id="editButton" class="btn btn-primary abrir-modal"
                                 data-bs-toggle="modal" data-bs-target="#editModal" data-remote="#"><i
                                     class="fas fa-eye"></i></button>
-                            <button type="button" class="btn btn-success"><i class="fas fa-dollar-sign"></i></button>
+                            <a href="{{route('personaPagos.inscripcion', $inscripcion->id)}}" type="button" class="btn btn-success"><i class="fas fa-dollar-sign"></i></a>
 
                             <button type="button" id="btn_delete" class="btn btn-danger eliminar-modal"
                                 data-target="#DeleteModal" data-toggle="modal" data-idcategoria="#">
