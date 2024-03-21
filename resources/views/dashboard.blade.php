@@ -53,7 +53,7 @@
                         </div>
                         <div class="row align-items-center mb-2 d-flex justify-content-center">
                             <div class="col-12">
-                                <a class="d-flex align-items-center justify-content-center mb-0">
+                                <a href="{{route('proyectos.index')}}" class="d-flex align-items-center justify-content-center mb-0">
                                     Ver Proyectos
                                 </a>
                             </div>

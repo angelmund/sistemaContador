@@ -124,6 +124,90 @@ class PagosController extends Controller
         }
     }
 
+    public function formIngreso(){
+        if (Auth::check()) {
+            // $cheques = Cheque::all();
+            // $pagos =  Pago::all();
+            // $proyectos = Proyecto::pluck('nombre');
+            $inscripciones = Inscripcione::all();
+            // $usuario = User::all();
+            return view::make('pagos.altaForm', compact('inscripciones'));
+        } else {
+            return redirect()->to('/');
+        }
+    }
+
+    public function ingressoForm(Request $request)
+    {
+        if (Auth::check()) {
+            $request->validate([
+                'numeroChequePago' => 'required_if:conceptoPago,cheque',
+                'NumeroCuentaBancaria' => 'required_if:conceptoPago,cheque',
+                'referencia' => 'required',
+                'monto' => 'required|numeric',
+            ], [
+                'numeroChequePago.required_if' => 'El campo es requerido',
+                'NumeroCuentaBancaria.required_if' => 'El campo es requerido',
+                'referencia.required' => 'El campo es requerido',
+                'monto.required' => 'El campo es requerido',
+                'monto.numeric' => 'El campo debe ser numérico',
+            ]);
+
+            try {
+                DB::beginTransaction();
+
+                $conceptoPago = $request->input('conceptoPago');
+
+                if ($conceptoPago === 'pago') {
+                    // Guardar en la tabla de pagos 
+                    $pago = new Pago();
+                    $pago->fecha = \Carbon\Carbon::now();
+                    $pago->hora = Carbon::now()->toTimeString();
+                    $pago->monto = $request->input('monto');
+                    $pago->referencia_pago  = $request->input('referencia');
+                    $pago->descripcion = $request->input('observaciones');
+                    $pago->id_cliente = $request->input('id_cliente');
+                    $pago->id_proyecto = $request->input('id_proyecto');
+                    $pago->id_usuario = Auth::id();
+                    $pago->estado = 1;
+                    $pago->save();
+
+                    DB::commit();
+
+                    return response()->json([
+                        'mensaje' => 'Pago agregado con éxito',
+                        'idnotificacion' => 1
+                    ]);
+                } elseif ($conceptoPago === 'cheque') {
+                    // Guardar el cheque
+                    $cheque = new Cheque();
+                    $cheque->fecha = \Carbon\Carbon::today();
+                    $cheque->hora = \Carbon\Carbon::now()->format('H:i:s');
+                    $cheque->numero_cheque = $request->input('numeroChequePago');
+                    $cheque->monto = $request->input('monto');
+                    $cheque->numero_cuentabancaria = $request->input('NumeroCuentaBancaria');
+                    $cheque->id_cliente = $request->input('id_cliente');
+                    $cheque->id_proyecto = $request->input('id_proyecto');
+                    $cheque->id_usuario = Auth::id();
+                    $cheque->save();
+                    DB::commit();
+
+                    return response()->json([
+                        'mensaje' => 'Cheque agregado con éxito',
+                        'idnotificacion' => 1
+                    ]);
+                }
+            } catch (\Exception $e) {
+                DB::rollback();
+                return response()->json([
+                    'mensaje' => 'Error al guardar el pago: ' . $e->getMessage(),
+                    'idnotificacion' => 3
+                ]);
+            }
+        } else {
+            return redirect()->to('/');
+        }
+    }
     //cancelar cheque
     public function cancelarCheque($id)
     {

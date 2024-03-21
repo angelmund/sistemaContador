@@ -1,6 +1,11 @@
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+<link rel="stylesheet" href="{{asset('styles.css')}}">
+<link rel="stylesheet" href="{{asset('stylesNavbar.css')}}">
+<link rel="stylesheet" href="{{asset('normalize.css')}}">
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
     <!-- NavBar --->
-    <div class="overlay" id="overlay"></div>
+    {{--  <div class="overlay" id="overlay"></div>
 
     <button id="toggleMenu" class="open-menu-button">☰</button>
 
@@ -23,7 +28,7 @@
                     <a href="{{ route('dashboard') }}" class="ms-2 text-decoration-none">Dashboard</a>
                 </li>
             </ul>
-            {{--------- usuarios----------}}
+           
             <ul class="list-unstyled d-flex align-items-center">
                 <li class="d-flex align-items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-user-bolt" width="24"
@@ -130,8 +135,177 @@
             </li>
 
         </ul>
-    </div>
+    </div>  --}}
+    <div class="nav-bar__abrir">
+		<button class="abrir__btn">
+			<i class="fas fa-bars"></i>
+		</button>
+	</div>
 
+	<nav class="nav-bar flex">
+		<!--Menu 1-->
+		<div class="nav-bar__cerrar flex">
+			<button class="cerrar_btn">
+				<i class="fas fa-times"></i>
+			</button>
+		</div>
+
+		<div class="menu__nav-bar">
+		    <div class="nav-bar__img">
+			    <img class="img__logo" src="{{asset('img/logoB.png')}}" alt="logo Benita Galeana">
+		    </div>
+
+		    <ul class="nav-bar__menu">
+                <a href="{{route('dashboard')}}" class="icon-btn title_icon fas fa-home">Inicio</a>
+                <br>
+	        <!--Items Desplegable-->
+			    <!--Menu__subitems-->
+			    <li class="menu__submenu">
+			    	<div class="submenu__title flex">
+			    		<i class="icon-btn title__icon fas fa-folder"></i>
+			    	    <p class="title__text">Proyectos</p>
+			    	</div>
+
+				    <ul class="submenu">
+					    <!--item url para ir a otra ventana-->
+					    <li class="submenu__item proyecto">
+						    <a class="item__link" href="{{route('proyectos.create')}}">
+						        <i class="fas fa-plus"></i>
+						        <span>Agregar Proyecto</span>
+						    </a>						    
+					    </li>
+					    <!--Fin item -->
+
+					    <!--item url para ir a otra ventana-->
+					    <li class="submenu__item">
+						    <a class="item__link" href="{{route('proyectos.index')}}">
+						        <i class="fas fa-table"></i>
+						        <span>Mostrar Proyecto</span>
+						    </a>	
+					    </li>
+					    <!--Fin item -->
+				    </ul>
+			    </li>
+			    <!--Fin Menu__subitems-->
+
+                <!--Menu__subitems-->
+			    <li class="menu__submenu">
+			    	<div class="submenu__title flex">
+                        <i class="icon-btn title__icon fas fa-users"></i>
+			    	    <p class="title__text">Usuarios</p>
+			    	</div>
+
+				    <ul class="submenu">
+					    <!--item url para ir a otra ventana-->
+					    <li class="submenu__item proyecto">
+						    <a class="item__link" href="{{route('usuarios.index')}}">
+						        <i class="fas fa-user"></i>
+						        <span>Mostrar Usuarios</span>
+						    </a>						    
+					    </li>
+					    <!--Fin item -->
+
+					    <!--item url para ir a otra ventana-->
+					    <li class="submenu__item">
+						    <a class="item__link" href="{{route('usuarios.roles.index')}}">
+						        <i class="fas fa-key"></i>
+						        <span>Roles</span>
+						    </a>	
+					    </li>
+					    <!--Fin item -->
+
+                        <!--item url para ir a otra ventana-->
+					    <li class="submenu__item">
+						    <a class="item__link" href="{{route('usuarios.permisos.index')}}">
+						        <i class="fas fa-lock"></i>
+						        <span>Permisos</span>
+						    </a>	
+					    </li>
+					    <!--Fin item -->
+				    </ul>
+			    </li>
+			    <!--Fin Menu__subitems-->
+
+			    <!--Menu__subitems-->
+			    <li class="menu__submenu">
+			    	<div class="submenu__title flex">
+			    		<i class="icon-btn title__icon fas fa-user"></i>
+			    	    <p class="title__text">Inscripciones</p>
+			    	</div>
+
+				    <ul class="submenu">
+					    <!--item url para ir a otra ventana-->
+					    <li class="submenu__item persona">
+						    <a class="item__link" href="{{route('inscripciones.form')}}">
+						        <i class="fas fa-plus"></i>
+						        <span>Agregar Inscripci&oacute;n</span>
+						    </a>						    
+					    </li>
+					    <!--Fin item -->
+
+					    <!--item url para ir a otra ventana-->
+					    <li class="submenu__item">
+						    <a class="item__link" href="{{route('inscripciones.index')}}">
+						        <i class="fas fa-table"></i>
+						        <span>Mostrar Inscripci&oacute;n</span>
+						    </a>	
+					    </li>
+					    <!--Fin item -->
+				    </ul>
+			    </li>
+			    <!--Fin Menu__subitems-->
+
+                <!--Menu__subitems-->
+			    <li class="menu__submenu">
+			    	<div class="submenu__title flex">
+			    		<i class="icon-btn title__icon fas fa-folder"></i>
+			    	    <p class="title__text">Cheques y Pagos</p>
+			    	</div>
+
+				    <ul class="submenu">
+					    <!--item url para ir a otra ventana-->
+					    <li class="submenu__item proyecto">
+						    <a class="item__link" href="{{route('pagos.nuevo')}}">
+						        <i class="fas fa-plus"></i>
+						        <span>Agregar pago/cheque</span>
+						    </a>						    
+					    </li>
+					    <!--Fin item -->
+
+					    <!--item url para ir a otra ventana-->
+					    <li class="submenu__item">
+						    <a class="item__link" href="{{route('cheques.lista')}}">
+						        <i class="fas fa-table"></i>
+						        <span>Mostrar pago/cheque</span>
+						    </a>	
+					    </li>
+					    <!--Fin item -->
+				    </ul>
+			    </li>
+			    <!--Fin Menu__subitems-->
+
+		    </ul>
+		</div>
+
+		{{--  <!--Menu 2-->
+		<div class="menu__nav-bar menu2 flex">
+			<!-- Btn para configuracion de perfil-->
+			<div class="nav-bar__item">
+				<a class="item__btn configuracion" href="#">
+					<i class="fas fa-cog"></i>
+					<span>Configuracion</span>
+				</a>
+			</div>
+
+			<!-- Btn para salir-->
+			<div class="nav-bar__item">
+				<a class="item__btn salir" href="#">
+					<i class="fas fa-sign-out-alt"></i>
+					<span>Salir</span>
+				</a>
+			</div>		
+		</div>  --}}
+	</nav>
 
 
     <!-- Primary Navigation Menu -->
@@ -224,3 +398,4 @@
         </div>
     </div>
 </nav>
+<script src="{{asset('js/scriptNavbar.js')}}"></script>

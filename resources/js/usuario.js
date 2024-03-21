@@ -1,4 +1,4 @@
-import { alertaInfo, confirSave } from "./alertas";
+import { alertaInfo, confirSave, eliminar } from "./alertas";
 
 // Declaración de la variable btnSubmit*
 
@@ -33,13 +33,64 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
     }
+
+    const btnEliminar = document.querySelectorAll('.eliminar-user');
+
+btnEliminar.forEach(btn => {
+    btn.addEventListener('click', eliminarUsuario);
+});
+
+function eliminarUsuario(event) {
+    const id = event.currentTarget.dataset.id; // Obtener el ID del usuario del botón
+    const ruta = $('#url').val();
+    const url ='/usuarios/delete/' + id; // Actualizar la URL para eliminar un usuario
+
+    eliminar("¿Seguro que desea eliminar el usuario?", function (){
+        eliminarUsuarioFetch(url); // Pasar la URL como parámetro
+    });
+}
+
+async function eliminarUsuarioFetch(url) {
+    try {
+        const response = await fetch(url, {
+            method: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+            },
+        });
+
+        const data = await response.json();
+
+        if (data.idnotificacion == 1) {
+            Swal.fire({
+                title: "Eliminado con éxito",
+                icon: "success",
+                showConfirmButton: false,
+                timer: 1500,
+                timerProgressBar: true
+            });
+            setTimeout(function () {
+                window.location.reload();
+            }, 1500);
+        } else {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "Ocurrió un error al eliminar"
+            });
+        }
+    } catch (error) {
+        console.error('Error en try-catch:', error);
+    }
+}
+
 });
 
 async function saveCheque() {
     const url = $('#url').val();
     const formData = new FormData($('#form-usuario')[0]);
     try {
-        const response = await fetch(url + '/listaPagos/ingreso', {
+        const response = await fetch(url + '/usuarios/delete', {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')

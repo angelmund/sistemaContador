@@ -19,6 +19,7 @@
     <div class="card mt-5">
         <div class="card-body">
             <div class="text-center mb-3">
+                <input type="hidden" value="{{ url('/') }}" id="url">
                 <a href="{{route('usuarios.create')}}" type="button" class="btn btn-primary"><i class='bx bx-user-plus'></i> Nuevo Usuario</a>
                 <a type="button" href="{{route('usuarios.roles.index')}}" class="btn btn-warning"><i class='bx bxs-user-check'></i>
                     Nuevo Rol</a>
@@ -97,8 +98,8 @@
                         <td>
                             <a href="{{route('usuario.RolAsignado.show', $usuario->id)}}" type="button" class="btn btn-primary"><i
                                     class="fas fa-pen"></i></a>
-                            <button type="button" id="btn_delete" class="btn btn-danger eliminar-modal" data-target="#DeleteModal"
-                                data-toggle="modal" data-idcategoria="#">
+                            <button type="button" id="btn_delete" class="btn btn-danger eliminar-user" data-target="#DeleteModal"
+                                data-toggle="modal" data-id="{{ $usuario->id}}">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>

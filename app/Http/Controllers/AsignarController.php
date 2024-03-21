@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\DB;
 
 class AsignarController extends Controller
 {
@@ -80,6 +81,29 @@ class AsignarController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if (Auth::check()) {
+            try {
+                DB::beginTransaction();
+                $rol = Role::findOrFail($id);
+                // $rol->estado = 0;
+                // dd( $rol );
+                $rol->delete();
+
+                DB::commit();
+
+                return response()->json([
+                    'mensaje' => 'Eliminado con éxito',
+                    'idnotificacion' => 1
+                ]);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return response()->json([
+                    'mensaje' => 'Error al eliminar: ' . $e->getMessage(),
+                    'idnotificacion' => 2
+                ]);
+            }
+        } else {
+            return redirect()->to('/');
+        }
     }
 }

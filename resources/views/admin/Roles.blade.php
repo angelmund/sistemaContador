@@ -45,8 +45,8 @@
                             <a type="button" href="{{route('usuarios.roles.edit', $rol)}}" class="btn btn-primary abrir-inscripcion" ><i class="fas fa-pen"></i></a>
 
 
-                            <button type="button" id="btn_delete" class="btn btn-danger eliminar-modal"
-                                data-target="#DeleteModal" data-toggle="modal" data-idcategoria="#">
+                            <button type="button" id="btn_delete" class="btn btn-danger eliminar-rol"
+                                data-target="#DeleteModal" data-toggle="modal" data-id="{{$rol->id}}">
                                 <i class="fas fa-trash"></i>
                             </button>
                         </td>

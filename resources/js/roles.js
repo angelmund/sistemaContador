@@ -1,4 +1,4 @@
-import { confirSave } from "./alertas";
+import { confirSave, eliminar } from "./alertas";
 
 // Verifica si hay elementos que requieren form-proyecto en la página actual
 if ($('#form-rol').length > 0) {
@@ -158,6 +158,56 @@ if ($('#form-rol').length > 0) {
                 }
             } catch (error) {
                 // console.log(error);
+            }
+        }
+
+        const btnEliminar = document.querySelectorAll('.eliminar-rol');
+
+        btnEliminar.forEach(btn => {
+            btn.addEventListener('click', funEliminar);
+        });
+        
+        function funEliminar(event) {
+            const id = event.currentTarget.dataset.id; // Obtener el ID del usuario del botón
+            const ruta = $('#url').val();
+            const url ='/usuario/asignarRol/' + id; // Actualizar la URL para eliminar un usuario
+        
+            eliminar("¿Seguro que desea eliminar el rol?", function (){
+                eliminarRol(url); // Pasar la URL como parámetro
+            });
+        }
+        
+        async function eliminarRol(url) {
+            try {
+                const response = await fetch(url, {
+                    method: 'DELETE',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                    },
+                });
+        
+                const data = await response.json();
+        
+                if (data.idnotificacion == 1) {
+                    Swal.fire({
+                        title: "Eliminado con éxito",
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1500,
+                        timerProgressBar: true
+                    });
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1500);
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: "Ocurrió un error al eliminar"
+                    });
+                }
+            } catch (error) {
+                console.error('Error en try-catch:', error);
             }
         }
     });

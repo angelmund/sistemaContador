@@ -374,7 +374,7 @@
 
             <div class="header-recibo__QR">
                 <div id="contenedorQR2" class="logo__img"></div>
-                <p>Folio: {{$inscripcion->id}}</p>
+                <p class="id">Folio: {{$inscripcion->id}}</p>
             </div>
         </header>
 
@@ -514,8 +514,15 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            const url = window.location.pathname;
+            // Dividir la URL utilizando el caracter "/"
+            const partes = url.split("/");
+
+            // El último elemento en partes será tu ID
+            const id = partes[partes.length - 1];
+
             // Convertimos el folio a cadena de texto
-            const folio = 123456;
+            const folio = id.toString();
         
             const contenedorQR = document.getElementById('contenedorQR');
             const QR = new QRCode(contenedorQR, {
