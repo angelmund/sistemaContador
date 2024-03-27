@@ -157,6 +157,7 @@
 
 		    <ul class="nav-bar__menu">
                 <a href="{{route('dashboard')}}" class="icon-btn title_icon fas fa-home">Inicio</a>
+                {{--  <a href="{{route('cheques.lista')}}" class="icon-btn title_icon fas fa-home">Lista cheques y pagos</a>  --}}
                 <br>
 	        <!--Items Desplegable-->
 			    <!--Menu__subitems-->
@@ -272,7 +273,8 @@
 					    </li>
 					    <!--Fin item -->
 
-					    <!--item url para ir a otra ventana-->
+					    
+                        <!--item url para ir a otra ventana-->
 					    <li class="submenu__item">
 						    <a class="item__link" href="{{route('cheques.lista')}}">
 						        <i class="fas fa-table"></i>
@@ -280,6 +282,7 @@
 						    </a>	
 					    </li>
 					    <!--Fin item -->
+
 				    </ul>
 			    </li>
 			    <!--Fin Menu__subitems-->

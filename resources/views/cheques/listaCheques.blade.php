@@ -98,7 +98,7 @@
                                 {{ $cheque->estado == 1 ? 'Activo' : 'Inactivo' }}
                             </span>
                         </td>
-                        <td>{{$cheque->user->name}}</td>
+                        <td>{{ $cheque->user->name ?? 'Usuario no encontrado' }}</td>
                         <td>
                             <!-- Para los cheques -->
                             <a href="{{ route('personaPagos.inscripcion', ['id' => $cheque->inscripcione->id]) }}" class="btn btn-primary">
@@ -140,7 +140,8 @@
                                 {{ $pago->estado == 1 ? 'Activo' : 'Inactivo' }}
                             </span>
                         </td>
-                        <td>{{$pago->user->name}}</td>
+                        <td>{{ $cheque->user->name ?? 'Usuario no encontrado' }}</td>
+
                         <td>
                             <a href="{{ route('personaPagos.inscripcion', ['id' => $pago->inscripcione->id]) }}" class="btn btn-primary">
                                 <i class="fas fa-eye"></i> Ver

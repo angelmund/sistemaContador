@@ -319,7 +319,7 @@
                 <div class="item__datos">
                     <p class="datos__negrita">Fecha Deposito: </p>
                     <div class="datos__linea">
-                        <p>{{ \Carbon\Carbon::parse($inscripcion->hora_registro)->format('d/m/Y') }}</p>
+                        <p>{{ \Carbon\Carbon::parse($inscripcion->fecha_deposito)->format('d/m/Y') }}</p>
                     </div>
                 </div>
                 <!--fin datos item-->
@@ -473,7 +473,7 @@
                 <div class="item__datos">
                     <p class="datos__negrita">Fecha Deposito: </p>
                     <div class="datos__linea">
-                        <p>{{ \Carbon\Carbon::parse($inscripcion->hora_registro)->format('d/m/Y') }}</p>
+                        <p>{{ \Carbon\Carbon::parse($inscripcion->fecha_deposito)->format('d/m/Y') }}</p>
                     </div>
                 </div>
                 <!--fin datos item-->
