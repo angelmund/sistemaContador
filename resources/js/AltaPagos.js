@@ -1,5 +1,5 @@
 import { alertaInfo, confirSave } from "./alertas";
-import Swal from 'sweetalert2';
+// import Swal from 'sweetalert2';
 
 // Declaración de la variable btnSubmit*
 

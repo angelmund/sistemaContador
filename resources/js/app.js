@@ -13,7 +13,7 @@ import './AltaPagos';
 import './alertas';
 import './editarPago';
 import './usuario';
-import 'select2';
+// import 'select2';
 import 'sweetalert2';
 import $ from 'jquery';
 window.jQuery = $; // Asigna jQuery a la variable global window.jQuery

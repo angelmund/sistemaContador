@@ -5,7 +5,7 @@ import { alertaInfo, confirmarInfo } from './alertas';
 if ($('#example').length > 0) {
 
     $(document).ready(function () {
-        $('.select2').select2();
+        // $('.select2').select2();
         // var table = $('#example');
         var dt;
         // const fechaInicio = document.querySelector('#fechaInicio');
