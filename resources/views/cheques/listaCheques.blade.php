@@ -25,6 +25,9 @@
                 {{-- <button id="pdfButton" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Exportar a
                     PDF</button> --}}
                 <button id="printButton" class="btn btn-info"><i class="fas fa-print"></i> Imprimir</button>
+                <h1>Total acumulado: ${{number_format($mostrarTotal, 0,'.',',')}}</h1>
+                <h2>Num.Pagos: #{{$sumaPagos}}</h2>
+                <h2>Num.Cheques: #{{$sumaCheques}}</h2>
             </div>
             <div class="row mb-3 ">
                 <div class="col-md-4 fechaDivs">
@@ -64,6 +67,7 @@
             <table id="example" class="table table-striped responsive" style="width:100%">
                 <thead>
                     <tr>
+                        <th class="centrar">Folio Cheque/Pago</th>
                         <th class="centrar">Folio del cliente</th>
                         <th class="centrar">Cliente</th>
                         <th class="centrar">Fecha del pago</th>
@@ -78,6 +82,7 @@
                 <tbody>
                     @foreach ($cheques as $cheque)
                     <tr>
+                        <td>Folio Cheque:{{$cheque->id}}</td>
                         <td>{{$cheque->inscripcione->id }}</td>
                         <td>{{$cheque->inscripcione->nombre_completo}}</td>
                         <td>{{ \Carbon\Carbon::parse($cheque->fecha)->format('d/m/Y') }}</td>
@@ -86,7 +91,7 @@
                                 @if($cheque->estado == 1)
                                 - ${{$cheque->monto}}
                                 @else
-                                ${{$cheque->monto}}
+                                $0
                                 @endif
                             </span>
                         </td>
@@ -95,7 +100,7 @@
                         <td>
                             <span class="badge rounded-pill"
                                 style="background-color: {{ $cheque->estado == 1 ? 'green' : 'red' }}; color: white;">
-                                {{ $cheque->estado == 1 ? 'Activo' : 'Inactivo' }}
+                                {{ $cheque->estado == 1 ? 'Activo' : 'Cancelado' }}
                             </span>
                         </td>
                         <td>{{ $cheque->user->name ?? 'Usuario no encontrado' }}</td>
@@ -119,6 +124,7 @@
                     @endforeach
                     @foreach ($pagos as $pago)
                     <tr>
+                        <td>Folio Pago:{{$pago->id}}</td>
                         <td>{{$pago->inscripcione->id}}</td>
                         <td>{{$pago->inscripcione->nombre_completo}}</td>
                         <td>{{ \Carbon\Carbon::parse($pago->fecha)->format('d/m/Y') }}</td>
@@ -127,7 +133,7 @@
                                 @if($pago->estado == 1)
                                 ${{$pago->monto}}
                                 @else
-                                ${{$pago->monto}}
+                                $0
                                 @endif
                             </span>
 
@@ -137,7 +143,7 @@
                         <td>
                             <span class="badge rounded-pill"
                                 style="background-color: {{ $pago->estado == 1 ? 'green' : 'red' }}; color: white;">
-                                {{ $pago->estado == 1 ? 'Activo' : 'Inactivo' }}
+                                {{ $pago->estado == 1 ? 'Activo' : 'Cancelado ' }}
                             </span>
                         </td>
                         <td>{{ $cheque->user->name ?? 'Usuario no encontrado' }}</td>

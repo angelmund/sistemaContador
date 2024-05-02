@@ -15,6 +15,7 @@ use App\Models\Pago;
 use App\Models\Proyecto;
 use App\Models\User;
 use Exception;
+use Luecano\NumeroALetras\NumeroALetras;
 
 class PagosController extends Controller
 {
@@ -42,16 +43,35 @@ class PagosController extends Controller
     public function Cheques()
     {
         if (Auth::check()) {
+            // Obtener todos los cheques, activos e inactivos
             $cheques = Cheque::all();
-            $pagos =  Pago::all();
+
+            // Obtener todos los pagos, activos e inactivos
+            $pagos = Pago::all();
+
+            // Calcular la suma de los montos de los cheques activos
+            $totalMontoCheques = $cheques->where('estado', 1)->sum('monto');
+
+            // Calcular la suma de los montos de los pagos activos
+            $totalMontoPagos = $pagos->where('estado', 1)->sum('monto');
+
+            // Calcular el total mostrando la diferencia entre los montos de pagos y cheques
+            $mostrarTotal = $totalMontoPagos - $totalMontoCheques;
+
+            //cantidad de cheques
+            $sumaCheques = $cheques->count();
+            $sumaPagos = $pagos->count();
+
             $proyectos = Proyecto::pluck('nombre');
             $inscripciones = Inscripcione::pluck('nombre_completo', 'id');
             $usuario = User::pluck('name');
-            return view::make('cheques.listaCheques', compact('cheques', 'proyectos', 'inscripciones', 'usuario', 'pagos'));
+
+            return view('cheques.listaCheques', compact('cheques', 'proyectos', 'inscripciones', 'usuario', 'pagos', 'totalMontoPagos', 'mostrarTotal', 'sumaCheques', 'sumaPagos'));
         } else {
             return redirect()->to('/');
         }
     }
+
     public function nuevoIngreso(Request $request)
     {
         if (Auth::check()) {
@@ -72,6 +92,10 @@ class PagosController extends Controller
                 DB::beginTransaction();
 
                 $conceptoPago = $request->input('conceptoPago');
+                $id_cliente = $request->input('id_cliente');
+
+                // Obtener la suma de los pagos realizados por el cliente
+                $sumaPagos = Pago::where('id_cliente', $id_cliente)->sum('monto');
 
                 if ($conceptoPago === 'pago') {
                     // Guardar en la tabla de pagos 
@@ -81,7 +105,7 @@ class PagosController extends Controller
                     $pago->monto = $request->input('monto');
                     $pago->referencia_pago  = $request->input('referencia');
                     $pago->descripcion = $request->input('observaciones');
-                    $pago->id_cliente = $request->input('id_cliente');
+                    $pago->id_cliente = $id_cliente;
                     $pago->id_proyecto = $request->input('id_proyecto');
                     $pago->id_usuario = Auth::id();
                     $pago->estado = 1;
@@ -91,26 +115,41 @@ class PagosController extends Controller
 
                     return response()->json([
                         'mensaje' => 'Pago agregado con éxito',
-                        'idnotificacion' => 1
+                        'idnotificacion' => 1,
+                        'pagoId' => $pago->id // Agrega el ID del registro guardado
                     ]);
                 } elseif ($conceptoPago === 'cheque') {
-                    // Guardar el cheque
-                    $cheque = new Cheque();
-                    $cheque->fecha = \Carbon\Carbon::today();
-                    $cheque->hora = \Carbon\Carbon::now()->format('H:i:s');
-                    $cheque->numero_cheque = $request->input('numeroChequePago');
-                    $cheque->monto = $request->input('monto');
-                    $cheque->numero_cuentabancaria = $request->input('NumeroCuentaBancaria');
-                    $cheque->id_cliente = $request->input('id_cliente');
-                    $cheque->id_proyecto = $request->input('id_proyecto');
-                    $cheque->id_usuario = Auth::id();
-                    $cheque->save();
-                    DB::commit();
+                    if ($sumaPagos === 0) {
+                        // El cliente no tiene pagos registrados
+                        return response()->json([
+                            'mensaje' => 'El cliente no tiene pagos registrados.',
+                            'idnotificacion' => 4
+                        ]);
+                    } elseif ($request->input('monto') > $sumaPagos) {
+                        // El monto del cheque supera el total de los pagos realizados por el cliente
+                        return response()->json([
+                            'mensaje' => 'El monto del cheque supera el total de los pagos realizados por el cliente.',
+                            'idnotificacion' => 2
+                        ]);
+                    } else {
+                        // Guardar el cheque
+                        $cheque = new Cheque();
+                        $cheque->fecha = \Carbon\Carbon::today();
+                        $cheque->hora = \Carbon\Carbon::now()->format('H:i:s');
+                        $cheque->numero_cheque = $request->input('numeroChequePago');
+                        $cheque->monto = $request->input('monto');
+                        $cheque->numero_cuentabancaria = $request->input('NumeroCuentaBancaria');
+                        $cheque->id_cliente = $id_cliente;
+                        $cheque->id_proyecto = $request->input('id_proyecto');
+                        $cheque->id_usuario = Auth::id();
+                        $cheque->save();
+                        DB::commit();
 
-                    return response()->json([
-                        'mensaje' => 'Cheque agregado con éxito',
-                        'idnotificacion' => 1
-                    ]);
+                        return response()->json([
+                            'mensaje' => 'Cheque agregado con éxito',
+                            'idnotificacion' => 1
+                        ]);
+                    }
                 }
             } catch (\Exception $e) {
                 DB::rollback();
@@ -124,89 +163,62 @@ class PagosController extends Controller
         }
     }
 
-    public function formIngreso(){
-        if (Auth::check()) {
-            // $cheques = Cheque::all();
-            // $pagos =  Pago::all();
-            // $proyectos = Proyecto::pluck('nombre');
-            $inscripciones = Inscripcione::all();
-            // $usuario = User::all();
-            return view::make('pagos.altaForm', compact('inscripciones'));
-        } else {
-            return redirect()->to('/');
-        }
-    }
 
-    public function ingressoForm(Request $request)
+
+
+    public function formIngreso()
     {
         if (Auth::check()) {
-            $request->validate([
-                'numeroChequePago' => 'required_if:conceptoPago,cheque',
-                'NumeroCuentaBancaria' => 'required_if:conceptoPago,cheque',
-                'referencia' => 'required',
-                'monto' => 'required|numeric',
-            ], [
-                'numeroChequePago.required_if' => 'El campo es requerido',
-                'NumeroCuentaBancaria.required_if' => 'El campo es requerido',
-                'referencia.required' => 'El campo es requerido',
-                'monto.required' => 'El campo es requerido',
-                'monto.numeric' => 'El campo debe ser numérico',
-            ]);
 
-            try {
-                DB::beginTransaction();
+            $inscripciones = Inscripcione::all();
+            $selectclaveproyecto = Proyecto::where('estado', true)->orderBy('clave_proyecto', 'asc')->pluck('clave_proyecto', 'id');
 
-                $conceptoPago = $request->input('conceptoPago');
-
-                if ($conceptoPago === 'pago') {
-                    // Guardar en la tabla de pagos 
-                    $pago = new Pago();
-                    $pago->fecha = \Carbon\Carbon::now();
-                    $pago->hora = Carbon::now()->toTimeString();
-                    $pago->monto = $request->input('monto');
-                    $pago->referencia_pago  = $request->input('referencia');
-                    $pago->descripcion = $request->input('observaciones');
-                    $pago->id_cliente = $request->input('id_cliente');
-                    $pago->id_proyecto = $request->input('id_proyecto');
-                    $pago->id_usuario = Auth::id();
-                    $pago->estado = 1;
-                    $pago->save();
-
-                    DB::commit();
-
-                    return response()->json([
-                        'mensaje' => 'Pago agregado con éxito',
-                        'idnotificacion' => 1
-                    ]);
-                } elseif ($conceptoPago === 'cheque') {
-                    // Guardar el cheque
-                    $cheque = new Cheque();
-                    $cheque->fecha = \Carbon\Carbon::today();
-                    $cheque->hora = \Carbon\Carbon::now()->format('H:i:s');
-                    $cheque->numero_cheque = $request->input('numeroChequePago');
-                    $cheque->monto = $request->input('monto');
-                    $cheque->numero_cuentabancaria = $request->input('NumeroCuentaBancaria');
-                    $cheque->id_cliente = $request->input('id_cliente');
-                    $cheque->id_proyecto = $request->input('id_proyecto');
-                    $cheque->id_usuario = Auth::id();
-                    $cheque->save();
-                    DB::commit();
-
-                    return response()->json([
-                        'mensaje' => 'Cheque agregado con éxito',
-                        'idnotificacion' => 1
-                    ]);
-                }
-            } catch (\Exception $e) {
-                DB::rollback();
-                return response()->json([
-                    'mensaje' => 'Error al guardar el pago: ' . $e->getMessage(),
-                    'idnotificacion' => 3
-                ]);
-            }
+            return view::make('pagos.altaForm', compact('inscripciones', 'selectclaveproyecto'));
         } else {
             return redirect()->to('/');
         }
+    }
+    //obtiene la relación del nombre al seleccionar el folio (id) de mi inscripción en mi vista 
+    public function getNombreInscripcion($id = 0)
+    {
+        if ($id == 0) {
+            return response()->json(['mensaje' => 'Registro no encontrado'], 404);
+        } else {
+            $inscripcion = Inscripcione::with('proyecto')->select('id', 'nombre_completo', 'clave_proyecto')->where('id', $id)->first();
+
+            if ($inscripcion) {
+                return response()->json([
+                    'id' => $inscripcion->id,
+                    'nombre_completo' => $inscripcion->nombre_completo,
+                    'nombre_proyecto' => $inscripcion->proyecto->nombre, // Obtener el nombre del proyecto a través de la relación
+                    'id_proyecto' => $inscripcion->proyecto->id, // Obtener el id del proyecto a través de la relación
+                ]);
+            } else {
+                return response()->json(['mensaje' => 'Registro no encontrado'], 404);
+            }
+        }
+    }
+
+    // Termina obtiene la relación del nombre al seleccionar el folio (id) de mi inscripción en mi vista 
+
+    public function formatoPago($id)
+    {
+        // Recuperar el registro de la base de datos usando el ID proporcionado
+        $pago = Pago::find($id);
+        $proyecto = Proyecto::pluck('nombre');
+
+        // Instanciar con NumeroALetras para pasar del número a como se escribe
+        $formatter = new NumeroALetras();
+
+        // Convertir el número a palabras
+        $importeEnPalabras = $formatter->toWords($pago->monto);
+
+        // Convertir la fecha a un objeto Carbon
+        $fecha_deposito = Carbon::parse($pago->fecha);
+
+        // Formatea la fecha en D-m-y
+        $fecha_formateada = $fecha_deposito->isoFormat('dddd, D [de] MMMM [del] YYYY');
+        return view('pagos.formatoPdf', compact('importeEnPalabras', 'fecha_formateada', 'pago', 'proyecto'));
     }
     //cancelar cheque
     public function cancelarCheque($id)
@@ -272,10 +284,12 @@ class PagosController extends Controller
         if (Auth::check()) {
             if ($tipo === 'cheque') {
                 $cheques = Cheque::where('id_cliente', $id)->get();
-                return view('cheques.pagosPersonas', compact('cheques'));
+                $totalMontoCheques = $cheques->sum('monto');
+                return view('cheques.pagosPersonas', compact('cheques', 'totalMontoCheques'));
             } elseif ($tipo === 'pago') {
                 $pagos = Pago::where('id_cliente', $id)->get();
-                return view('cheques.pagosPersonas', compact('pagos'));
+                $totalMontoPagos = $pagos->sum('monto');
+                return view('cheques.pagosPersonas', compact('pagos', 'totalMontoPagos'));
             } else {
                 // Manejar caso de tipo de pago no válido, por ejemplo, redireccionar a una página de error
                 return response()->json([
@@ -288,22 +302,33 @@ class PagosController extends Controller
         }
     }
 
+
     public function Pagos($id)
     {
         if (Auth::check()) {
+            // Obtener la inscripción correspondiente al ID proporcionado
             $inscripcion = Inscripcione::findOrFail($id);
             $cheques = $inscripcion->cheques;
-            $numCheques = $cheques->count(); // Contar la cantidad de cheques
-    
+            // Obtener los cheques asociados a la inscripción
+            $cheque = $inscripcion->cheques()->where('estado', 1)->get();
+            $numCheques = $cheque->count(); // Contar la cantidad de cheques
+            $totalMontoCheques = $cheque->sum('monto'); // Sumar los montos de los cheques
+
             $pagos = $inscripcion->pagos;
-            $numPagos = $pagos->count(); // Contar la cantidad de pagos
-    
+            // Obtener los pagos asociados a la inscripción
+            $pago = $inscripcion->pagos()->where('estado', 1)->get();
+            $numPagos = $pago->count(); // Contar la cantidad de pagos
+            $totalMontoPagos = $pago->sum('monto'); // Sumar los montos de los pagos
+
+            // Calcular el total mostrando la diferencia entre los montos de pagos y cheques
+            $mostrarTotal = $totalMontoPagos - $totalMontoCheques;
+
             // Sumar la cantidad de cheques y pagos
             $total = $numCheques + $numPagos;
-    
-            return view('cheques.pagosPersonas', compact('cheques', 'numCheques', 'pagos', 'numPagos', 'total', 'inscripcion'));
+
+            return view('cheques.pagosPersonas', compact('cheques', 'numCheques', 'numPagos', 'totalMontoCheques', 'pagos', 'numPagos', 'total', 'inscripcion', 'mostrarTotal'));
         } else {
             return redirect()->to('/');
         }
     }
-}    
+}

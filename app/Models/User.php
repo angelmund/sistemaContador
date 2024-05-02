@@ -54,7 +54,8 @@ class User extends Authenticatable implements MustVerifyEmail
 		'email',
 		'email_verified_at',
 		'password',
-		'remember_token'
+		'remember_token',
+		'estado'
 	];
 
 	public function cheques()

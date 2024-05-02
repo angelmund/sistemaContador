@@ -10,23 +10,40 @@ use App\Http\controllers\QueryException;
 use Illuminate\Http\Request;
 use App\Models\Inscripcione;
 use App\Models\Proyecto;
-
+use App\Models\Cheque;
+use App\Models\Pago;
 
 class ProyectosController extends Controller
 {
     public function index()
     {
         if (Auth::check()) {
-            // $proyectos = Proyecto::all();
-            // $proyectos = Proyecto::pluck('nombre');
-            // return response()->json(Inscripcione::all());
-            $proyectos = Proyecto::with('cheques', 'pagos')->get();
+            $proyectos = Proyecto::with('inscripciones')->get();
+            $totalPresupuesto = $proyectos->sum('presupuesto');
+            // Obtener todos los cheques, activos e inactivos
+            $cheques = Cheque::all();
 
-            return View::make('proyectos.index', compact('proyectos')); //
+            // Obtener todos los pagos, activos e inactivos
+            $pagos = Pago::all();
+
+            // Calcular la suma de los montos de los cheques activos
+            $totalMontoCheques = $cheques->where('estado', 1)->sum('monto');
+
+            // Calcular la suma de los montos de los pagos activos
+            $totalMontoPagos = $pagos->where('estado', 1)->sum('monto');
+
+            // Calcular el total mostrando la diferencia entre los montos de pagos y cheques
+            $mostrarTotal = $totalMontoPagos - $totalMontoCheques;
+
+            //Cantidad de inscritos a un proyecto 
+            $sumaCheques = $proyectos->count();
+
+            return view('proyectos.index', compact('proyectos', 'totalPresupuesto', 'mostrarTotal'));
         } else {
             return redirect()->to('/');
         }
     }
+
 
     public function proyecto()
     {
@@ -37,10 +54,25 @@ class ProyectosController extends Controller
             return redirect()->to('/');
         }
     }
-    public function tableProyectos($id){
+    public function getTotalPagosUsuario($idUsuario)
+    {
+        $totalPagos = Pago::where('id_cliente', $idUsuario)->sum('monto');
+        return $totalPagos;
+    }
+    public function tableProyectos($id)
+    {
         if (Auth::check()) {
             $proyecto = Proyecto::with('inscripciones')->find($id);
-            return View::make('proyectos.proyectosTable', compact('proyecto'));
+
+            //recorre cada uno de los pagos 
+            foreach ($proyecto->inscripciones as $inscripcion) {
+                $totalPagos = Pago::where('id_cliente', $inscripcion->id)
+                    ->where('estado', 1) //devulve solo los que tengan un estado =1
+                    ->sum('monto'); //hace la suma de los montos de los pagos 
+                $inscripcion->totalPagos = $totalPagos;
+            }
+
+            return view('proyectos.proyectosTable', compact('proyecto'));
         } else {
             return redirect()->to('/');
         }
@@ -50,7 +82,7 @@ class ProyectosController extends Controller
         if (Auth::check()) {
             $request->validate([
                 // 'nombredelcampo' => 'required | email | unique:tabla', 
-                'claveProyecto_new' => 'required','unique:proyectos,clave_proyecto,except,id',
+                'claveProyecto_new' => 'required', 'unique:proyectos,clave_proyecto,except,id',
                 'nombre_new' => 'required',
                 // 'descripcion_edit' => 'required',
                 'nombreEncargado_new' => 'required',
@@ -68,7 +100,7 @@ class ProyectosController extends Controller
 
             DB::beginTransaction();
             try {
-               
+
                 $proyecto = new Proyecto();
                 $proyecto->clave_proyecto = $request->input('claveProyecto_new');
                 $proyecto->nombre = $request->input('nombre_new');
@@ -94,8 +126,7 @@ class ProyectosController extends Controller
                     'mensaje' => 'Error al guardar: ' . $e->getMessage(),
                     'idnotificacion' => 2
                 ]);
-                
-            } 
+            }
         } else {
             return redirect()->to('/');
         }
@@ -160,7 +191,6 @@ class ProyectosController extends Controller
                     'mensaje' => 'Proyecto Editado con éxito',
                     'idnotificacion' => 1
                 ]);
-           
             } catch (\Exception $e) {
                 DB::rollback();
                 return response()->json([
@@ -200,7 +230,6 @@ class ProyectosController extends Controller
                     'mensaje' => 'Eliminado con éxito',
                     'idnotificacion' => 1
                 ]);
-           
             } catch (\Exception $e) {
                 DB::rollback();
                 return response()->json([

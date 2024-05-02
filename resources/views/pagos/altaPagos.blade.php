@@ -19,7 +19,7 @@
                                 <input type="text" class="form-control" id="id_cliente" name="id_cliente"
                                     value="{{$inscripcion->id}}" readonly>
                             </div>
-                            <input type="hidden" id="id_proyecto" name="id_proyecto" value="{{$inscripcion->proyecto->id}}">
+                            <input type="hidden" id="id_proyecto" name="id_proyecto" value="{{optional($inscripcion->proyecto)->id ?? 'No Asignado'}}">
                             <div class="col-auto">
                                 <button type="button" class="btn btn-primary">
                                     <i class="fas fa-eye"></i>
@@ -29,8 +29,8 @@
 
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre Cliente:</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre"
-                                value="{{$inscripcion->proyecto->encargado}}" readonly>
+                            <input type="text" class="form-control" id="nombre" name="nombre" value="{{$inscripcion->nombre_completo}}" readonly>
+                                {{--  value="{{ optional($inscripcion->proyecto)->encargado  ?? 'No Asignado'}}" readonly>  --}}
                         </div>
                         <div class="mb-3">
                             <legend class="title text-center">Información Pago</legend>

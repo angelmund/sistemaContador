@@ -28,7 +28,24 @@ class AdminController extends Controller
     public function create()
     {
         if (Auth::check()) {
-            return view::make('admin.create');
+            $roles = Role::all(); // trae todos los roles que se hayan creado para poder asignar
+            return view::make('admin.create', compact('roles'));
+        } else {
+            return redirect()->to('/');
+        }
+    }
+
+    public function nuevoUsuario(Request $request)
+    {
+        if (Auth::check()) {
+            $usuario = new User();
+            $usuario->name = $request->input('nombre');
+            $usuario->email = $request->input('email');
+            $usuario->email_verified_at = now();
+            $usuario->password = bcrypt("Benit24&");  //encripta la contraseña por defecto 
+            $usuario->estado = 1;   //estado activo
+            $usuario->save();
+            	
         } else {
             return redirect()->to('/');
         }

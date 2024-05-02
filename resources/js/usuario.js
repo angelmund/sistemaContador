@@ -1,5 +1,5 @@
 import { alertaInfo, confirSave, eliminar } from "./alertas";
-
+import Swal from 'sweetalert2';
 // Declaración de la variable btnSubmit*
 
 // const btnSubmit = document.querySelector('#btn_save');*
@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 alertaInfo("Faltan datos por completar");
                 formulario.classList.add('was-validated'); // Marcar campos inválidos
                 return;
-            }else{
+            } else {
                 confirSave("¿Los datos capturados son correctos?", function () {
                     saveCheque();
                 });
@@ -36,53 +36,53 @@ document.addEventListener('DOMContentLoaded', function () {
 
     const btnEliminar = document.querySelectorAll('.eliminar-user');
 
-btnEliminar.forEach(btn => {
-    btn.addEventListener('click', eliminarUsuario);
-});
-
-function eliminarUsuario(event) {
-    const id = event.currentTarget.dataset.id; // Obtener el ID del usuario del botón
-    const ruta = $('#url').val();
-    const url ='/usuarios/delete/' + id; // Actualizar la URL para eliminar un usuario
-
-    eliminar("¿Seguro que desea eliminar el usuario?", function (){
-        eliminarUsuarioFetch(url); // Pasar la URL como parámetro
+    btnEliminar.forEach(btn => {
+        btn.addEventListener('click', eliminarUsuario);
     });
-}
 
-async function eliminarUsuarioFetch(url) {
-    try {
-        const response = await fetch(url, {
-            method: 'DELETE',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-            },
+    function eliminarUsuario(event) {
+        const id = event.currentTarget.dataset.id; // Obtener el ID del usuario del botón
+        const ruta = $('#url').val();
+        const url = '/usuarios/delete/' + id; // Actualizar la URL para eliminar un usuario
+
+        eliminar("¿Seguro que desea eliminar el usuario?", function () {
+            eliminarUsuarioFetch(url); // Pasar la URL como parámetro
         });
-
-        const data = await response.json();
-
-        if (data.idnotificacion == 1) {
-            Swal.fire({
-                title: "Eliminado con éxito",
-                icon: "success",
-                showConfirmButton: false,
-                timer: 1500,
-                timerProgressBar: true
-            });
-            setTimeout(function () {
-                window.location.reload();
-            }, 1500);
-        } else {
-            Swal.fire({
-                icon: "error",
-                title: "Oops...",
-                text: "Ocurrió un error al eliminar"
-            });
-        }
-    } catch (error) {
-        console.error('Error en try-catch:', error);
     }
-}
+
+    async function eliminarUsuarioFetch(url) {
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+            });
+
+            const data = await response.json();
+
+            if (data.idnotificacion == 1) {
+                Swal.fire({
+                    title: "Eliminado con éxito",
+                    icon: "success",
+                    showConfirmButton: false,
+                    timer: 1500,
+                    timerProgressBar: true
+                });
+                setTimeout(function () {
+                    window.location.reload();
+                }, 1500);
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Oops...",
+                    text: "Ocurrió un error al eliminar"
+                });
+            }
+        } catch (error) {
+            console.error('Error en try-catch:', error);
+        }
+    }
 
 });
 

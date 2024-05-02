@@ -16,7 +16,7 @@
 
 <x-app-layout>
     <h1 class="text-center mt-2">Lista de pagos y cheques</h1>
-
+    <h2 class="text-center mt-2">{{$inscripcion->nombre_completo}}</h2>
     <div class="card mt-5">
         <input type="hidden" value="{{ url('/') }}" id="url">
         <div class="card-body">
@@ -26,7 +26,10 @@
                 {{-- <button id="pdfButton" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Exportar a
                     PDF</button> --}}
                 <button id="printButton" class="btn btn-info"><i class="fas fa-print"></i> Imprimir</button>
-                <h1>Total de cheques y pagos: {{ $total }}</h1>
+
+                <h2>Total de cheques: {{ $numCheques }}</h2>
+                <h2>Total de Pagos: {{ $numPagos }}</h2>
+                <h2>Total acumulado: ${{$mostrarTotal}}</h2>
             </div>
             <div class="row mb-3 ">
                 <div class="col-md-4 fechaDivs">
@@ -67,6 +70,7 @@
             <table id="example" class="table table-striped responsive" style="width:100%">
                 <thead>
                     <tr>
+                        <th class="centrar">Folio Pago</th>
                         <th class="centrar">Folio del cliente</th>
                         <th class="centrar">Cliente</th>
                         <th class="centrar">Fecha del pago</th>
@@ -79,6 +83,7 @@
 
                     @foreach ($cheques as $cheque)
                     <tr>
+                        <td>{{$cheque->id}}</td>
                         <td>{{$inscripcion->id }}</td>
                         <td>{{$inscripcion->nombre_completo}}</td>
                         <td>{{ \Carbon\Carbon::parse($cheque->fecha)->format('d/m/Y') }}</td>
@@ -87,7 +92,7 @@
                                 @if($cheque->estado == 1)
                                 - ${{$cheque->monto}}
                                 @else
-                                ${{$cheque->monto}}
+                                $0
                                 @endif
                             </span>
                         </td>
@@ -113,6 +118,7 @@
 
                     @foreach ($pagos as $pago)
                     <tr>
+                        <td>{{$pago->id}}</td>
                         <td>{{$inscripcion->id }}</td>
                         <td>{{$inscripcion->nombre_completo}}</td>
                         <td>{{ \Carbon\Carbon::parse($pago->fecha)->format('d/m/Y') }}</td>
@@ -121,7 +127,7 @@
                                 @if($pago->estado == 1)
                                 ${{$pago->monto}}
                                 @else
-                                ${{$pago->monto}}
+                                $0
                                 @endif
                             </span>
                         </td>

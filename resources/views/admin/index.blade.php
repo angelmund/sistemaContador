@@ -96,8 +96,8 @@
                             </span>
                         </td>
                         <td>
-                            <a href="{{route('usuario.RolAsignado.show', $usuario->id)}}" type="button" class="btn btn-primary"><i
-                                    class="fas fa-pen"></i></a>
+                            <a href="{{route('usuario.RolAsignado.show', $usuario->id)}}" type="button" class="btn btn-warning"><i class='bx bxs-user-check'></i>
+                                Editar Rol</a>
                             <button type="button" id="btn_delete" class="btn btn-danger eliminar-user" data-target="#DeleteModal"
                                 data-toggle="modal" data-id="{{ $usuario->id}}">
                                 <i class="fas fa-trash"></i>

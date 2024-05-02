@@ -1,5 +1,5 @@
 import { confirSave, eliminar } from "./alertas";
-
+import Swal from 'sweetalert2';
 let formularioValido = false;
 // Verifica si hay elementos que requieren form-proyecto en la página actual
 if ($('#formedit-proyecto').length > 0) {

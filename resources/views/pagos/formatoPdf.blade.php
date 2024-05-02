@@ -1,12 +1,9 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Recibo Benita Galeana</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <style>
         /* Estilo para ocultar el encabezado y el pie de página al imprimir */
@@ -152,19 +149,12 @@
             text-align: center;
         }
 
-        .info__item-fechas {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            margin-bottom: 1rem;
-        }
-
         .info__item {
             display: flex;
             margin-bottom: 1rem;
         }
 
-        .info__item p,
-        .info__item-fechas p {
+        .info__item p {
             margin-right: .5rem;
         }
 
@@ -238,32 +228,86 @@
             margin: 2rem;
             0;
             text-align: center;
-            font-size: 1rem;
+            font-size: 1.2rem;
         }
 
         .recibo-terminos h3 {
+            margin-bottom: 1rem;
+        }
+
+        body {
+            font-size: 1.6rem;
+        }
+
+        .info__titulo {
+            font-size: 2.1rem;
+        }
+
+        .header-recibo__info h5 {
+            font-size: 1.7rem;
             margin-bottom: .5rem;
         }
 
-        .datos__negrita {
+        .info__texto {
+            font-size: 1.4rem;
+        }
+
+        .item__datos {
+            flex: 1;
+        }
+
+        .info__item:nth-child(4) .item__datos {
+            flex: 1;
+        }
+
+        .info__item:nth-child(4) .item__datos:nth-child(2) {
+            flex: 1;
+        }
+
+        .numero__datos p:nth-child(1) {
             font-weight: bold;
+            margin-bottom: .5rem;
         }
 
-        .texto-centrar {
-            text-align: center;
+        .fecha__item {
+            font-size: 1.5rem;
         }
 
-        .letras-grandes {
-            text-transform: uppercase;
+        .separador {
+            margin: 2.5rem 0;
+        }
+
+        .espacio-qr {
+            margin-left: 5rem;
+            margin: 0 auto;
+        }
+
+        .centrarQR {
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .numero__datos p:nth-child(1) {
+            margin-bottom: .5rem;
+        }
+
+        .firmas__QR p:nth-child(1) {
+            margin-bottom: .5rem;
+        }
+
+        .firmas__QR p:nth-child(2) {
+            margin-top: .5rem;
         }
     </style>
 
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script type="text/javascript" src="js/script.js"></script>
+
+    <title>Recibo de Pago</title>
 </head>
 
 <body>
-    
     <button id="boton-imprimir" onclick="imprimir()">Imprimir</button>
     <div class="contenedor-recibo">
 
@@ -278,116 +322,83 @@
                 <p class="info__texto">Holbein No. 75 Col San Juan C.P. 03730 Alcaldia Benito Juarez. Ciudad Mexico</p>
                 <p class="info__texto">Horarios de Atencion 5:00 pm - 8:00 pm Tel: 55 8952 8891</p>
             </div>
-
-            <div class="header-recibo__QR">
-                <div id="contenedorQR" class="logo__img"></div>
-                <p>Folio: {{$inscripcion->id}}</p>
+            <div class="numero__datos">
+                <p>Sucursal Bancaria</p>
+                <p>{{$pago->referencia_pago}}</p>
             </div>
         </header>
 
         <div class="recibo__info">
-            <!-- info item -->
             <div class="info__item">
                 <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">Nombre: </p>
+                    <!-- Nombre de proyecto-->
+                    <p class="datos__negrita">Proyecto: </p>
                     <div class="datos__linea">
-                        <p class="letras-grandes">{{ $inscripcion->nombre_completo }}</p>
+                        <p>{{$pago->proyecto->nombre}}</p>
                     </div>
                 </div>
                 <!--fin datos item-->
             </div>
-            <!-- Fin datos -->
 
             <!-- info item -->
             <div class="info__item">
                 <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">Dirección: </p>
-                    <div class="datos__linea">
-                        <p>{{ $inscripcion->direccion }}</p>
+                    <p class="datos__negrita">Recibi de: </p>
+                    <div class="datos__linea texto-grande">
+                        <p>{{$pago->inscripcione->nombre_completo}}</p>
                     </div>
                 </div>
-                <!--fin datos item-->
             </div>
+
             <!-- info item -->
             <div class="info__item">
                 <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">Alcaldia: </p>
+                    <p class="datos__negrita">La cantidad de $: </p>
                     <div class="datos__linea">
-                        <p>{{ $inscripcion->alcaldia }}</p>
+                        <p>{{$pago->monto}}<span>.00</span></p>
                     </div>
                 </div>
                 <!--fin datos item-->
                 <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">Telefono: </p>
+                    <p class="datos__negrita">Por concepto de: </p>
                     <div class="datos__linea">
-                        <p>{{ $inscripcion->telefono }}</p>
+                        <p>{{$pago->descripcion}}</p>
                     </div>
                 </div>
                 <!--fin datos item-->
             </div>
-            <!-- Fin datos -->
+
             <!-- info item -->
             <div class="info__item">
                 <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">Concepto: </p>
                     <div class="datos__linea">
-                        <p>{{ $inscripcion->concepto }}</p>
-                    </div>
-                </div>
-                <!--fin datos item-->
-                <!--datos item-->
-                <div class="item__datos">
-                    <p class="datos__negrita">Importe: </p>
-                    <div class="datos__linea">
-                        <p>{{ $inscripcion->importe }}</p>
-                    </div>
-                </div>
-                <!--fin datos item-->
-                <!--datos item-->
-                <div class="item__datos">
-                    <p class="datos__negrita">No. Solicitud: </p>
-                    <div class="datos__linea">
-                        <p>{{ $inscripcion->numero_solicitud }}</p>
+                        <p class="texto-centrar texto-grande">{{$importeEnPalabras}}<span>PESOS</span></p>
                     </div>
                 </div>
                 <!--fin datos item-->
             </div>
-            <!-- Fin datos -->
+
             <!-- info item -->
-            <div class="info__item-fechas ">
+            <div class="info__item fecha__item">
                 <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">Fecha Registro: </p>
+                    <p class="datos__negrita">Fecha recibo: </p>
                     <div class="datos__linea">
-                        <p>{{ $fecha_regis }}</p>
+                        <p>{{$fecha_formateada}}</p>
                     </div>
                 </div>
                 <!--fin datos item-->
-                <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">Fecha Deposito: </p>
+                    <p class="datos__negrita">Fecha deposito: </p>
                     <div class="datos__linea">
-                        <p>{{ $fecha_formateada}}</p>
+                        <p>{{$fecha_formateada}}</p>
                     </div>
                 </div>
-                <!--fin datos item-->
-            </div>
-            <!-- Fin datos -->
-            <!-- info item -->
-            <div class="info__item">
-                <!--datos item-->
-                <div class="item__datos">
-                    <p class="datos__negrita">Importe en texto: </p>
-                    <div class="datos__linea">
-                        <p class="texto-centrar letras-grandes">{{ $importeEnPalabras}} PESOS</p>
-                    </div>
-                </div>
-                <!--fin datos item-->
             </div>
 
             <!-- info item -->
@@ -396,48 +407,37 @@
                 <div class="item__datos">
                     <p class="datos__negrita">Observaciones: </p>
                     <div class="datos__linea">
-                        <p class="texto-centrar">{{$inscripcion->observaciones}}</p>
+                        <p class="texto-centrar">{{$pago->descripcion}}</p>
                     </div>
                 </div>
-            </div>
-            <!-- Fin datos -->
-        </div>
-
-        <div class="recibo__firmas">
-            <div class="firmas_firma">
-                <div class="firma__texto">
-                    <p class="datos__negrita">{{ $inscripcion->nombre_completo }}</p>
-                    <p>Firma Inscrito</p>
-                </div>
-            </div>
-            <div class="firmas_firma">
-                <div class="firma__texto">
-                    <p class="datos__negrita">Jose Javier Hernandez Perales</p>
-                    <p>Firma Autor</p>
-                </div>
+                <!--fin datos item-->
             </div>
         </div>
 
-        <div class="recibo-terminos">
-            <h3>Nota: </h3>
-            <p>
-                EL IMPORTE DE ESTE RECIBO NO ES REEMBOLSABLE, NI TRANSFERIBLE EN CASO DE RETIRO DEL PROYECTO
-            </p>
-            <p>
-                EL PAGO DE LA INSCRIPCIÓN ES EN UNA SOLA EXHIBICIÓN.
-            </p>
-            <p>
-                EL PAGO SE REALIZARA SOLO EN VENTANILLA ÚNICA O PRACTI-CAJA.
-            </p>
-            <p>
-                NO SE RECIBE DINERO EN EFECTIVO, TODO DEPOSITO SE REALIZA A LA CUENTA DE LA ASOCIACIÓN:
-            </p>
+        <div class="recibo__firmas centrarQR">
+            <div class="header-recibo__QR firmas__QR">
+                <p>Folio</p>
+                <div id="contenedorQR1" class="logo__img"></div>
+                <p class="idFolio">{{$pago->id_cliente}}</p>
+            </div>
+
+            <div class="firmas_firma">
+                <div class="firma__texto">
+                    <p class="datos__negrita">C.P. Jose Javier Hernandez Perales</p>
+                    <p>Firma</p>
+                </div>
+            </div>
+
+            <div class="header-recibo__QR firmas__QR">
+                <p>No. Pago</p>
+                <div id="contenedorQR2" class="logo__img"></div>
+                <p class="idPago">{{$pago->id}}</p>
+            </div>
         </div>
 
         <!--Separador ALV-->
         <div class="separador"></div>
 
-        <!--Contenedor 2-->
         <header class="header-recibo">
             <div class="header-recibo__logo">
                 <img class="logo__img" src="{{asset('img/logoB.png')}}" alt="logo benita galeana">
@@ -449,116 +449,83 @@
                 <p class="info__texto">Holbein No. 75 Col San Juan C.P. 03730 Alcaldia Benito Juarez. Ciudad Mexico</p>
                 <p class="info__texto">Horarios de Atencion 5:00 pm - 8:00 pm Tel: 55 8952 8891</p>
             </div>
-
-            <div class="header-recibo__QR">
-                <div id="contenedorQR2" class="logo__img"></div>
-                <p>Folio: {{$inscripcion->id}}</p>
+            <div class="numero__datos">
+                <p>Sucursal Bancaria</p>
+                <p>{{$pago->referencia_pago}}</p>
             </div>
         </header>
 
         <div class="recibo__info">
-            <!-- info item -->
             <div class="info__item">
                 <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">Nombre: </p>
+                    <!-- Nombre de proyecto-->
+                    <p class="datos__negrita">Proyecto: </p>
                     <div class="datos__linea">
-                        <p class="letras-grandes">{{ $inscripcion->nombre_completo }}</p>
+                        <p>{{$pago->proyecto->nombre}}</p>
                     </div>
                 </div>
                 <!--fin datos item-->
             </div>
-            <!-- Fin datos -->
 
             <!-- info item -->
             <div class="info__item">
                 <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">Dirección: </p>
-                    <div class="datos__linea">
-                        <p>{{ $inscripcion->direccion }}</p>
+                    <p class="datos__negrita">Recibi de: </p>
+                    <div class="datos__linea texto-grande">
+                        <p>{{$pago->inscripcione->nombre_completo}}</p>
                     </div>
                 </div>
-                <!--fin datos item-->
             </div>
+
             <!-- info item -->
             <div class="info__item">
                 <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">Alcaldia: </p>
+                    <p class="datos__negrita">La cantidad de $: </p>
                     <div class="datos__linea">
-                        <p>{{ $inscripcion->alcaldia }}</p>
+                        <p>{{$pago->monto}}<span>.00</span></p>
                     </div>
                 </div>
                 <!--fin datos item-->
                 <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">Telefono: </p>
+                    <p class="datos__negrita">Por concepto de: </p>
                     <div class="datos__linea">
-                        <p>{{ $inscripcion->telefono }}</p>
+                        <p>{{$pago->descripcion}}</p>
                     </div>
                 </div>
                 <!--fin datos item-->
             </div>
-            <!-- Fin datos -->
+
             <!-- info item -->
             <div class="info__item">
                 <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">Concepto: </p>
                     <div class="datos__linea">
-                        <p>{{ $inscripcion->concepto }}</p>
-                    </div>
-                </div>
-                <!--fin datos item-->
-                <!--datos item-->
-                <div class="item__datos">
-                    <p class="datos__negrita">Importe: </p>
-                    <div class="datos__linea">
-                        <p>{{ $inscripcion->importe }}</p>
-                    </div>
-                </div>
-                <!--fin datos item-->
-                <!--datos item-->
-                <div class="item__datos">
-                    <p class="datos__negrita">No. Solicitud: </p>
-                    <div class="datos__linea">
-                        <p>{{ $inscripcion->numero_solicitud }}</p>
+                        <p class="texto-centrar texto-grande">{{$importeEnPalabras}} <span>PESOS</span></p>
                     </div>
                 </div>
                 <!--fin datos item-->
             </div>
-            <!-- Fin datos -->
+
             <!-- info item -->
-            <div class="info__item-fechas ">
+            <div class="info__item fecha__item">
                 <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">Fecha Registro: </p>
+                    <p class="datos__negrita">Fecha recibo: </p>
                     <div class="datos__linea">
-                        <p>{{ $fecha_regis }}</p>
+                        <p>{{$fecha_formateada}}</p>
                     </div>
                 </div>
                 <!--fin datos item-->
-                <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">Fecha Deposito: </p>
+                    <p class="datos__negrita">Fecha deposito: </p>
                     <div class="datos__linea">
-                        <p>{{ $fecha_formateada}}</p>
+                        <p>{{$fecha_formateada}}</p>
                     </div>
                 </div>
-                <!--fin datos item-->
-            </div>
-            <!-- Fin datos -->
-            <!-- info item -->
-            <div class="info__item">
-                <!--datos item-->
-                <div class="item__datos">
-                    <p class="datos__negrita">Importe en texto: </p>
-                    <div class="datos__linea">
-                        <p class="texto-centrar letras-grandes">{{ $importeEnPalabras }} PESOS</p>
-                    </div>
-                </div>
-                <!--fin datos item-->
             </div>
 
             <!-- info item -->
@@ -567,78 +534,77 @@
                 <div class="item__datos">
                     <p class="datos__negrita">Observaciones: </p>
                     <div class="datos__linea">
-                        <p class="texto-centrar"> {{$inscripcion->observaciones}}</p>
+                        <p class="texto-centrar">{{$pago->descripcion}}</p>
                     </div>
                 </div>
-            </div>
-            <!-- Fin datos -->
-        </div>
-
-        <div class="recibo__firmas">
-            <div class="firmas_firma">
-                <div class="firma__texto">
-                    
-                    <p class="datos__negrita">{{ $inscripcion->nombre_completo }} </p>
-                    <p>Firma Inscrito</p>
-                </div>
-            </div>
-            <div class="firmas_firma">
-                <div class="firma__texto">
-                    <p class="datos__negrita">Jose Javier Hernandez Perales </p>
-                    <p>Firma Autor</p>
-                </div>
+                <!--fin datos item-->
             </div>
         </div>
 
-        <div class="recibo-terminos">
-            <h3>Nota: </h3>
-            <p>
-                EL IMPORTE DE ESTE RECIBO NO ES REEMBOLSABLE, NI TRANSFERIBLE EN CASO DE RETIRO DEL PROYECTO
-            </p>
-            <p>
-                EL PAGO DE LA INSCRIPCIÓN ES EN UNA SOLA EXHIBICIÓN.
-            </p>
-            <p>
-                EL PAGO SE REALIZARA SOLO EN VENTANILLA ÚNICA O PRACTI-CAJA.
-            </p>
-            <p>
-                NO SE RECIBE DINERO EN EFECTIVO, TODO DEPOSITO SE REALIZA A LA CUENTA DE LA ASOCIACIÓN:
-            </p>
+        <div class="recibo__firmas centrarQR">
+            <div class="header-recibo__QR firmas__QR">
+                <p>Folio</p>
+                <div id="contenedorQR3" class="logo__img"></div>
+                <p class="idFolio">{{$pago->id_cliente}}</p>
+            </div>
+
+            <div class="firmas_firma">
+                <div class="firma__texto">
+                    <p class="datos__negrita">C.P. Jose Javier Hernandez Perales</p>
+                    <p>Firma</p>
+                </div>
+            </div>
+
+            <div class="header-recibo__QR firmas__QR">
+                <p>No. Pago</p>
+                <div id="contenedorQR4" class="logo__img"></div>
+                <p class="idPago">{{$pago->id}}</p>
+            </div>
         </div>
 
     </div>
+
     <script>
         document.addEventListener("DOMContentLoaded", function() {
-            const url = window.location.pathname;
-            // Dividir la URL utilizando el caracter "/"
-            const partes = url.split("/");
-
-            // El último elemento en partes será tu ID
-            const id = partes[partes.length - 1];
-
-            // Convertimos el folio a cadena de texto
-            const folio = id.toString();
-        
-            const contenedorQR = document.getElementById('contenedorQR');
-            const QR = new QRCode(contenedorQR, {
-                width: 75, // Ancho deseado
-                height: 75 // Alto deseado
-            });   
-        
-            const contenedorQR2 = document.getElementById('contenedorQR2');
-            const QR2 = new QRCode(contenedorQR2, { // <-- Aquí corregí el parámetro
-                width: 75, // Ancho deseado
-                height: 75 // Alto deseado
+           // Obtener el idFolio y el idPago
+            const idFolio = document.querySelector('.idFolio').textContent.trim();
+            const idPago = document.querySelector('.idPago').textContent.trim();
+            // Generar códigos QR
+            const QR1 = new QRCode(document.getElementById('contenedorQR1'), {
+                width: 100,
+                height: 100
             });
-        
-            QR.makeCode(folio.toString());
-            QR2.makeCode(folio.toString()); // <-- Aquí está corregido
+            // Generar códigos QR
+            const QR2 = new QRCode(document.getElementById('contenedorQR2'), {
+                width: 100,
+                height: 100
+            });
+            // Generar códigos QR
+            const QR3 = new QRCode(document.getElementById('contenedorQR3'), {
+                width: 100,
+                height: 100
+            });
+            const QR4 = new QRCode(document.getElementById('contenedorQR4'), {
+                width: 100,
+                height: 100
+            });
+
+            // Convertir los valores a cadenas de texto
+            const nFolio = idFolio.toString();
+            const nPago = idPago.toString();
+
+            // Generar los códigos QR con los valores obtenidos
+            QR1.makeCode(nFolio);
+            QR2.makeCode(nPago);
+            QR3.makeCode(nFolio);
+            QR4.makeCode(nPago);
         });
         
         // Función para imprimir la página
         function imprimir() {
             window.print(); // Abre el cuadro de diálogo de impresión    
         }
+        
     </script>
 </body>
 

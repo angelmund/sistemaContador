@@ -22,23 +22,26 @@
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="direccion" class="form-label">Correo:</label>
-                            <input type="email" class="form-control" id="direccion" name="direccion" required>
+                            <label for="email" class="form-label">Correo:</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
                             <div class="valid-feedback"></div>
                             <div class="invalid-feedback">
                                 Por favor agregue un correo.
                             </div>
                         </div>
                         <div class="mb-3">
-                            <label for="direccion" class="form-label">Rol:</label>
-                            <select id="concepto_pago" class="form-control" name="conceptoPago" required>
-                                <option value="Admin">Administrador</option>
-                                <option value="Usuario">Usuario</option>
+                            <label for="rol" class="form-label">Rol:</label>
+                            <select id="rol" class="form-control" name="rol" required>
+                                <option value="">Selecciona un rol</option>
+                                @foreach($roles as $rol)
+                                    <option value="{{ $rol->id }}">{{ $rol->name }}</option>
+                                @endforeach
                             </select>
                             <div class="invalid-feedback">
-                                Por favor selecciona una opci&oacute;n.
+                                Por favor selecciona una opción.
                             </div>
                         </div>
+                        
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary" id="btn_save"><i
                                     class="fas fa-save"></i> Guardar Usuario</button>

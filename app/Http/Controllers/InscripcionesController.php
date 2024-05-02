@@ -13,7 +13,9 @@ use App\Models\Inscripcione;
 use App\Models\Proyecto;
 use Exception;
 use PDF;
+use Carbon\Carbon;
 use Luecano\NumeroALetras\NumeroALetras;
+
 class InscripcionesController extends Controller
 {
     public function index()
@@ -67,54 +69,63 @@ class InscripcionesController extends Controller
     public function crearInscripcion(Request $request)
     {
         if (Auth::check()) {
+            // Obtener el nombre completo del cliente
+            $nombreCompleto = strtoupper($request->input('nombre'));
+
+            // Validar que el cliente no esté asignado a otro proyecto
+            $cliente = Inscripcione::where('nombre_completo', $nombreCompleto)
+                ->whereNotNull('clave_proyecto')
+                ->first();
+
+            if ($cliente) {
+                return response()->json([
+                    'mensaje' => 'La persona que desea registrar ya está asignada a un proyecto.',
+                    'idnotificacion' => 3 // Esto indica que es un error de validación
+                ], 422); // Devuelve el código de estado HTTP 422 para indicar una validación fallida
+            }
+
             $request->validate([
-                // 'nombredelcampo' => 'required | email | unique:tabla', 
                 'nombre' => 'required',
                 'direccion' => 'required',
-                // 'descripcion_edit' => 'required',
-                'claveProyecto' => 'required',
-                // 'nombreProyecto' => 'required',
-                // 'comite' => 'required',
                 'alcaldia' => 'required',
-                'telefono' => 'required | numeric',
+                'telefono' => 'required|numeric',
                 'concepto' => 'required',
-                'importeInscripcion' => 'required | numeric',
+                'importeInscripcion' => 'required|numeric',
                 'noSolicitud' => 'required',
                 'fechaDeposito' => 'required',
-                'fotoCliente' => 'image|mimes:jpeg,png,jpg',
-                'Ine' => 'image|mimes:jpeg,png,jpg',
             ], [
                 'nombre.required' => 'El campo nombre completo es requerido',
-                'direccion.required' => 'El campo direccion es requerido',
-                'claveProyecto.required' => 'La clave del proyecto es requerida',
+                'direccion.required' => 'El campo dirección es requerido',
                 'alcaldia.required' => 'El campo alcaldía es requerido',
                 'telefono.required' => 'El campo teléfono es requerido',
-                'concepto.required' => 'El campo comcepto es requerido',
+                'telefono.numeric' => 'El campo teléfono debe ser numérico',
+                'concepto.required' => 'El campo concepto es requerido',
                 'importeInscripcion.required' => 'El campo Importe Inscripción es requerido',
+                'importeInscripcion.numeric' => 'El campo Importe Inscripción debe ser numérico',
                 'noSolicitud.required' => 'El número de solicitud es requerida',
                 'fechaDeposito.required' => 'La fecha del depósito es requerida',
-
             ]);
+            // dd($request->all());
             try {
                 DB::beginTransaction();
                 // dd($request->all());
                 $inscripcion = new Inscripcione();
-                $inscripcion->nombre_completo = $request->input('nombre');
+                $inscripcion->nombre_completo = strtoupper($request->input('nombre'));
                 $inscripcion->direccion = $request->input('direccion');
-                $claveProyecto = $request->input('claveProyecto');
+                // $claveProyecto = $request->input('claveProyecto');
 
 
-                $proyecto = Proyecto::where('clave_proyecto', $claveProyecto)->first();
+                // $proyecto = Proyecto::where('clave_proyecto', $claveProyecto)->first();
 
 
-                if (!$proyecto) {
-                    return response()->json([
-                        'mensaje' => 'Error al guardar: El proyecto con clave_proyecto ' . $claveProyecto . ' no existe.',
-                        'idnotificacion' => 3
-                    ]);
-                }
+                // if (!$proyecto) {
+                //     return response()->json([
+                //         'mensaje' => 'Error al guardar: El proyecto con clave_proyecto ' . $claveProyecto . ' no existe.',
+                //         'idnotificacion' => 3
+                //     ]);
+                // }
 
-                $inscripcion->clave_proyecto = $proyecto->clave_proyecto;
+                $inscripcion->clave_proyecto = $request->input('claveProyecto');
 
                 // $inscripcion->nombreProyecto  = $request->input('nombreProyecto');
                 $inscripcion->comite = $request->input('comite');
@@ -126,20 +137,22 @@ class InscripcionesController extends Controller
                 $inscripcion->fecha_deposito = $request->input('fechaDeposito');
                 $inscripcion->fecha_registro = \Carbon\Carbon::now();
                 // Genera los nuevos nombres de archivo usando el ID de inscripción
-                $nuevoNombreFotoCliente = $inscripcion->id . "foto_cliente." . pathinfo($request->file('fotoCliente')->getClientOriginalName(), PATHINFO_EXTENSION);
-                $nuevoNombreIne = $inscripcion->id . "foto_ine." . pathinfo($request->file('Ine')->getClientOriginalName(), PATHINFO_EXTENSION);
+                // $nuevoNombreFotoCliente = $inscripcion->id . "foto_cliente." . pathinfo($request->file('fotoCliente')->getClientOriginalName(), PATHINFO_EXTENSION);
+                // $nuevoNombreIne = $inscripcion->id . "foto_ine." . pathinfo($request->file('Ine')->getClientOriginalName(), PATHINFO_EXTENSION);
 
-                // Guarda las imágenes con los nuevos nombres
-                if ($request->hasFile('fotoCliente')) {
-                    $inscripcion->url_foto_cliente = $request->file('fotoCliente')->storeAs('images/photo', $nuevoNombreFotoCliente, 'public');
-                }
+                // // Guarda las imágenes con los nuevos nombres
+                // if ($request->hasFile('fotoCliente')) {
+                //     $inscripcion->url_foto_cliente = $request->file('fotoCliente')->storeAs('images/photo', $nuevoNombreFotoCliente, 'public');
+                // }
 
-                if ($request->hasFile('Ine')) {
-                    $inscripcion->url_foto_ine = $request->file('Ine')->storeAs('images/photo', $nuevoNombreIne, 'public');
-                    // dd($inscripcion);
-                }
+                // if ($request->hasFile('Ine')) {
+                //     $inscripcion->url_foto_ine = $request->file('Ine')->storeAs('images/photo', $nuevoNombreIne, 'public');
+                //     // dd($inscripcion);
+                // }
                 $inscripcion->hora_registro = date("H:i:s");
+                $inscripcion->observaciones = $request->input('observaciones');
                 $inscripcion->estado = 1;
+                // dd($inscripcion);
                 $inscripcion->save();
 
                 DB::commit();
@@ -161,7 +174,7 @@ class InscripcionesController extends Controller
                     'idnotificacion' => 1,
                     'inscripcionId' => $inscripcion->id // Agrega el ID del registro guardado
                 ]);
-                
+
                 // return response()->download($pdfPath)->setContentDisposition('attachment');
                 // Después de guardar el registro, devuelve la vista
                 // return view('incripciones.PdfIns', compact('inscripcion'));
@@ -181,16 +194,27 @@ class InscripcionesController extends Controller
     {
         // Recuperar el registro de la base de datos usando el ID proporcionado
         $inscripcion = Inscripcione::find($id);
-        //instanciamos con NumeroALetras para pasar del número a como se escribe
+
+        // Instanciar con NumeroALetras para pasar del número a como se escribe
         $formatter = new NumeroALetras();
 
         // Convertir el número a palabras
         $importeEnPalabras = $formatter->toWords($inscripcion->importe);
 
+        // Convertir la fecha a un objeto Carbon
+        $fecha_deposito = Carbon::parse($inscripcion->fecha_deposito);
+
+        $fecha_regist = Carbon::parse($inscripcion->fecha_registro);
+
+        $fecha_regis = $fecha_regist->isoFormat('dddd, D [de] MMMM [del] YYYY');
+
+        // Formatea la fecha en D-m-y
+        $fecha_formateada = $fecha_deposito->isoFormat('dddd, D [de] MMMM [del] YYYY');
+
         // Pasar ambas variables a la vista
-        return view('incripciones.PdfIns', compact('inscripcion', 'importeEnPalabras'));
+        return view('incripciones.PdfIns', compact('inscripcion', 'importeEnPalabras', 'fecha_formateada', 'fecha_regis'));
     }
-    
+
 
 
     // public function nuevainscripcion(Request $request)
@@ -324,83 +348,53 @@ class InscripcionesController extends Controller
             // dd($request->all());
             $request->validate([
                 // 'nombredelcampo' => 'required | email | unique:tabla', 
-                'nombre_edit' => 'required',
-                'direccion_edit' => 'required',
+                'nombre' => 'required',
+                'direccion' => 'required',
                 // 'descripcion_edit' => 'required',
-                'claveProyecto_edit' => 'required',
+                // 'claveProyecto' => 'required',
                 // 'nombreProyecto' => 'required',
                 // 'comite' => 'required',
-                'alcaldia_edit' => 'required',
-                'telefono_edit' => 'required',
-                'concepto_edit' => 'required',
-                'importeInscripcion_edit' => 'required | numeric',
-                'noSolicitud_edit' => 'required',
-                'fechaDeposito_edit' => 'required',
-                'fotoCliente_edit' => 'image|mimes:jpeg,png,jpg',
-                'Ine_edit' => 'image|mimes:jpeg,png,jpg',
+                'alcaldia' => 'required',
+                'telefono' => 'required | numeric',
+                'concepto' => 'required',
+                'importeInscripcion' => 'required | numeric',
+                'noSolicitud' => 'required',
+                'fechaDeposito' => 'required',
+                // 'fotoCliente' => 'image|mimes:jpeg,png,jpg',
+                // 'Ine' => 'image|mimes:jpeg,png,jpg',
             ], [
-                'nombre_edit.required' => 'El campo nombre completo es requerido',
-                'direccion_edit.required' => 'El campo direccion es requerido',
-                'claveProyecto_edit.required' => 'La clave del proyecto es requerida',
-                'alcaldia_edit.required' => 'El campo alcaldía es requerido',
-                'telefono_edit.required' => 'El campo teléfono es requerido',
-                'concepto_edit.required' => 'El campo comcepto es requerido',
-                'importeInscripcion_edit.required' => 'El campo Importe Inscripción es requerido',
-                'noSolicitud_edit.required' => 'El número de solicitud es requerida',
-                'fechaDeposito_edit.required' => 'La fecha del depósito es requerida',
+                'nombre.required' => 'El campo nombre completo es requerido',
+                'direccion.required' => 'El campo direccion es requerido',
+                // 'claveProyecto.required' => 'La clave del proyecto es requerida',
+                'alcaldia.required' => 'El campo alcaldía es requerido',
+                'telefono.required' => 'El campo teléfono es requerido',
+                'concepto.required' => 'El campo comcepto es requerido',
+                'importeInscripcion.required' => 'El campo Importe Inscripción es requerido',
+                'noSolicitud.required' => 'El número de solicitud es requerida',
+                'fechaDeposito.required' => 'La fecha del depósito es requerida',
 
             ]);
-
-
-            DB::beginTransaction();
             try {
+                DB::beginTransaction();
+                // dd($request->all());
                 $inscripcion =  Inscripcione::find($id);
-                $inscripcion->nombre_completo = $request->input('nombre_edit');
-                $inscripcion->direccion = $request->input('direccion_edit');
-                $claveProyecto = $request->input('claveProyecto_edit');
+                $inscripcion->nombre_completo = strtoupper($request->input('nombre'));
+                $inscripcion->direccion = $request->input('direccion');
 
-
-                $proyecto = Proyecto::where('clave_proyecto', $claveProyecto)->first();
-
-
-                // if (!$proyecto) {
-                //     return response()->json([
-                //         'mensaje' => 'Error al guardar: El proyecto con clave_proyecto ' . $claveProyecto . ' no existe.',
-                //         'idnotificacion' => 3
-                //     ]);
-                // }
-
-                $inscripcion->clave_proyecto = $proyecto->clave_proyecto;
-
-                // $inscripcion->nombreProyecto  = $request->input('nombreProyecto');
-                $inscripcion->comite = $request->input('comite_edit');
-                $inscripcion->alcaldia = $request->input('alcaldia_edit');
-                $inscripcion->telefono = $request->input('telefono_edit');
-                $inscripcion->concepto = $request->input('concepto_edit');
-                $inscripcion->importe = $request->input('importeInscripcion_edit');
-                $inscripcion->numero_solicitud = $request->input('noSolicitud_edit');
-                $inscripcion->fecha_deposito = $request->input('fechaDeposito_edit');
+                $inscripcion->clave_proyecto = $request->input('claveProyecto');
+                $inscripcion->comite = $request->input('comite');
+                $inscripcion->alcaldia = $request->input('alcaldia');
+                $inscripcion->telefono = $request->input('telefono');
+                $inscripcion->concepto = $request->input('concepto');
+                $inscripcion->importe = $request->input('importeInscripcion');
+                $inscripcion->numero_solicitud = $request->input('noSolicitud');
+                $inscripcion->fecha_deposito = $request->input('fechaDeposito');
                 // $inscripcion->fecha_registro = \Carbon\Carbon::now();
-                // Genera los nuevos nombres de archivo usando el ID de inscripción
-                $nuevoNombreFotoCliente = $inscripcion->id . "foto_cliente." . pathinfo($request->file('fotoCliente')->getClientOriginalName(), PATHINFO_EXTENSION);
-                $nuevoNombreIne = $inscripcion->id . "foto_ine." . pathinfo($request->file('Ine')->getClientOriginalName(), PATHINFO_EXTENSION);
 
-                // Guarda las imágenes con los nuevos nombres
-                if ($request->hasFile('fotoCliente_edit')) {
-                    $inscripcion->url_foto_cliente = $request->file('fotoCliente')->storeAs('images/photo', $nuevoNombreFotoCliente, 'public');
-                }
-
-                if ($request->hasFile('Ine_edit')) {
-                    $inscripcion->url_foto_ine = $request->file('Ine')->storeAs('images/photo', $nuevoNombreIne, 'public');
-                    // dd($inscripcion);
-                }
-                // if($request->imagen){
-                //     $imagen = $request->imagen('fotoCliente_edit');
-                //     $nombreImagen = Str::uui() . "." . $imagen->extension();
-                //     $rutaGuardado = $request->file('Ine')->storeAs('images/photo', $nombreImagen, 'public');
-                // }
                 // $inscripcion->hora_registro = date("H:i:s");
+                $inscripcion->observaciones = $request->input('observaciones');
                 $inscripcion->estado = 1;
+                dd($inscripcion);
                 $inscripcion->save();
 
                 DB::commit();

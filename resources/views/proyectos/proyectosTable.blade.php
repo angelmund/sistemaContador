@@ -47,17 +47,19 @@
                     <tr>
                         <td>{{ $inscripcion->id }}</td>
                         <td>{{ $inscripcion->nombre_completo }}</td>
-                        <td>$0</td>
+                        <td>${{ number_format($inscripcion->totalPagos, 0, '.', ',') }}</td>
                         <td>
                             <button type="button" id="editButton" class="btn btn-primary abrir-modal"
                                 data-bs-toggle="modal" data-bs-target="#editModal" data-remote="#"><i
                                     class="fas fa-eye"></i></button>
                             <a href="{{route('personaPagos.inscripcion', $inscripcion->id)}}" type="button" class="btn btn-success"><i class="fas fa-dollar-sign"></i></a>
 
-                            <button type="button" id="btn_delete" class="btn btn-danger eliminar-modal"
-                                data-target="#DeleteModal" data-toggle="modal" data-idcategoria="#">
+                            @can('Eliminar')
+                            <button type="button" id="btn_delete" class="btn btn-danger eliminar-inscripcion"
+                                data-target="#DeleteModal" data-toggle="modal" data-id="{{ $inscripcion->id }}">
                                 <i class="fas fa-trash"></i>
                             </button>
+                            @endcan
                         </td>
                     </tr>
                     @endforeach

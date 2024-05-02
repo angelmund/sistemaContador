@@ -25,11 +25,24 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
 
-        $request->session()->regenerate();
+        if (Auth::attempt($request->only('email', 'password', 'estado'))) {
+            if (Auth::user()->estado == 0) {
+                return redirect('/')->with('error', 'Tu cuenta no cuenta con acceso al sistema. Por favor, contacta al administrador.');
+            }
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+            $request->session()->regenerate();
+
+            return redirect()->intended(RouteServiceProvider::HOME);
+        }
+
+        return back()->withErrors([
+            'email' => __('auth.failed'),
+        ]);
     }
 
     /**

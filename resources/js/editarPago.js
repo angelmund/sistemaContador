@@ -1,5 +1,5 @@
 import { alertaInfo, confirSave, eliminar } from "./alertas";
-
+import Swal from 'sweetalert2';
 
 /***************************Cancelar un cheque o pago ******************************/
 const btnEliminar = document.querySelectorAll('.eliminartipoPago');

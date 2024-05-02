@@ -1,5 +1,5 @@
 import { alertaInfo, confirSave } from "./alertas";
-
+import Swal from 'sweetalert2';
 if ($('#form-inscripciones').length > 0) {
     document.addEventListener('DOMContentLoaded', function () {
         $('.select2').select2();
@@ -10,8 +10,8 @@ if ($('#form-inscripciones').length > 0) {
             //tienen que coicidir con el mismo id de cada campo
             nombre: '',
             direccion: '',
-            claveProyecto: '',
-            nombreProyecto_n: '',
+            // claveProyecto: '',
+            // nombreProyecto_n: '',
             // comite: '',
             alcaldia: '',
             telefono: '',
@@ -19,8 +19,8 @@ if ($('#form-inscripciones').length > 0) {
             importeInscripcion: '',
             noSolicitud: '',
             fechaDeposito: '',
-            fotoCliente: '',
-            Ine: '',
+            // fotoCliente: '',
+            // Ine: '',
 
         };
         let formularioValido = false;
@@ -40,8 +40,8 @@ if ($('#form-inscripciones').length > 0) {
         const importeinscripcionN = document.querySelector('#importeInscripcion');
         const nosolicitudN = document.querySelector('#noSolicitud');
         const fechadepositoN = document.querySelector('#fechaDeposito');
-        const fotoclienteN = document.querySelector('#fotoCliente');
-        const ineN = document.querySelector('#Ine');
+        // const fotoclienteN = document.querySelector('#fotoCliente');
+        // const ineN = document.querySelector('#Ine');
 
 
 
@@ -57,24 +57,23 @@ if ($('#form-inscripciones').length > 0) {
         // comite.addEventListener('input', validarFormulario);
         nombreNew.addEventListener('input', validarFormulario);
         direccion.addEventListener('input', validarFormulario);
-        selectClaveProyecto.addEventListener('input', validarFormulario);
-        nombreProyectoInput.addEventListener('input', validarFormulario);
+
         alcaldiaN.addEventListener('input', validarFormulario);
         telefonoN.addEventListener('input', validarFormulario);
         conceptoN.addEventListener('input', validarFormulario);
         importeinscripcionN.addEventListener('input', validarFormulario);
         nosolicitudN.addEventListener('input', validarFormulario);
         fechadepositoN.addEventListener('input', validarFormulario);
-        fotoclienteN.addEventListener('input', validarFormulario);
-        ineN.addEventListener('input', validarFormulario);
+        // fotoclienteN.addEventListener('input', validarFormulario);
+        // ineN.addEventListener('input', validarFormulario);
 
 
         btnCancelar.addEventListener('click', (e) => {
             e.preventDefault();
             inscripcion.nombre = '';
             inscripcion.direccion = '';
-            inscripcion.claveProyecto = '';
-            inscripcion.nombreProyecto_n = '';
+            // inscripcion.claveProyecto = '';
+            // inscripcion.nombreProyecto_n = '';
             // proyecto.comite = '';
             inscripcion.alcaldia = '';
             inscripcion.telefono = '';
@@ -82,13 +81,13 @@ if ($('#form-inscripciones').length > 0) {
             inscripcion.importeInscripcion = '';
             inscripcion.noSolicitud = '';
             inscripcion.fechaDeposito = '';
-            inscripcion.fotoCliente = '';
-            inscripcion.Ine = '';
+            // inscripcion.fotoCliente = '';
+            // inscripcion.Ine = '';
             formulario.reset();
             limpiarAlerta(nombreNew.parentElement);
             limpiarAlerta(direccion.parentElement);
-            limpiarAlerta(selectClaveProyecto.parentElement);
-            limpiarAlerta(nombreProyectoInput.parentElement);
+            // limpiarAlerta(selectClaveProyecto.parentElement);
+            // limpiarAlerta(nombreProyectoInput.parentElement);
             // limpiarAlerta(comite.parentElement);
             limpiarAlerta(alcaldiaN.parentElement);
             limpiarAlerta(telefonoN.parentElement);
@@ -96,8 +95,8 @@ if ($('#form-inscripciones').length > 0) {
             limpiarAlerta(importeinscripcionN.parentElement);
             limpiarAlerta(nosolicitudN.parentElement);
             limpiarAlerta(fechadepositoN.parentElement);
-            limpiarAlerta(fotoclienteN.parentElement);
-            limpiarAlerta(ineN.parentElement);
+            // limpiarAlerta(fotoclienteN.parentElement);
+            // limpiarAlerta(ineN.parentElement);
             comprobarFormulario();
         });
 
@@ -107,8 +106,13 @@ if ($('#form-inscripciones').length > 0) {
         function validarFormulario(e) {
             const referencia = e.target.parentElement;
 
-            // console.log(`Campo ${e.target.id}: ${e.target.value.trim()}`);
-            // console.log('Estado actual del proyecto:', proyecto);
+            // Ignorar validación para claveProyecto y nombreProyecto_n
+            if (e.target.id === 'claveProyecto' || e.target.id === 'nombreProyecto_n') {
+                limpiarAlerta(referencia);
+                inscripcion[e.target.id] = e.target.value.trim();
+                comprobarFormulario();
+                return;
+            }
 
             if (e.target.value.trim() === '') {
                 mostrarAlerta(`El campo es obligatorio`, referencia);
@@ -122,6 +126,7 @@ if ($('#form-inscripciones').length > 0) {
             inscripcion[e.target.id] = e.target.value.trim();
             comprobarFormulario();
         }
+
 
         // muestra alerta 
         function mostrarAlerta(mensaje, referencia) {
@@ -188,45 +193,45 @@ if ($('#form-inscripciones').length > 0) {
             }
         });
 
-        function mostrarImagen(inputId, contenedorId) {
-            const fileInput = document.getElementById(inputId);
-            const contenedor = document.getElementById(contenedorId);
+        // function mostrarImagen(inputId, contenedorId) {
+        //     const fileInput = document.getElementById(inputId);
+        //     const contenedor = document.getElementById(contenedorId);
 
-            fileInput.addEventListener('change', function (e) {
-                const file = e.target.files[0];
+        //     fileInput.addEventListener('change', function (e) {
+        //         const file = e.target.files[0];
 
-                if (file) {
-                    const reader = new FileReader();
+        //         if (file) {
+        //             const reader = new FileReader();
 
-                    reader.onload = function (e) {
-                        contenedor.innerHTML = ''; // Limpiar el contenido anterior
+        //             reader.onload = function (e) {
+        //                 contenedor.innerHTML = ''; // Limpiar el contenido anterior
 
-                        const img = document.createElement('img');
-                        img.src = e.target.result;
-                        img.alt = 'Imagen seleccionada';
-                        img.classList.add('img-thumbnail'); // Agregar clases de Bootstrap si es necesario
+        //                 const img = document.createElement('img');
+        //                 img.src = e.target.result;
+        //                 img.alt = 'Imagen seleccionada';
+        //                 img.classList.add('img-thumbnail'); // Agregar clases de Bootstrap si es necesario
 
-                        // Establecer estilos para tamaño y centrado
-                        img.style.width = '40%'; // Ajusta el ancho al 100% del contenedor
-                        img.style.height = 'auto'; // Ajusta la altura automáticamente para mantener la proporción
+        //                 // Establecer estilos para tamaño y centrado
+        //                 img.style.width = '40%'; // Ajusta el ancho al 100% del contenedor
+        //                 img.style.height = 'auto'; // Ajusta la altura automáticamente para mantener la proporción
 
-                        // Aplicar borderRadius solo a #fotoCliente
-                        if (contenedorId === 'fotocliente') {
-                            img.style.borderRadius = '50%';
-                        }
+        //                 // Aplicar borderRadius solo a #fotoCliente
+        //                 if (contenedorId === 'fotocliente') {
+        //                     img.style.borderRadius = '50%';
+        //                 }
 
-                        contenedor.style.textAlign = 'center'; // Centra la imagen en el contenedor
-                        contenedor.appendChild(img);
-                    };
+        //                 contenedor.style.textAlign = 'center'; // Centra la imagen en el contenedor
+        //                 contenedor.appendChild(img);
+        //             };
 
-                    reader.readAsDataURL(file);
-                }
-            });
-        }
+        //             reader.readAsDataURL(file);
+        //         }
+        //     });
+        // }
 
         // Llamar a la función para cada par de input y contenedor
-        mostrarImagen('fotoCliente', 'fotocliente');
-        mostrarImagen('Ine', 'fotoIne');
+        // mostrarImagen('fotoCliente', 'fotocliente');
+        // mostrarImagen('Ine', 'fotoIne');
 
 
         function comprobarFormulario() {
@@ -240,10 +245,25 @@ if ($('#form-inscripciones').length > 0) {
                 // console.log("Formulario válido");
                 btnSubmit.disabled = false;
                 formularioValido = true; // El formulario es válido
+
             }
         }
 
 
+        // Función para inicializar los valores de inscripcion con los del formulario
+        function inicializarValoresInscripcion() {
+            inscripcion.concepto = conceptoN.value.trim();
+            inscripcion.importeInscripcion = importeinscripcionN.value.trim();
+
+
+            // Disparar manualmente el evento input en los campos que ya tienen valores
+            validarFormulario({ target: conceptoN });
+            validarFormulario({ target: importeinscripcionN });
+
+            comprobarFormulario(); // Verificar el estado del formulario
+        }
+
+        inicializarValoresInscripcion();
         // comprueba si todos los campos estan llenos para habilitar boton de enviar o no
         btnSubmit.addEventListener("click", (e) => {
             e.preventDefault();
@@ -254,37 +274,80 @@ if ($('#form-inscripciones').length > 0) {
             }
         });
 
-        // document.getElementById("telefono").addEventListener("input", function() {
-        //     var input = this;
-        //     var value = input.value.replace(/\s/g, '').replace(/-/g, '');
+        telefonoN.addEventListener('input', function (e) {
+            let valor = this.value.trim(); // Obtener el valor actual del campo y eliminar espacios en blanco
 
-        //     // Elimina caracteres no numéricos
-        //     value = value.replace(/\D/g, '');
+            // Eliminar caracteres no numéricos
+            valor = valor.replace(/\D/g, '');
 
-        //     // Limita la longitud a 10 caracteres
-        //     if (value.length > 13) {
-        //         value = value.substring(0, 13);
-        //     }
+            // Limitar la longitud a 10 caracteres (para aceptar solo 10 dígitos)
+            if (valor.length > 10) {
+                valor = valor.substring(0, 10);
+            }
 
-        //     // Formatea automáticamente el valor
-        //     var formattedValue = '';
-        //     for (var i = 0; i < value.length; i++) {
-        //         if (i === 2 || i === 6 || i == 10) {
-        //             formattedValue += ' '; // Agrega un espacio después del segundo y sexto dígito
-        //         }
-        //         formattedValue += value.charAt(i);
-        //     }
-        //     input.value = formattedValue;
-        // });
+            // Formatear el valor para separar en grupos de 2, 4 y 4
+            let formattedValue = '';
+            for (let i = 0; i < valor.length; i++) {
+                if (i === 2 || i === 6) {
+                    formattedValue += ' '; // Agregar espacio después de los primeros 2 y luego de los siguientes 4 dígitos
+                }
+                formattedValue += valor.charAt(i);
+            }
+
+            // Actualizar el valor del campo de entrada
+            this.value = formattedValue;
+        });
+
+       
+
+        nosolicitudN.addEventListener('input', function (e) {
+            let valor = this.value.trim(); // Obtener el valor actual del campo y eliminar espacios en blanco
+        
+            // Eliminar caracteres no deseados (todo excepto números y letras)
+            valor = valor.replace(/[^a-zA-Z0-9]/g, '');
+        
+            // Limitar la longitud a 14 caracteres
+            if (valor.length > 14) {
+                valor = valor.substring(0, 14);
+            }
+        
+            // Formatear el valor para separar en grupos de cuatro
+            let formattedValue = '';
+            for (let i = 0; i < valor.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedValue += ' '; // Agregar espacio después de cada grupo de cuatro caracteres
+                }
+                formattedValue += valor.charAt(i);
+            }
+        
+            // Actualizar el valor del campo de entrada
+            this.value = formattedValue;
+        });
+
+
 
         async function saveinscripcion() {
             const url = $('#url').val();
             try {
                 const formData = new FormData($('#form-inscripciones')[0]);
-                var claveProyecto = $('#claveProyecto').val();
-                var nombreProyectoSeleccionado = $('#claveProyecto option:selected').text();
+                // Obtener el valor seleccionado y el texto de la opción
+                const claveProyectoValue = $('#claveProyecto').val();
+                const claveProyectoText = $('#claveProyecto option:selected').text();
 
-                formData.append('claveProyecto', nombreProyectoSeleccionado);
+                // Reemplazar "Seleccione una opción" con una cadena vacía si es la opción seleccionada
+                const claveProyectoFinalValue = claveProyectoText === 'Seleccione una opción' ? '' : claveProyectoText;
+                console.log(claveProyectoValue); ///id 
+                console.log(claveProyectoText);//CLAVE
+
+                // Eliminar espacios en blanco del campo de teléfono
+                const telefonoValue = $('#telefono').val().replace(/\s/g, '');
+                const solicitud = $('#noSolicitud').val().replace(/\s/g, '');
+
+                // Agregar los valores al FormData
+                formData.append('claveProyecto', claveProyectoFinalValue);
+                formData.append('telefono', telefonoValue);
+                formData.append('noSolicitud', solicitud);
+                // console.log(formData);
 
                 const response = await fetch(url + '/inscripciones/nuevo', {
                     method: 'POST',
@@ -297,30 +360,48 @@ if ($('#form-inscripciones').length > 0) {
                 });
 
                 const data = await response.json();
+                switch (data.idnotificacion) {
+                    case 1:
+                        // Abre la URL de la vista en una nueva pestaña
+                        const vistaUrl = url + '/inscripciones/formato/' + data.inscripcionId;
+                        window.open(vistaUrl, '_blank');
 
-                if (data.idnotificacion == 1) {
-                    // Abre la URL de la vista en una nueva pestaña
-                    const vistaUrl = url + '/inscripciones/formato/' + data.inscripcionId;
-                    window.open(vistaUrl, '_blank');
+                        // Esperar un breve período de tiempo antes de recargar la página
+                        setTimeout(function () {
+                            document.getElementById('form-inscripciones').reset();
+                            window.location.reload();
+                        }, 1000); // Espera 1 segundo
 
-                    // Esperar un breve período de tiempo antes de recargar la página
-                    setTimeout(function () {
-                        document.getElementById('form-inscripciones').reset();
-                        window.location.reload();
-                    }, 1000); // Espera 1 segundo
-                } else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: "Ocurrió un error al guardar!"
-                    });
+                        break;
+
+                    case 2:
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: data.mensaje
+                        });
+                        break;
+
+                    case 3:
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: data.mensaje
+                        });
+                        break;
+
+                    default:
+                        Swal.fire({
+                            icon: "info",
+                            title: "Info...",
+                            text: "Error desconocido"
+                        });
                 }
+
             } catch (error) {
                 console.error("Error al procesar la solicitud:", error);
             }
         }
-
-
 
 
     });

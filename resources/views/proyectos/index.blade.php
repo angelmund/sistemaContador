@@ -21,6 +21,9 @@
             <div class="text-center mb-3">
                 <a href="{{route('proyectos.create')}}" type="button" class="btn btn-primary"><i class='fas fa-plus'></i> Agregar proyecto</a>
                 <a href="{{route('inscripciones.form')}}" type="button" class="btn btn-primary"><i class='fas fa-plus'></i> Nueva inscripci&oacute;n</a>
+                <h1>Total Presupuesto:$ {{ number_format($totalPresupuesto, 0, '.', ',') }}</h1>
+                <h2>Total acumado: ${{number_format($mostrarTotal, 0,'.',',')}}</h2>
+
                 <button id="excelButton" class="btn btn-success"><i class="fas fa-file-excel"></i> Exportar a
                     Excel</button>
                 <button id="pdfButton" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Exportar a PDF</button>
@@ -69,6 +72,7 @@
                         <th class="centrar">Encargado</th>
                         <th class="centrar">Presupuesto</th>
                         <th class="centrar">Acumulado</th>
+                        <th class="centrar">Num.Inscritos</th>
 
                         <th class="centrar">Estado</th>
                         <th class="centrar">
@@ -82,9 +86,9 @@
                         <td>{{$proyecto->clave_proyecto}}</td>
                         <td>{{$proyecto->nombre}}</td>
                         <td>{{$proyecto->encargado}}</td>
-                        <td>${{$proyecto->presupuesto}}</td>
-                        <td> <span>${{ $proyecto->cheques->sum('monto') + $proyecto->pagos->sum('monto') }}</span> </td>
-
+                        <td>${{ number_format($proyecto->presupuesto, 0, '.', ',') }}</td>
+                        <td> <span>$ {{ number_format($proyecto->pagos->sum('monto') - $proyecto->cheques->sum('monto'), 0, '.', ',') }}</span> </td>
+                        <td>{{ $proyecto->inscripciones->count() }}</td>
                         <td>
                             <span class="badge rounded-pill"
                                 style="background-color: {{ $proyecto->estado == 1 ? 'green' : 'red' }}; color: white;">

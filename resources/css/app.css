@@ -13608,6 +13608,8 @@ ul {
  table.dataTable.table-bordered td.dtr-control.dtr-hidden + * {
    border-left-width: 1px;
  }
- 
- 
- 
+ .mayuscula {
+  text-transform: uppercase;
+}
+
+

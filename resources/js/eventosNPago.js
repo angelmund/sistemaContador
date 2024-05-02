@@ -1,9 +1,9 @@
 import { alertaInfo, confirSave } from "./alertas";
-
+import Swal from 'sweetalert2';
 $(document).ready(function () {
     if ($('#formAlta-pagos').length > 0) {
         let formularioValido = false;
-        $('.select2').select2();
+        // $('.select2').select2();
         // Ocultar inicialmente los elementos con la clase 'cheque'
         toggleChequeDivs();
 

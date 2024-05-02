@@ -1,4 +1,4 @@
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/css/select2.min.css" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
     integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
 <x-app-layout>
@@ -13,17 +13,21 @@
                         enctype="multipart/form-data" class="bg-Light p-4 rounded needs-validation" novalidate>
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
                         <div class="row mb-3">
-                            <label for="folio" class="form-label">Folio Cliente:</label>
-
+                        
                             <div class="col">
-                                <select name="claveProyecto" id="claveProyecto" class="form-select select2">
-                                    <option selected disabled>Seleccione una opción</option>
+                                <label for="id_cliente">Folio Cliente:</label>
+                                <select id="id_cliente" class="form-control select2" name="id_cliente" required>
+                                    <option value="" disabled selected>-- Selecciona un folio --</option>
+                                    
                                     @foreach ($inscripciones as $inscripcion)
-                                        <option value="{{ $inscripcion->id }}">{{ $inscripcion->id }}</option>
+                                    <option value="{{ $inscripcion->id }}">{{ $inscripcion->id }}</option>
                                     @endforeach
                                 </select>
+                                <div class="invalid-feedback">
+                                    Por favor selecciona un folio.
+                                </div>
                             </div>
-                            
+
                             <div class="col-auto">
                                 <button type="button" class="btn btn-primary">
                                     <i class="fas fa-eye"></i>
@@ -33,7 +37,29 @@
 
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre Cliente:</label>
-                            <input type="text" class="form-control" id="nombre" name="nombre">
+                            <input type="text" class="form-control" id="nombre" name="nombre" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <legend class="title text-center">Proyecto asigando</legend>
+                        </div>
+                        {{--  <div class="mb-3">
+                            <label for="id_proyecto" class="form-label">Clave Proyecto:</label>
+                            <select name="id_proyecto" id="id_proyecto" class="form-select select2" required>
+                                <option value="" disabled selected>-- Selecciona un proyecto --</option>
+                                @foreach ($selectclaveproyecto as $id => $clave_proyecto)
+                                    <option value="{{ $id }}">{{ $clave_proyecto }}</option>
+                                @endforeach
+                            </select>
+                            <div class="invalid-feedback">
+                                Por favor selecciona un proyecto.
+                            </div>
+                        </div>  --}}
+                        
+
+                        <div class="mb-3">
+                            <label for="nombreProyecto_n" class="form-label">Nombre Proyecto:</label>
+                            <input type="text" class="form-control" id="nombreProyecto_n" name="nombreProyecto_n"
+                                readonly>
                         </div>
                         <div class="mb-3">
                             <legend class="title text-center">Información Pago</legend>
@@ -50,7 +76,7 @@
                                 Por favor selecciona un concepto.
                             </div>
                         </div>
-                        
+
                         <div class="mb-3 cheque d-none">
                             <label for="numeroChequePago">Numero Cheque:</label>
                             <input class="form-control" type="text" name="numeroChequePago" id="numeroChequePago"
@@ -93,13 +119,14 @@
 
                         <div class="mb-3">
                             <label for="observaciones" class="form-label">Observaciones:</label>
-                            <textarea type="text" class="form-control" id="observaciones" name="observaciones" required></textarea>
+                            <textarea type="text" class="form-control" id="observaciones" name="observaciones"
+                                required></textarea>
                             <div class="valid-feedback"></div>
                             <div class="invalid-feedback">
                                 Por favor ingrese la observación.
                             </div>
                         </div>
-                        
+
 
                         <div class="modal-footer">
                             <button type="submit" class="btn btn-primary" id="btn_save"><i class="fas fa-save"></i>
@@ -114,8 +141,7 @@
     </div>
     <!-- jQuery -->
     <!-- jQuery -->
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.3/js/select2.full.min.js"></script>
 
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 </x-app-layout>

@@ -1,5 +1,5 @@
 import { confirSave } from "./alertas";
-
+import Swal from 'sweetalert2';
 // Verifica si hay elementos que requieren form-proyecto en la página actual
 if ($('#form-permiso').length > 0) {
     document.addEventListener('DOMContentLoaded', function () {

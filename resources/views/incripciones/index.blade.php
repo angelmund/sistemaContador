@@ -62,7 +62,7 @@
             </div>
 
 
-            <table id="example" class="table table-striped responsive" style="width:100%">
+            <table id="example" class="table table-striped responsive table_inscripcion" style="width:100%">
                 <thead>
                     <tr>
                         <th class="centrar">Folio</th>
@@ -81,10 +81,11 @@
                     @foreach ($inscripciones as $inscripcion)
                     <tr>
                         <td>{{$inscripcion->id}}</td>
-                        <td>{{$inscripcion->proyecto->encargado}}</td>
-                        <td>{{$inscripcion->direccion}}</td>
-                        <td>{{$inscripcion->clave_proyecto}}</td>
-                        <td> {{$inscripcion->proyecto->nombre}}</td>
+                        <td>{{ optional($inscripcion->proyecto)->encargado ?? 'No Asignado' }}</td>
+                        <td>{{ $inscripcion->direccion }}</td>
+                        <td>{{ $inscripcion->clave_proyecto ? $inscripcion->clave_proyecto : 'No Asignado' }}</td>
+                        <td>{{ optional($inscripcion->proyecto)->nombre ?? 'No Asignado' }}</td>
+
                         <td>{{ \Carbon\Carbon::parse($inscripcion->fecha_registro)->format('d/m/Y') }}</td>
                         <td>
                             <span class="badge rounded-pill"
@@ -92,15 +93,15 @@
                                 {{ $inscripcion->estado == 1 ? 'Activo' : 'Inactivo' }}
                             </span>
                         </td>
-
                         <td>
                             <button type="button" class="btn btn-warning"><i class="fas fa-download"></i></button>
-                            <!-- Botón para abrir el modal -->
                             <button type="button" class="btn btn-primary abrir-inscripcion" data-bs-toggle="modal"
-                                data-bs-target="#EditModal{{$inscripcion->id}}"
-                                data-remote="{{route('inscripciones.edit', $inscripcion->id)}}">
+                                data-bs-target="#EditModal{{$inscripcion->id}}" data-bs-backdrop="false"
+                                data-id="{{$inscripcion->id}}">
                                 <i class="fas fa-eye"></i>
                             </button>
+
+
 
                             <a type="button" href="{{route('pagos.alta', $inscripcion->id)}}" class="btn btn-success"><i
                                     class="fas fa-dollar-sign"></i></a>
@@ -109,11 +110,10 @@
                                 data-target="#DeleteModal" data-toggle="modal" data-id="{{ $inscripcion->id }}">
                                 <i class="fas fa-trash"></i>
                             </button>
-
                             @endcan
-
                         </td>
                     </tr>
+
                     @include('incripciones.edit', ['modalId' => $inscripcion->id])
 
                     @yield('pagos.altaPagos')
