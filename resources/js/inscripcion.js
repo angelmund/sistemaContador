@@ -1,9 +1,10 @@
 import { alertaInfo, confirSave } from "./alertas";
 import Swal from 'sweetalert2';
+// import 'select2'; // Importa Select2
 if ($('#form-inscripciones').length > 0) {
     document.addEventListener('DOMContentLoaded', function () {
-        $('.select2').select2();
-        $('#claveProyecto').select2();
+        // $('.select2').select2();
+        // $('#claveProyecto').select2();
         let nombreProyectoSeleccionado = '';
         //se crea un objeto con los id de los input para mapear los valores
         const inscripcion = {
