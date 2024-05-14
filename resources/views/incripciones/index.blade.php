@@ -14,9 +14,10 @@
             </div>
             <div class="row mb-3 ">
                 <div class="col-md-4 fechaDivs">
-                    <label for="fechainicio">Fecha Inicio</label>
-                    <input type="date" id="fechaIncio" name="fechaInicio" class="form-control fechaInicio" />
+                    <label for="fechaInicio">Fecha Inicio</label>
+                    <input type="date" id="fechaInicio" name="fechaInicio" class="form-control fechaInicio" />
                 </div>
+                
 
                 <div class="col-md-4 fechaDivs">
                     <label for="fechafinal">Fecha Final</label>
@@ -42,7 +43,7 @@
                 </div>
 
                 <div class="col-md-1 mt-4">
-                    <button id="filtrar" class="btn btn-danger"><i class="fas fa-filter"></i> Filtrar</button>
+                    <button id="filtrar" class="btn btn-danger filtrar"><i class="fas fa-filter"></i> Filtrar</button>
                 </div>
             </div>
 
@@ -57,9 +58,8 @@
                         <th class="centrar">Nombre del Proyecto</th>
                         <th class="centrar">Fecha de registro</th>
                         <th class="centrar">Estado</th>
-                        <th class="centrar">
-
-                        </th>
+                        <th class="centrar"></th>
+                        
                     </tr>
                 </thead>
                 <tbody>
@@ -110,7 +110,5 @@
         </div>
         {{-- @include('incripciones.edit'); --}}
     </div>
-
-
 
 </x-app-layout>

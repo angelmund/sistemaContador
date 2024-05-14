@@ -8,28 +8,24 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('DataTables/datatables.min.css') }}">
+    <!-- jQuery -->
+    <script src="{{ asset('DataTables/jQuery-3.7.0/jquery-3.7.0.min.js') }}"></script>
 
-    <!----DataTables ----->
-    <link rel="stylesheet" href="{{asset('DataTables/datatables.min.css')}}">
-    <script src="{{asset('DataTables/datatables.min.js')}}"></script>
-
-    <!----Bootstrap ----->
-    <link rel="stylesheet" href="{{asset('bootstrap-5.2.3-dist/css/bootstrap.min.css')}}">
-    <!-- Incluir Font Awesome -->
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="{{ asset('bootstrap-5.2.3-dist/css/bootstrap.min.css') }}">
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" crossorigin="anonymous">
+    <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <!-------- moment ---------->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-
-
-    @vite(['resources/css/app.css'  ,'resources/js/app.js'])
-    
-
-    {{-- @include('proyectos.edit') --}}
-
-    <!-- Scripts -->
-    <link rel="stylesheet" href="{{asset('sweetalert2/sweetalert2.min.css')}}">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="{{ asset('sweetalert2/sweetalert2.min.css') }}">
     @yield('css')
 </head>
 
@@ -54,16 +50,15 @@
             @include('proyectos.edit')
         </main>
     </div>
-   
-   
+
+    <!-- Bootstrap JS -->
+    <script src="{{ asset('bootstrap-5.2.3-dist/js/bootstrap.min.js') }}"></script>
+    <!-- SweetAlert2 JS -->
+    <script src="{{ asset('sweetalert2/sweetalert2.min.js') }}"></script>
+    <!-- DataTables JS -->
+    <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
+    {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script> --}}
     @yield('js')
-    <script src="{{asset('bootstrap-5.2.3-dist/js/bootstrap.min.js')}}"></script>
-
-    <script src="{{asset('sweetalert2/sweetalert2.min.js')}}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js">
-
-    </script>
-
 </body>
 
 </html>

@@ -17,9 +17,10 @@
             </div>
             <div class="row mb-3 ">
                 <div class="col-md-4 fechaDivs">
-                    <label for="fechainicio">Fecha Inicio</label>
-                    <input type="date" id="fechaIncio" name="fechaInicio" class="form-control fechaInicio" />
+                    <label for="fechaInicio">Fecha Inicio</label>
+                    <input type="date" id="fechaInicio" name="fechaInicio" class="form-control fechaInicio" />
                 </div>
+                
 
                 <div class="col-md-4 fechaDivs">
                     <label for="fechafinal">Fecha Final</label>
@@ -45,7 +46,7 @@
                 </div>
 
                 <div class="col-md-1 mt-4">
-                    <button id="filtrar" class="btn btn-danger"><i class="fas fa-filter"></i> Filtrar</button>
+                    <button id="filtrar" class="btn btn-danger filtrar"><i class="fas fa-filter"></i> Filtrar</button>
                 </div>
             </div>
 
@@ -56,9 +57,9 @@
                         <th class="centrar">Folio Cheque/Pago</th>
                         <th class="centrar">Folio del cliente</th>
                         <th class="centrar">Cliente</th>
-                        <th class="centrar">Fecha del pago</th>
                         <th class="centrar">Monto</th>
                         <th class="centrar">Clave de proyecto</th>
+                        <th class="centrar">Fecha del pago</th>
                         <th class="centrar">Nombre de proyecto</th>
                         <th class="centrar">Estado</th>
                         <th class="centrar">Usuario que dio de alta</th>
@@ -71,7 +72,7 @@
                         <td>Folio Cheque:{{$cheque->id}}</td>
                         <td>{{$cheque->inscripcione->id }}</td>
                         <td>{{$cheque->inscripcione->nombre_completo}}</td>
-                        <td>{{ \Carbon\Carbon::parse($cheque->fecha)->format('d/m/Y') }}</td>
+                        
                         <td>
                             <span style="color: {{ $cheque->estado == 1 ? 'red' : 'green' }};">
                                 @if($cheque->estado == 1)
@@ -82,6 +83,7 @@
                             </span>
                         </td>
                         <td>{{$cheque->proyecto->clave_proyecto}}</td>
+                        <td>{{ \Carbon\Carbon::parse($cheque->fecha)->format('d/m/Y') }}</td>
                         <td> {{$cheque->proyecto->nombre}}</td>
                         <td>
                             <span class="badge rounded-pill"
@@ -113,7 +115,7 @@
                         <td>Folio Pago:{{$pago->id}}</td>
                         <td>{{$pago->inscripcione->id}}</td>
                         <td>{{$pago->inscripcione->nombre_completo}}</td>
-                        <td>{{ \Carbon\Carbon::parse($pago->fecha)->format('d/m/Y') }}</td>
+                        
                         <td>
                             <span style="color: {{ $pago->estado == 1 ? 'green' : 'blue' }};">
                                 @if($pago->estado == 1)
@@ -125,6 +127,7 @@
 
                         </td>
                         <td>{{$pago->proyecto->clave_proyecto}}</td>
+                        <td>{{ \Carbon\Carbon::parse($pago->fecha)->format('d/m/Y') }}</td>
                         <td>{{$pago->proyecto->nombre}}</td>
                         <td>
                             <span class="badge rounded-pill"

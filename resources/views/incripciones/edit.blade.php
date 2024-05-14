@@ -1,7 +1,3 @@
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"
-    integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
-
 @foreach ($inscripciones as $inscripcion)
  <div class="modal fade edit-modal modal-custom" id="EditModal{{$inscripcion->id}}" tabindex="-1" role="dialog"
         aria-labelledby="miModalLabel" aria-hidden="true" data-bs-backdrop="static">
@@ -103,8 +99,3 @@
     </div>
 </div>
 @endforeach
-<!-- jQuery -->
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>

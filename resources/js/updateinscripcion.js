@@ -4,8 +4,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     if ($('#formedit-incripcion').length > 0) {
 
-        $('.select2').select2();
-        $('#claveProyecto').select2();
+        // $('.select2').select2();
+        // $('#claveProyecto').select2();
         let nombreProyectoSeleccionado = '';
         let idInscripcion;
         //se crea un objeto con los id de los input para mapear los valores

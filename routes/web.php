@@ -53,11 +53,7 @@ Route::middleware(['auth', 'verified', 'checkUserStatus'])->group(function () {
         Route::post('/proyectos/save', [App\Http\Controllers\ProyectosController::class, 'createProyecto'])->name('proyectos.save');
         Route::get('/proyectos/edit/{id}', [App\Http\Controllers\ProyectosController::class, 'editProyecto'])->name('proyectos.edit');
         Route::post('/proyectos/update/{id}', [App\Http\Controllers\ProyectosController::class, 'updateProyecto'])->name('proyectos.update');
-        // Route::get('/inscripciones/datos', [App\Http\Controllers\InscripcionesController::class, 'datos'])->name('inscripciones.datos');
-        // Route::post('/categorias/createcategoria', [App\Http\Controllers\CategoriaController::class, 'store'])->name('categorias.create');
-        // Route::get('/categorias/editcategoria/{idcategoria}', [App\Http\Controllers\CategoriaController::class, 'show'])->name('categorias.edit');
-        // Route::post('/categorias/updatecategoria/{idcategoria}', [App\Http\Controllers\CategoriaController::class, 'update'])->name('categorias.update');
-        // Route::delete('/categorias/eliminarcategoria/{idcategoria}', [App\Http\Controllers\CategoriaController::class, 'eliminarcategoria'])->name('categorias.eliminar');
+        
     })->middleware(['auth', 'verified'])->name('proyectos');
     
     //Ruta pagos

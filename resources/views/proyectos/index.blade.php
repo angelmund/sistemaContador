@@ -14,7 +14,7 @@
                 <button id="pdfButton" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Exportar a PDF</button>
                 <button id="printButton" class="btn btn-info"><i class="fas fa-print"></i> Imprimir</button>
             </div>
-            <div class="row mb-3 ">
+            {{--  <div class="row mb-3 ">
                 <div class="col-md-4 fechaDivs">
                     <label for="fechainicio">Fecha Inicio</label>
                     <input type="text" id="fechaIncio" name="fechaInicio" class="form-control fechaInicio" readonly />
@@ -44,9 +44,9 @@
                 </div>
 
                 <div class="col-md-1 mt-4">
-                    <button id="filtrar" class="btn btn-danger"><i class="fas fa-filter"></i> Filtrar</button>
+                    <button id="filtrar" class="btn btn-danger filtrar"><i class="fas fa-filter"></i> Filtrar</button>
                 </div>
-            </div>
+            </div>  --}}
 
 
             <table id="example" class="table table-striped responsive" style="width:100%">
