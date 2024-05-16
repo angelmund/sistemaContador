@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
         // $('.select2').select2();
         // $('#claveProyecto').select2();
         let nombreProyectoSeleccionado = '';
-        let idInscripcion;
+
         //se crea un objeto con los id de los input para mapear los valores
         const inscripcion = {
             //tienen que coicidir con el mismo id de cada campo
@@ -43,7 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
         const importeinscripcionN = document.querySelector('#importeInscripcion');
         const nosolicitudN = document.querySelector('#noSolicitud');
         const fechadepositoN = document.querySelector('#fechaDeposito');
-        const btnSubmit = document.querySelector('#btn_actualizar');
+        const btnSubmit = document.querySelector('.btn_actualizar');
         // const fotoclienteN = document.querySelector('#fotoCliente');
         // const ineN = document.querySelector('#Ine');
 
@@ -281,31 +281,38 @@ document.addEventListener('DOMContentLoaded', function () {
             this.value = formattedValue;
         });
 
-        const botonesAbrirModal = document.querySelectorAll('.abrir-inscripcion');
+        // $('#example').on('show.bs.modal', '.modal', function (event) {
+        //     var button = $(event.relatedTarget); // Botón que abre el modal
+        //     var id = button.data('id'); // Extraer el ID del botón
+        //     $(this).find('.idInscripcion').val(id); // Establecer el ID en el campo oculto del formulario
+        //     console.log(id);
+        // });
 
-        // Itera sobre cada botón
-        botonesAbrirModal.forEach(function (boton) {
-            // Agrega un evento clic a cada botón
-            boton.addEventListener('click', function () {
-                // Obtiene el ID de la inscripción del atributo de datos "data-id"
-                idInscripcion = this.getAttribute('data-id');
 
-            });
+        $('.abrir-inscripcion').click(function (event) {
+            event.preventDefault();
+            var id = $(this).data('id');
+            $('#idInscripcion').val(id); // Establecer el ID en el campo oculto del formulario
+            console.log(id);
         });
-
+        // Actualizar el registro al hacer clic en el botón de actualizar
         $('.btn_actualizar').click(function (e) {
             e.preventDefault();
-            if (formularioValido) { // Verifica si el formulario es válido
-                confirSave("¿Los datos capturados, son correctos?", function () {
-                    // Llama a la función updateinscripcion utilizando el ID almacenado
-                    updateinscripcion(idInscripcion);
+            var modalId = $(this).data('modal-id');
+            var id = $('#idInscripcion' + modalId).val();
+            console.log(modalId);
+            if (formularioValido) {
+                confirSave("¿Los datos capturados son correctos?", function () {
+                    updateinscripcion(modalId);
                 });
             }
         });
+        
 
-        async function updateinscripcion() {
+
+
+        async function updateinscripcion(modalId) {
             const url = $('#url').val();
-            console.log('ID :', idInscripcion); // Utiliza el ID obtenido anteriormente
             try {
                 const formData = new FormData($('#formedit-incripcion')[0]);
                 const claveProyectoValue = $('#claveProyecto').val();
@@ -318,10 +325,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 // Añade los valores al FormData
                 formData.append('claveProyecto', claveProyectoFinalValue); // Utiliza el valor final
                 formData.append('telefono', telefonoValue);
-                console.log(claveProyectoText);
+               
+                // console.log(claveProyectoText);
 
                 // Realiza la solicitud fetch
-                const response = await fetch(url + '/inscripciones/update/' + idInscripcion, {
+                const response = await fetch(url + '/inscripciones/update/' + modalId, {
                     method: 'POST',
                     mode: 'cors',
                     redirect: 'manual',
@@ -363,10 +371,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
     ///inscripciones/delete/
 
-    const btnEliminar = document.querySelectorAll('.eliminar-inscripcion');
+    // const btnEliminar = document.querySelectorAll('.eliminar-inscripcion');
 
-    btnEliminar.forEach(btn => {
-        btn.addEventListener('click', eliminarInscripcion);
+    $('#example').on('click', '.eliminar-inscripcion', function (event) {
+        eliminarInscripcion(event);
     });
 
     function eliminarInscripcion(event) {

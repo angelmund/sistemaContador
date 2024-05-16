@@ -1,4 +1,3 @@
-
 <x-app-layout>
     <h1 class="text-center mt-2">Tabla de Inscripciones</h1>
     <div class="card mt-5">
@@ -17,7 +16,7 @@
                     <label for="fechaInicio">Fecha Inicio</label>
                     <input type="date" id="fechaInicio" name="fechaInicio" class="form-control fechaInicio" />
                 </div>
-                
+
 
                 <div class="col-md-4 fechaDivs">
                     <label for="fechafinal">Fecha Final</label>
@@ -59,7 +58,7 @@
                         <th class="centrar">Fecha de registro</th>
                         <th class="centrar">Estado</th>
                         <th class="centrar"></th>
-                        
+
                     </tr>
                 </thead>
                 <tbody>
@@ -82,10 +81,10 @@
                             <button type="button" class="btn btn-warning"><i class="fas fa-download"></i></button>
                             <button type="button" class="btn btn-primary abrir-inscripcion" data-bs-toggle="modal"
                                 data-bs-target="#EditModal{{$inscripcion->id}}" data-bs-backdrop="false"
-                                data-id="{{$inscripcion->id}}">
+                                data-remote="{{route('inscripciones.edit',$inscripcion->id)}}"
+                                data-id="{{ $inscripcion->id }}">
                                 <i class="fas fa-eye"></i>
                             </button>
-
 
 
                             <a type="button" href="{{route('pagos.alta', $inscripcion->id)}}" class="btn btn-success"><i

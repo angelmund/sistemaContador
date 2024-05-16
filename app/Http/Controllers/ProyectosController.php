@@ -12,6 +12,8 @@ use App\Models\Inscripcione;
 use App\Models\Proyecto;
 use App\Models\Cheque;
 use App\Models\Pago;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Validation\Rule;
 
 class ProyectosController extends Controller
 {
@@ -80,27 +82,26 @@ class ProyectosController extends Controller
     public function createProyecto(Request $request)
     {
         if (Auth::check()) {
-            $request->validate([
-                // 'nombredelcampo' => 'required | email | unique:tabla', 
-                'claveProyecto_new' => 'required', 'unique:proyectos,clave_proyecto,except,id',
-                'nombre_new' => 'required',
-                // 'descripcion_edit' => 'required',
-                'nombreEncargado_new' => 'required',
-                'ubicacion_new' => 'required',
-                'cantParticipantes_new' => 'required | numeric',
-                'presupuestoN' => 'required | numeric',
 
-            ], [
-                'nombre_new.unique' => 'La clave del proyecto ya existe.'
-            ]);
-            return response()->json([
-                'mensaje' => 'La clave del proyecto ya existe.',
-                'idnotificacion' => 3 // Esto indica que es un error de validación
-            ], 422); // Devuelve el código de estado HTTP 422 para indicar una validación fallida
+            // return response()->json([
+            //     'mensaje' => 'La clave del proyecto ya existe.',
+            //     'idnotificacion' => 3 // Esto indica que es un error de validación
+            // ], 422); // Devuelve el código de estado HTTP 422 para indicar una validación fallida
 
-            DB::beginTransaction();
+
             try {
+               
+                $validator = Validator::make($request->all(), [
+                    'claveProyecto_new' => 'required|unique:proyectos,clave_proyecto|max:20',
+                ], ['claveProyecto_new.unique' => 'La clave del proyecto ya existe']);
 
+                if ($validator->fails()) {
+                    return response()->json([
+                        'mensaje' => $validator->errors()->first(),
+                        'idnotificacion' => 3
+                    ]);
+                }
+                DB::beginTransaction();
                 $proyecto = new Proyecto();
                 $proyecto->clave_proyecto = $request->input('claveProyecto_new');
                 $proyecto->nombre = $request->input('nombre_new');
@@ -123,7 +124,7 @@ class ProyectosController extends Controller
 
                 DB::rollback();
                 return response()->json([
-                    'mensaje' => 'Error al guardar: ' . $e->getMessage(),
+                    'mensaje' => 'Error al guardar',
                     'idnotificacion' => 2
                 ]);
             }
@@ -162,26 +163,55 @@ class ProyectosController extends Controller
         //     $datos['usuario']=User::where("correo",Auth::user()->correo)->first();
         // }
         if (Auth::check()) {
-            $request->validate([
-                // 'nombredelcampo' => 'required | email | unique:tabla', 
-                'claveProyecto_edit' => 'required',
-                'nombreProyecto_edit' => 'required',
-                // 'descripcion_edit' => 'required',
-                'ubicacion_edit' => 'required',
-                'encargado_edit' => 'required',
-                'presupuesto_edit' => 'required | numeric',
-                'cantMaxParticipantes_edit' => 'required | numeric',
 
-            ]);
-            DB::beginTransaction();
             try {
+
+                // DB::beginTransaction();
                 $proyectos =  proyecto::find($id);
+
+                
+
+                 // Verificamos si el nombre ha sido modificado
+                 if ($request->input('claveProyecto_edit') !== $proyectos->clave_proyecto) {
+                    // Si ha sido modificado, validamos que el nuevo nombre sea único
+                    $validator = Validator::make($request->all(), [
+                        'claveProyecto_edit' => [
+                            'required',
+                            Rule::unique('proyectos', 'clave_proyecto')->ignore($id, 'id'),
+                            'max:20'
+                        ],
+                    ], [
+                        'claveProyecto_edit.unique' => 'La clave del proyecto ya ha sido tomado'
+                    ]);
+
+                    if ($validator->fails()) {
+                        return response()->json([
+                            'mensaje' => $validator->errors()->first(),
+                            'idnotificacion' => 3
+                        ]);
+                    }
+                } else {
+                    // Si el nombre no ha sido modificado, no realizamos ninguna validación única
+                    $validator = Validator::make($request->all(), [
+                        'claveProyecto_edit' => 'required|max:20',
+                    ]);
+                }
+
+                if ($validator->fails()) {
+                    return response()->json([
+                        'mensaje' => $validator->errors()->first(),
+                        'idnotificacion' => 3
+                    ]);
+                }
+
                 $proyectos->clave_proyecto = $request->input('claveProyecto_edit');
                 $proyectos->nombre = $request->input('nombreProyecto_edit');
                 $proyectos->descripcion = $request->input('descripcion_edit');
                 $proyectos->encargado = $request->input('encargado_edit');
-                $proyectos->presupuesto  = $request->input('presupuesto_edit');
+                $presupuesto = str_replace(',', '', $request->input('presupuesto_edit'));
+                $proyectos->presupuesto = $presupuesto;
                 $proyectos->cantMaxParticipantes = $request->input('cantMaxParticipantes_edit');
+                // dd($proyectos);
                 $proyectos->estado = 1;
                 $proyectos->save();
 
@@ -194,8 +224,8 @@ class ProyectosController extends Controller
             } catch (\Exception $e) {
                 DB::rollback();
                 return response()->json([
-                    'mensaje' => 'Error al guardar: ' . $e->getMessage(),
-                    'idnotificacion' => 3
+                    'mensaje' => 'Error al guardar',
+                    'idnotificacion' => 2
                 ]);
             }
         } else {
@@ -220,9 +250,9 @@ class ProyectosController extends Controller
                 DB::beginTransaction();
 
                 $proyecto = Proyecto::find($id);
-                // $proyecto->estado = 0;
-                $proyecto->delete();
-                // $proyecto->save();
+                $proyecto->estado = 0;
+                // $proyecto->delete();
+                $proyecto->save();
 
                 DB::commit();
 
@@ -233,7 +263,7 @@ class ProyectosController extends Controller
             } catch (\Exception $e) {
                 DB::rollback();
                 return response()->json([
-                    'mensaje' => 'Error al eliminar: ' . $e->getMessage(),
+                    'mensaje' => 'Error al eliminar',
                     'idnotificacion' => 2
                 ]);
             }

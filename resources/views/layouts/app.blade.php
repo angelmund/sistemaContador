@@ -16,7 +16,8 @@
     <!-- Bootstrap -->
     <link rel="stylesheet" href="{{ asset('bootstrap-5.2.3-dist/css/bootstrap.min.css') }}">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css"
+        crossorigin="anonymous">
     <!-- Boxicons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
     <!-------- moment ---------->
@@ -26,6 +27,8 @@
 
     <!-- SweetAlert2 -->
     <link rel="stylesheet" href="{{ asset('sweetalert2/sweetalert2.min.css') }}">
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js" defer></script>
     @yield('css')
 </head>
 
@@ -58,6 +61,13 @@
     <!-- DataTables JS -->
     <script src="{{ asset('DataTables/datatables.min.js') }}"></script>
     {{-- <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.13/js/select2.min.js"></script> --}}
+
+{{--      
+    <script>
+        $(document).ready(function() {
+            $('.select2').select2();
+        });
+    </script>  --}}
     @yield('js')
 </body>
 

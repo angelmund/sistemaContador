@@ -2,10 +2,11 @@ import { alertaInfo, confirSave, eliminar } from "./alertas";
 import Swal from 'sweetalert2';
 
 /***************************Cancelar un cheque o pago ******************************/
-const btnEliminar = document.querySelectorAll('.eliminartipoPago');
+// const btnEliminar = document.querySelectorAll('.eliminartipoPago');
 
-btnEliminar.forEach(btn => {
-    btn.addEventListener('click', eliminarTipoPago);
+// Actualiza la selección de botones de eliminar para delegar el evento clic al contenedor de la tabla
+$('#example').on('click', '.eliminartipoPago', function(event) {
+    eliminarTipoPago(event);
 });
 
 function eliminarTipoPago(event) {
@@ -13,7 +14,7 @@ function eliminarTipoPago(event) {
     const tipo = event.target.dataset.tipo; // Obtener el tipo (cheque o pago)
     const url = `/cancelar/${tipo}/${id}`; // Construir la URL con el tipo y el ID
 
-    eliminar("¿Seguro que quiere cancelar el pago?", function () {
+    eliminar("¿Seguro que quiere cancelar?", function () {
         enviarSolicitudDelete(url); // Llamar a la función que envía la solicitud DELETE
     });
 }

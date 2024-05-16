@@ -242,6 +242,7 @@ if ($('#formedit-proyecto').length > 0) {
                 // Crea un objeto FormData y agrega los datos
                 const formData = new FormData($('#formedit-proyecto')[0]);
                 formData.set('presupuestoN', presupuestoValue);
+                // console.log(formData);
                 const response = await fetch(url + '/proyectos/update/' + id, {
                     method: 'POST',
                     mode: 'cors',
@@ -253,80 +254,105 @@ if ($('#formedit-proyecto').length > 0) {
                 const data = await response.json();
                 // console.log(data); // Muestra los datos recibidos en la consola
 
-                if (data.idnotificacion == 1) {
-                    Swal.fire({
-                        title: "Proyecto actualizado con éxito",
-                        icon: "success",
-                        showConfirmButton: false,  // No mostrar el botón "Ok"
-                        timer: 1500,  // Cerrar automáticamente después de 1500 milisegundos (1.5 segundos)
-                        timerProgressBar: true  // Mostrar una barra de progreso durante el temporizador
-                    });
-                    // Espera 1500 milisegundos (1.5 segundos) antes de limpiar el formulario
-                    setTimeout(function () {
-                        formulario.reset();  // Limpia el formulario
-                        window.location.reload();
-                        // formulario.style.display = 'none';
-                        comprobarFormulario();  // Asegurarse que el botón esté deshabilitado después de limpiar
-                    }, 1500);
-                } else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: "Ocurrió un error al guardar!"
-                    });
+                switch (data.idnotificacion) {
+                    case 1:
+                        Swal.fire({
+                            title: data.mensaje,
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1000,
+                            timerProgressBar: true
+                        });
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1000);
+                        break;
+
+                    case 2:
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: data.mensaje
+                        });
+                        break;
+                    case 3:
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: data.mensaje
+                        });
+                        break;
+
+                    default:
+                        Swal.fire({
+                            icon: "info",
+                            title: "Info...",
+                            text: "Error desconocido"
+                        });
                 }
-                // console.log(response);
-                // console.log($('#formcreate-medida').serialize());
 
             } catch (error) {
                 // console.log(error);
             }
         }
 
-        btnEliminar.forEach(btn => {
-            btn.addEventListener('click', eliminarProyecto);
+        
+       
+        $('#example').on('click', '.eliminar', function(event) {
+            event.preventDefault();
+            // Obtener el id del botón que ha sido clicado
+            var id = $(this).data('id');
+            eliminar("¿Está seguro de eliminar el proyecto?", function () {
+                deleteProyecto(id);
+            });
         });
         
-        function eliminarProyecto(event) {
-            const id = document.querySelector('#formedit-proyecto').dataset.proyectoId;
-            const url = '/categorias/eliminarcategoria/' + id;
-    
-            eliminar("¿Seguro que quiere eliminar el proyecto?", function (){
-                eliminarproyecto();
-            })
-        }
-    
-        async function eliminarproyecto(url) {
+        async function deleteProyecto(id) {
+            const url = $('#url').val();
             try {
-                const response = await fetch(url, {
-                    method: 'DELETE',
+                const response = await fetch(url + '/proyectos/delete/' + id, {
+                    method: 'POST',
+                    mode: 'cors',
+                    redirect: 'manual',
                     headers: {
-                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                    },
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
                 });
-    
+        
                 const data = await response.json();
-    
-                if (data.idnotificacion == 1) {
-                    Swal.fire({
-                        title: "Eliminado con éxito",
-                        icon: "success",
-                        showConfirmButton: false,
-                        timer: 1500,
-                        timerProgressBar: true
-                    });
-                    setTimeout(function () {
-                        window.location.reload();
-                    }, 1500);
-                } else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: "Ocurrió un error al eliminar"
-                    });
+                switch (data.idnotificacion) {
+                    case 1:
+                        Swal.fire({
+                            title: data.mensaje,
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1000,
+                            timerProgressBar: true
+                        });
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1000);
+                        break;
+        
+                    case 2:
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: data.mensaje
+                        });
+                        break;
+                    
+        
+                    default:
+                        Swal.fire({
+                            icon: "info",
+                            title: "Info...",
+                            text: "Error desconocido"
+                        });
                 }
+        
             } catch (error) {
-                console.error('Error en try-catch:', error);
+                console.error("Error al procesar la solicitud:", error);
             }
         }
     });

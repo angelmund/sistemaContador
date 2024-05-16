@@ -135,6 +135,7 @@ function handleResponse(data) {
 // Escucha cambios en el elemento select   de clientes para cargar los nombres de cada cliente 
 $('#id_cliente').change(function () {
     var idSeleccionado = $(this).val();
+    console.log(idSeleccionado);
     if (idSeleccionado) {
         $.get('/inscripciones/relacion/nombre/' + idSeleccionado, function (data) {
             if (data && data.nombre_completo) {

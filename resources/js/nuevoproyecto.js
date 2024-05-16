@@ -174,34 +174,41 @@ if ($('#form-proyecto').length > 0) {
                     body: formData
                 });
                 const data = await response.json();
-                // console.log(data); // Muestra los datos recibidos en la consola
+                switch (data.idnotificacion) {
+                    case 1:
+                        Swal.fire({
+                            title: data.mensaje,
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1000,
+                            timerProgressBar: true
+                        });
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1000);
+                        break;
 
-                if (data.idnotificacion == 3) {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Error",
-                        text: data.mensaje // Muestra el mensaje de error recibido del servidor
-                    });
-                } else if (data.idnotificacion == 1) {
-                    Swal.fire({
-                        title: "Proyecto guardado con éxito",
-                        icon: "success",
-                        showConfirmButton: false,  // No mostrar el botón "Ok"
-                        timer: 1500,  // Cerrar automáticamente después de 1500 milisegundos (1.5 segundos)
-                        timerProgressBar: true  // Mostrar una barra de progreso durante el temporizador
-                    });
-                    // Espera 1500 milisegundos (1.5 segundos) antes de limpiar el formulario
-                    setTimeout(function () {
-                        formulario.reset();  // Limpia el formulario
-                        window.location.reload();
-                        // comprobarFormulario();  // Asegúrate de que el botón esté deshabilitado después de limpiar
-                    }, 1500);
-                } else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: "Ocurrió un error al guardar!"
-                    });
+                    case 2:
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: data.mensaje
+                        });
+                        break;
+                    case 3:
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: data.mensaje
+                        });
+                        break;
+
+                    default:
+                        Swal.fire({
+                            icon: "info",
+                            title: "Info...",
+                            text: "Error desconocido"
+                        });
                 }
             } catch (error) {
                 // console.log(error);

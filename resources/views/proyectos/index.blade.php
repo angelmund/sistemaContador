@@ -3,6 +3,7 @@
     <h1 class="text-center mt-2">Tabla de Proyectos</h1>
     <div class="card mt-5">
         <div class="card-body">
+            <input type="hidden" value="{{ url('/') }}" id="url">
             <div class="text-center mb-3">
                 <a href="{{route('proyectos.create')}}" type="button" class="btn btn-primary"><i class='fas fa-plus'></i> Agregar proyecto</a>
                 <a href="{{route('inscripciones.form')}}" type="button" class="btn btn-primary"><i class='fas fa-plus'></i> Nueva inscripci&oacute;n</a>
@@ -90,8 +91,8 @@
                             {{--  <button type="button" class="btn btn-success"><i class="fas fa-dollar-sign"></i></button>  --}}
 
                             @can('Eliminar')
-                            <button type="button" id="btn_delete" class="btn btn-danger eliminar-modal"
-                                data-target="#DeleteModal" data-toggle="modal" data-idcategoria="#">
+                            <button type="button" id="btn_delete" class="btn btn-danger eliminar"
+                                data-target="#DeleteModal" data-toggle="modal" data-id="{{$proyecto->id}}">
                                 <i class="fas fa-trash"></i>
                             </button>
                             @endcan

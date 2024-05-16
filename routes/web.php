@@ -53,6 +53,7 @@ Route::middleware(['auth', 'verified', 'checkUserStatus'])->group(function () {
         Route::post('/proyectos/save', [App\Http\Controllers\ProyectosController::class, 'createProyecto'])->name('proyectos.save');
         Route::get('/proyectos/edit/{id}', [App\Http\Controllers\ProyectosController::class, 'editProyecto'])->name('proyectos.edit');
         Route::post('/proyectos/update/{id}', [App\Http\Controllers\ProyectosController::class, 'updateProyecto'])->name('proyectos.update');
+        Route::post('/proyectos/delete/{id}', [App\Http\Controllers\ProyectosController::class, 'eliminarproyecto'])->name('proyectos.delete');
         
     })->middleware(['auth', 'verified'])->name('proyectos');
     
