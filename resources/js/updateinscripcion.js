@@ -2,7 +2,7 @@ import { confirSave, eliminar, alertaInfo } from "./alertas";
 import Swal from 'sweetalert2';
 document.addEventListener('DOMContentLoaded', function () {
 
-    if ($('#formedit-incripcion').length > 0) {
+    if ($('#form-editincripcion').length > 0) {
 
         // $('.select2').select2();
         // $('#claveProyecto').select2();
@@ -49,107 +49,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-        const formulario = document.querySelector('#formedit-incripcion');
+        const formulario = document.querySelector('#form-editincripcion');
 
         const btnCancelar = document.querySelector('#limpiar');
 
-        // Deshabilitar el botón de submit al inicio
-        // btnSubmit.disabled = true;
-        btnSubmit.disabled = false;
-
-        // agrega validarformulario
-        // comite.addEventListener('input', validarFormulario);
-        nombreNew.addEventListener('input', validarFormulario);
-        direccion.addEventListener('input', validarFormulario);
-
-        alcaldiaN.addEventListener('input', validarFormulario);
-        telefonoN.addEventListener('input', validarFormulario);
-        conceptoN.addEventListener('input', validarFormulario);
-        importeinscripcionN.addEventListener('input', validarFormulario);
-        nosolicitudN.addEventListener('input', validarFormulario);
-        fechadepositoN.addEventListener('input', validarFormulario);
-
-
-
         btnCancelar.addEventListener('click', (e) => {
             e.preventDefault();
-            inscripcion.nombre = '';
-            inscripcion.direccion = '';
-            // inscripcion.claveProyecto = '';
-            // inscripcion.nombreProyecto_n = '';
-            // proyecto.comite = '';
-            inscripcion.alcaldia = '';
-            inscripcion.telefono = '';
-            inscripcion.concepto = '';
-            inscripcion.importeInscripcion = '';
-            inscripcion.noSolicitud = '';
-            inscripcion.fechaDeposito = '';
-            // inscripcion.fotoCliente = '';
-            // inscripcion.Ine = '';
             formulario.reset();
-            limpiarAlerta(nombreNew.parentElement);
-            limpiarAlerta(direccion.parentElement);
-            // limpiarAlerta(selectClaveProyecto.parentElement);
-            // limpiarAlerta(nombreProyectoInput.parentElement);
-            // limpiarAlerta(comite.parentElement);
-            limpiarAlerta(alcaldiaN.parentElement);
-            limpiarAlerta(telefonoN.parentElement);
-            limpiarAlerta(conceptoN.parentElement);
-            limpiarAlerta(importeinscripcionN.parentElement);
-            limpiarAlerta(nosolicitudN.parentElement);
-            limpiarAlerta(fechadepositoN.parentElement);
-            // limpiarAlerta(fotoclienteN.parentElement);
-            // limpiarAlerta(ineN.parentElement);
-            comprobarFormulario();
-            inicializarValoresInscripcion();
         });
-
-
-
-        // valida el formulario
-        function validarFormulario(e) {
-            const referencia = e.target.parentElement;
-
-            // Ignorar validación para claveProyecto y nombreProyecto_n
-            if (e.target.id === 'claveProyecto' || e.target.id === 'nombreProyecto_n') {
-                limpiarAlerta(referencia);
-                inscripcion[e.target.id] = e.target.value.trim();
-                comprobarFormulario();
-                return;
-            }
-
-            if (e.target.value.trim() === '') {
-                mostrarAlerta(`El campo es obligatorio`, referencia);
-                inscripcion[e.target.id] = '';
-                comprobarFormulario();
-                return;
-            }
-
-            limpiarAlerta(referencia);
-
-            inscripcion[e.target.id] = e.target.value.trim();
-            comprobarFormulario();
-        }
-
-
-        // muestra alerta 
-        function mostrarAlerta(mensaje, referencia) {
-            limpiarAlerta(referencia);
-
-            const error = document.createElement('SPAN');
-
-            error.textContent = mensaje;
-            error.classList.add('bg-danger', 'text-white', 'p-2', 'text-center');
-            referencia.appendChild(error);
-        }
-
-        // limpia la alerta 
-        function limpiarAlerta(referencia) {
-            const alerta = referencia.querySelector('.bg-danger');
-            if (alerta) {
-                alerta.remove();
-            }
-        }
 
         // Escucha cambios en el elemento select
         $('#claveProyecto').on('change', function () {
@@ -195,68 +102,6 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         });
 
-        function comprobarFormulario() {
-
-
-            if (Object.values(inscripcion).includes('')) {
-                // console.log("Formulario no válido");
-                btnSubmit.disabled = true;
-                formularioValido = false; // El formulario no es válido
-            } else {
-                // console.log("Formulario válido");
-                btnSubmit.disabled = false;
-                formularioValido = true; // El formulario es válido
-
-            }
-        }
-
-
-        // Función para inicializar los valores de inscripcion con los del formulario
-        function inicializarValoresInscripcion() {
-            inscripcion.nombre = nombreNew.value.trim();
-            inscripcion.direccion = direccion.value.trim();
-            inscripcion.claveProyecto = claveProyecto.value.trim();
-            inscripcion.nombreProyecto_n = nombreProyectoInput.value.trim();
-            inscripcion.comite = comite.value.trim();
-            inscripcion.alcaldia = alcaldiaN.value.trim();
-            inscripcion.telefono = telefonoN.value.trim();
-            inscripcion.concepto = conceptoN.value.trim();
-            inscripcion.importeInscripcion = importeinscripcionN.value.trim();
-            inscripcion.noSolicitud = nosolicitudN.value.trim();
-            inscripcion.fechaDeposito = fechadepositoN.value.trim();
-
-
-            // Disparar manualmente el evento input en los campos que ya tienen valores
-            validarFormulario({ target: nombreNew });
-            validarFormulario({ target: direccion });
-            validarFormulario({ target: claveProyecto });
-            validarFormulario({ target: nombreProyectoInput });
-            validarFormulario({ target: comite });
-            validarFormulario({ target: alcaldiaN });
-            validarFormulario({ target: telefonoN });
-            validarFormulario({ target: conceptoN });
-            validarFormulario({ target: importeinscripcionN });
-            validarFormulario({ target: nosolicitudN });
-            validarFormulario({ target: fechadepositoN });
-
-            comprobarFormulario(); // Verificar el estado del formulario
-        }
-
-        inicializarValoresInscripcion();
-        // comprueba si todos los campos estan llenos para habilitar boton de enviar o no
-
-        // const btnSubmit = document.querySelector('.btn_save');
-        // btnSubmit.addEventListener("click", (e) => {
-        //     e.preventDefault();
-        //     // alert("¡Hiciste clic en el botón!");
-        //      if (formularioValido) { // Verifica si el formulario es válido
-        //         confirSave("¿Los datos capturados, son correctos?", function () {
-        //             updateinscripcion();
-        //         });
-        //     }
-        // });
-
-
         telefonoN.addEventListener('input', function (e) {
             let valor = this.value.trim(); // Obtener el valor actual del campo y eliminar espacios en blanco
 
@@ -281,55 +126,130 @@ document.addEventListener('DOMContentLoaded', function () {
             this.value = formattedValue;
         });
 
-        // $('#example').on('show.bs.modal', '.modal', function (event) {
-        //     var button = $(event.relatedTarget); // Botón que abre el modal
-        //     var id = button.data('id'); // Extraer el ID del botón
-        //     $(this).find('.idInscripcion').val(id); // Establecer el ID en el campo oculto del formulario
-        //     console.log(id);
-        // });
 
 
-        $('.abrir-inscripcion').click(function (event) {
+        // Evento para abrir el modal y cargar los datos
+        $('#example').on('click', '.abrir-inscripcion', function (event) {
             event.preventDefault();
-            var id = $(this).data('id');
-            $('#idInscripcion').val(id); // Establecer el ID en el campo oculto del formulario
-            console.log(id);
+            // Obtener la url del botón que ha sido clicado
+            var url = $(this).data('remote');
+            consultarInscripcion(url);
         });
-        // Actualizar el registro al hacer clic en el botón de actualizar
-        $('.btn_actualizar').click(function (e) {
-            e.preventDefault();
-            var modalId = $(this).data('modal-id');
-            var id = $('#idInscripcion' + modalId).val();
-            console.log(modalId);
-            if (formularioValido) {
-                confirSave("¿Los datos capturados son correctos?", function () {
-                    updateinscripcion(modalId);
+
+        // Función para convertir y formatear la fecha en el formato esperado por un input de tipo date
+        function formatearFecha(fechaISO) {
+            const date = new Date(fechaISO);
+            const day = ('0' + date.getDate()).slice(-2);
+            const month = ('0' + (date.getMonth() + 1)).slice(-2);
+            const year = date.getFullYear();
+            return `${year}-${month}-${day}`; // Formato YYYY-MM-DD
+        }
+
+        // Función para consultar la inscripción
+        function consultarInscripcion(url) {
+            fetch(url)
+                .then(respuesta => {
+                    if (!respuesta.ok) {
+                        throw new Error('Error');
+                    }
+                    return respuesta.json();
+                })
+                .then(datos => {
+                    if (datos.error) {
+                        console.error('Error:', datos.error);
+                        return;
+                    }
+                    mostrarDatos(datos);
+                    // Verifica si el modal se abre correctamente
+                    $('#EditInscripcion').modal('show');
+                  
+                })
+                .catch(error => {
+                    console.error('Error:', error);
                 });
+        }
+
+        // Función para mostrar los datos en el formulario del modal
+        function mostrarDatos(datos) {
+            //obtener los datos de mi json enviado desde el back
+            const inscripcion = datos.inscripcion;
+            const selectclaveproyecto = Object.entries(datos.selectclaveproyecto);
+            const proyecto = datos.proyecto;
+
+            // Asignar valores a los campos del formulario
+            $('#nombre').val(inscripcion.nombre_completo);
+            $('#direccion').val(inscripcion.direccion);
+            $('#comite').val(inscripcion.comite);
+            $('#alcaldia').val(inscripcion.alcaldia);
+            $('#telefono').val(inscripcion.telefono);
+            $('#concepto').val(inscripcion.concepto);
+            $('#importeInscripcion').val(inscripcion.importe);
+            // Asignar el nombre del proyecto, o una cadena vacía si no hay proyecto
+            $('#nombreProyecto_n').val(proyecto ? proyecto.nombre : '');
+            $('#noSolicitud').val(inscripcion.numero_solicitud);
+
+            // Convertir y asignar la fecha formateada
+            const fechaFormateada = formatearFecha(inscripcion.fecha_deposito);
+
+            $('#fechaDeposito').val(fechaFormateada);
+
+            $('#observaciones').val(inscripcion.observaciones);
+
+            // Llenar el select y seleccionar la clave del proyecto
+            const select = document.getElementById('claveProyecto');
+            select.innerHTML = ''; // Limpiar opciones existentes
+            const defaultOption = document.createElement('option');
+            defaultOption.value = '';
+            defaultOption.textContent = 'No Asignado';
+            select.appendChild(defaultOption);
+
+            selectclaveproyecto.forEach(([id, clave]) => {
+                const option = document.createElement('option');
+                option.value = id;
+                option.textContent = clave;
+                if (clave === inscripcion.clave_proyecto) {
+                    option.selected = true;
+                }
+                select.appendChild(option);
+            });
+
+
+
+            // console.log(datos);
+        }
+
+        document.getElementById('form-editincripcion').addEventListener('submit', function(event) {
+            var inputs = this.getElementsByTagName('input');
+            var isValid = true;
+        
+            for (var i = 0; i < inputs.length; i++) {
+                if (!inputs[i].checkValidity()) {
+                    inputs[i].classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    inputs[i].classList.remove('is-invalid');
+                    inputs[i].classList.add('is-valid');
+                }
+            }
+        
+            if (!isValid) {
+                event.preventDefault();
             }
         });
-        
 
-
-
-        async function updateinscripcion(modalId) {
+        async function updateinscripcion(id) {
             const url = $('#url').val();
             try {
-                const formData = new FormData($('#formedit-incripcion')[0]);
+                const formData = new FormData($('#form-editincripcion')[0]);
                 const claveProyectoValue = $('#claveProyecto').val();
                 const claveProyectoText = $('#claveProyecto option:selected').text();
-                // Si es "Seleccione una opción", envía null; de lo contrario, envía el valor seleccionado
                 const claveProyectoFinalValue = claveProyectoText === 'Seleccione una opción' ? '' : claveProyectoText;
-
                 const telefonoValue = $('#telefono').val().replace(/\s/g, '');
 
-                // Añade los valores al FormData
-                formData.append('claveProyecto', claveProyectoFinalValue); // Utiliza el valor final
+                formData.append('claveProyecto', claveProyectoFinalValue);
                 formData.append('telefono', telefonoValue);
-               
-                // console.log(claveProyectoText);
 
-                // Realiza la solicitud fetch
-                const response = await fetch(url + '/inscripciones/update/' + modalId, {
+                const response = await fetch(url + '/inscripciones/update/' + id, {
                     method: 'POST',
                     mode: 'cors',
                     redirect: 'manual',
@@ -339,7 +259,6 @@ document.addEventListener('DOMContentLoaded', function () {
                     body: formData
                 });
 
-                // Procesa la respuesta
                 const data = await response.json();
                 if (data.idnotificacion == 1) {
                     Swal.fire({
@@ -350,9 +269,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         timerProgressBar: true
                     });
                     setTimeout(function () {
-                        formulario.reset();
+                        $('#form-editincripcion')[0].reset();
                         window.location.reload();
-                        comprobarFormulario();
                     }, 1500);
                 } else {
                     Swal.fire({

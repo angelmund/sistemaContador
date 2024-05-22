@@ -9,7 +9,8 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\DB;
 use App\Http\controllers\QueryException;
 use Illuminate\Http\Request;
-use App\Models\usere;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 use App\Models\User;
 use Spatie\Permission\Models\Role;
 
@@ -38,14 +39,48 @@ class AdminController extends Controller
     public function nuevoUsuario(Request $request)
     {
         if (Auth::check()) {
-            $usuario = new User();
-            $usuario->name = $request->input('nombre');
-            $usuario->email = $request->input('email');
-            $usuario->email_verified_at = now();
-            $usuario->password = bcrypt("Benit24&");  //encripta la contraseña por defecto 
-            $usuario->estado = 1;   //estado activo
-            $usuario->save();
-            	
+            
+            try {
+              
+                
+                $validator = Validator::make($request->all(), [
+                    'email' => 'unique:users,email|max:50',
+                    'nombre' => 'string|max:255',
+                    'rol' => 'exists:roles,id',
+                ], ['email.unique' => 'El email ya ha sido tomado']);
+
+                if ($validator->fails()) {
+                    return response()->json([
+                        'mensaje' => $validator->errors()->first(),
+                        'idnotificacion' => 3
+                    ]);
+                }
+                DB::beginTransaction();
+                $usuario = new User();
+                $usuario->name = $request->input('nombre');
+                $usuario->email = $request->input('email');
+                $usuario->email_verified_at = now();
+                $usuario->password = bcrypt("Benit24&"); // Encripta la contraseña por defecto
+                $usuario->estado = 1; // Estado activo
+                // dd($usuario);
+                $usuario->save();
+            
+                // Asigna el rol al usuario
+                $rol = Role::findOrFail($request->input('rol'));
+                $usuario->assignRole($rol);
+                // dd($request->all());
+            
+                return response()->json([
+                    'mensaje' => 'Usuario agregado con éxito',
+                    'idnotificacion' => 1
+                ]);
+            } catch (\Exception $e) {
+                DB::rollback();
+                return response()->json([
+                    'mensaje' => 'Error al guardar: ' . $e->getMessage(),
+                    'idnotificacion' => 2
+                ]);
+            }
         } else {
             return redirect()->to('/');
         }
@@ -81,7 +116,7 @@ class AdminController extends Controller
             } catch (\Exception $e) {
                 DB::rollback();
                 return response()->json([
-                    'mensaje' => 'Error al eliminar: ' . $e->getMessage(),
+                    'mensaje' => 'Error al eliminar',
                     'idnotificacion' => 2
                 ]);
             }

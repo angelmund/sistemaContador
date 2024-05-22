@@ -21,17 +21,70 @@ document.addEventListener('DOMContentLoaded', function () {
         formulario.addEventListener('submit', async function (event) {
             event.preventDefault(); // Evita que el formulario se envíe automáticamente
 
-            if (!formulario.checkValidity()) {
-                event.stopPropagation();
-                alertaInfo("Faltan datos por completar");
-                formulario.classList.add('was-validated'); // Marcar campos inválidos
-                return;
-            } else {
+            
                 confirSave("¿Los datos capturados son correctos?", function () {
-                    saveCheque();
+                    saveUsuario();
                 });
-            }
+            
         });
+
+        async function saveUsuario() {
+            const url = $('#url').val();
+            const formData = new FormData($('#form-usuario')[0]);
+
+            try {
+                const response = await fetch(url + '/usuarios/nuevo', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    },
+                    body: formData
+                });
+                const data = await response.json();
+                switch (data.idnotificacion) {
+                    case 1:
+                        Swal.fire({
+                            title: data.mensaje,
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1000,
+                            timerProgressBar: true
+                        });
+                        setTimeout(function () {
+                            formulario.reset();
+                            window.location.reload();
+                        }, 1000);
+                        break;
+
+                    case 2:
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: data.mensaje
+                        });
+                        break;
+                    case 3:
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: data.mensaje
+                        });
+                        break;
+
+                    default:
+                        Swal.fire({
+                            icon: "info",
+                            title: "Info...",
+                            text: "Error desconocido"
+                        });
+                }
+            } catch (error) {
+                console.error("Error al procesar la solicitud:", error);
+            }
+        }
+
+
+
     }
 
     const btnEliminar = document.querySelectorAll('.eliminar-user');
@@ -61,23 +114,41 @@ document.addEventListener('DOMContentLoaded', function () {
 
             const data = await response.json();
 
-            if (data.idnotificacion == 1) {
-                Swal.fire({
-                    title: "Eliminado con éxito",
-                    icon: "success",
-                    showConfirmButton: false,
-                    timer: 1500,
-                    timerProgressBar: true
-                });
-                setTimeout(function () {
-                    window.location.reload();
-                }, 1500);
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "Ocurrió un error al eliminar"
-                });
+            switch (data.idnotificacion) {
+                case 1:
+                    Swal.fire({
+                        title: data.mensaje,
+                        icon: "success",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true
+                    });
+                    setTimeout(function () {
+                        window.location.reload();
+                    }, 1000);
+                    break;
+
+                case 2:
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: data.mensaje
+                    });
+                    break;
+                case 3:
+                    Swal.fire({
+                        icon: "error",
+                        title: "Oops...",
+                        text: data.mensaje
+                    });
+                    break;
+
+                default:
+                    Swal.fire({
+                        icon: "info",
+                        title: "Info...",
+                        text: "Error desconocido"
+                    });
             }
         } catch (error) {
             console.error('Error en try-catch:', error);
@@ -86,65 +157,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 });
 
-async function saveCheque() {
-    const url = $('#url').val();
-    const formData = new FormData($('#form-usuario')[0]);
-    try {
-        const response = await fetch(url + '/usuarios/delete', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            body: formData
-        });
-        const data = await response.json();
-        handleResponse(data);
-    } catch (error) {
-        console.error("Error al procesar la solicitud:", error);
-    }
-}
 
-async function savePago() {
-    const url = $('#url').val();
-    const formData = new FormData($('#form-usuario')[0]);
-    formData.append('referencia', $('#referencia').val());
-    formData.append('monto', $('#monto').val());
-    formData.append('observaciones', $('#observaciones').val());
-    formData.append('id_cliente', $('#id_cliente').val());
-    formData.append('id_proyecto', $('#id_proyecto').val());
-    try {
-        const response = await fetch(url + '/listaPagos/ingreso', {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-            },
-            body: formData
-        });
-        const data = await response.json();
-        handleResponse(data);
-    } catch (error) {
-        console.error("Error al procesar la solicitud:", error);
-    }
-}
 
-function handleResponse(data) {
-    if (data.idnotificacion == 1) {
-        Swal.fire({
-            title: "Agregado con éxito",
-            icon: "success",
-            showConfirmButton: false,
-            timer: 1500,
-            timerProgressBar: true
-        });
-        setTimeout(function () {
-            document.getElementById('form-usuario').reset();
-            window.location.reload();
-        }, 1500);
-    } else {
-        Swal.fire({
-            icon: "error",
-            title: "Oops...",
-            text: "Ocurrió un error al guardar!"
-        });
-    }
-}
+
+

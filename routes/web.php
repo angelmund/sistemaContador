@@ -36,7 +36,7 @@ Route::middleware(['auth', 'verified', 'checkUserStatus'])->group(function () {
         Route::get('/inscripciones/relacion/nombre/{id}', [App\Http\Controllers\PagosController::class, 'getNombreInscripcion'])->name('inscripciones.nombre');
         // Route::get('/inscripciones/formato/{id}', [App\Http\Controllers\InscripcionesController::class, 'crearInscripcion'])->name('inscripciones.formato');
         Route::get('/inscripciones/formato/{id}', [App\Http\Controllers\InscripcionesController::class, 'mostrarFormato'])->name('inscripciones.formato');
-        Route::get('/inscripciones/edit/{id}', [App\Http\Controllers\InscripcionesController::class, 'editInscripcion'])->name('inscripciones.edit');
+        Route::get('/inscripciones/edit/{id}', [App\Http\Controllers\InscripcionesController::class, 'editarInscripcion'])->name('inscripciones.edit');
         Route::post('/inscripciones/delete/{id}', [App\Http\Controllers\InscripcionesController::class, 'eliminarInscripcion'])->name('inscripciones.delete');
         Route::post('/inscripciones/update/{id}', [App\Http\Controllers\InscripcionesController::class, 'actualizarInscripcion'])->name('inscripciones.actualizar');
         // Route::get('/inscripciones/edit/{id}', [App\Http\Controllers\InscripcionesController::class, 'editInscripcion'])->name('inscripciones.edit');
@@ -82,6 +82,7 @@ Route::middleware(['auth', 'verified', 'checkUserStatus'])->group(function () {
     Route::group(['middleware' => ['auth']], function () {
         Route::get('/usuarios', [App\Http\Controllers\AdminController::class, 'usuarios'])->name('usuarios.index');
         Route::get('/usuarios/create', [App\Http\Controllers\AdminController::class, 'create'])->name('usuarios.create');
+        Route::post('/usuarios/nuevo', [App\Http\Controllers\AdminController::class, 'nuevoUsuario'])->name('usuarios.nuevo');
         Route::delete('/usuarios/delete/{id}', [App\Http\Controllers\AdminController::class, 'eliminarUsuario'])->name('usuarios.delete');
         Route::resource('/usuario/roles', App\Http\Controllers\RolesController::class)->names('usuarios.roles');
         Route::resource('/usuario/permisos', App\Http\Controllers\PermisosController::class)->names('usuarios.permisos');

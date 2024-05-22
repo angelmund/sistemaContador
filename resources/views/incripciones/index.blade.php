@@ -80,11 +80,12 @@
                         <td>
                             <button type="button" class="btn btn-warning"><i class="fas fa-download"></i></button>
                             <button type="button" class="btn btn-primary abrir-inscripcion" data-bs-toggle="modal"
-                                data-bs-target="#EditModal{{$inscripcion->id}}" data-bs-backdrop="false"
-                                data-remote="{{route('inscripciones.edit',$inscripcion->id)}}"
+                                data-bs-target="#EditInscripcion" data-bs-backdrop="false"
+                                data-remote="{{ route('inscripciones.edit', $inscripcion->id) }}"
                                 data-id="{{ $inscripcion->id }}">
                                 <i class="fas fa-eye"></i>
                             </button>
+
 
 
                             <a type="button" href="{{route('pagos.alta', $inscripcion->id)}}" class="btn btn-success"><i

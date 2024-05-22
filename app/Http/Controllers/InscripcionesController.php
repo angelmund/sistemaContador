@@ -309,36 +309,54 @@ class InscripcionesController extends Controller
     }
 
 
-    public function editInscripcion($id)
+    // public function editInscripcion($id)
+    // {
+    //     if (Auth::check()) {
+    //         try {
+
+    //             if (Auth::check()) {
+    //                 $proyecto = Proyecto::select('clave_proyecto', 'nombre')->where('id', $id)->first();
+    //                 $selectclaveproyecto = Proyecto::where('estado', true)->orderBy('clave_proyecto', 'asc')->pluck('clave_proyecto', 'id');
+    //                 $inscripcion = Inscripcione::find($id);
+    //                 return view('incripciones.edit', compact('proyecto', 'inscripcion', 'selectclaveproyecto'));
+    //             } else {
+    //                 return redirect()->to('/');
+    //             }
+    //         } catch (\Exception $e) {
+    //             return response()->json(['error' => $e->getMessage()], 500);
+    //         }
+    //     } else {
+    //         return redirect()->to('/');
+    //     }
+    // }
+    public function editarInscripcion($id)
     {
         if (Auth::check()) {
-            try {
+            $inscripcion = Inscripcione::find($id);
 
-                if (Auth::check()) {
-                    $proyecto = Proyecto::select('clave_proyecto', 'nombre')->where('id', $id)->first();
-                    $selectclaveproyecto = Proyecto::where('estado', true)->orderBy('clave_proyecto', 'asc')->pluck('clave_proyecto', 'id');
-                    $inscripcion = Inscripcione::find($id);
-                    return view('incripciones.edit', compact('proyecto', 'inscripcion', 'selectclaveproyecto'));
-                } else {
-                    return redirect()->to('/');
-                }
-            } catch (\Exception $e) {
-                return response()->json(['error' => $e->getMessage()], 500);
+            if (!$inscripcion) {
+                return response()->json(['error' => 'Inscripción no encontrada'], 404);
             }
+
+            $proyecto = Proyecto::select('clave_proyecto', 'nombre')->where('clave_proyecto', $inscripcion->clave_proyecto)->first();
+
+            if (!$proyecto) {
+                $proyecto = null;
+            }
+            $selectclaveproyecto = Proyecto::where('estado', true)->orderBy('clave_proyecto', 'asc')->pluck('clave_proyecto', 'id');
+
+            return response()->json([
+                'inscripcion' => $inscripcion,
+                'proyecto' => $proyecto,
+                'selectclaveproyecto' => $selectclaveproyecto
+            ]);
         } else {
             return redirect()->to('/');
         }
     }
-    // public function editInscripcion($id)
-    // {
-    //     $inscripcion = Inscripcione::find($id);
 
-    //     if ($inscripcion) {
-    //         return response()->json($inscripcion);
-    //     } else {
-    //         return response()->json(['error' => 'Proyecto no encontrada'], 404);
-    //     }
-    // }
+
+
 
     public function actualizarInscripcion($id, Request $request)
     {
@@ -403,14 +421,10 @@ class InscripcionesController extends Controller
                     'mensaje' => 'Inscripción actualizada con éxito',
                     'idnotificacion' => 1
                 ]);
-                // return response()->json([
-                //     'mensaje' => 'La clave del proyecto ya existe.',
-                //     'idnotificacion' => 3 // Esto indica que es un error de validación
-                // ], 422); // Devuelve el código de estado HTTP 422 para indicar una validación fallida
             } catch (\Exception $e) {
                 DB::rollback();
                 return response()->json([
-                    'mensaje' => 'Error al actualizar: ' . $e->getMessage(),
+                    'mensaje' => 'Error al actualizar',
                     'idnotificacion' => 2
                 ]);
             }
