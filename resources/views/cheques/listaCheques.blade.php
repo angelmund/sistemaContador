@@ -6,6 +6,7 @@
         <input type="hidden" value="{{ url('/') }}" id="url">
         <div class="card-body">
             <div class="text-center mb-3">
+                
                 <button id="excelButton" class="btn btn-success"><i class="fas fa-file-excel"></i> Exportar a
                     Excel</button>
                 {{-- <button id="pdfButton" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Exportar a
@@ -94,8 +95,9 @@
                         <td>{{ $cheque->user->name ?? 'Usuario no encontrado' }}</td>
                         <td>
                             <!-- Para los cheques -->
-                            <a href="{{ route('personaPagos.inscripcion', ['id' => $cheque->inscripcione->id]) }}" class="btn btn-primary">
-                                <i class="fas fa-eye"></i> Ver
+                            <a href="{{ route('pagos.formato', $cheque->id) }}" class="btn btn-warning"><i class="fas fa-download"></i></a>
+                            <a href="{{ route('personaPagos.inscripcion', ['id' => $cheque->inscripcione->id]) }}" class="btn btn-success">
+                                <i class="fas fa-dollar-sign"></i>
                             </a>
                         
                             @can('Eliminar')
@@ -138,8 +140,9 @@
                         <td>{{ $cheque->user->name ?? 'Usuario no encontrado' }}</td>
 
                         <td>
-                            <a href="{{ route('personaPagos.inscripcion', ['id' => $pago->inscripcione->id]) }}" class="btn btn-primary">
-                                <i class="fas fa-eye"></i> Ver
+                            <a href="{{ route('pagos.formato', $pago->id) }}" class="btn btn-warning"><i class="fas fa-download"></i></a>
+                            <a href="{{ route('personaPagos.inscripcion', ['id' => $pago->inscripcione->id]) }}" class="btn btn-success">
+                                <i class="fas fa-dollar-sign"></i>
                             </a>
                             @can('Eliminar')
                             <button type="button" id="btn_delete" class="btn btn-danger eliminartipoPago"

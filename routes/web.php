@@ -36,6 +36,7 @@ Route::middleware(['auth', 'verified', 'checkUserStatus'])->group(function () {
         Route::get('/inscripciones/relacion/nombre/{id}', [App\Http\Controllers\PagosController::class, 'getNombreInscripcion'])->name('inscripciones.nombre');
         // Route::get('/inscripciones/formato/{id}', [App\Http\Controllers\InscripcionesController::class, 'crearInscripcion'])->name('inscripciones.formato');
         Route::get('/inscripciones/formato/{id}', [App\Http\Controllers\InscripcionesController::class, 'mostrarFormato'])->name('inscripciones.formato');
+        Route::get('inscripciones/{id}/pdf', [App\Http\Controllers\InscripcionesController::class, 'mostrarFormato'])->name('inscripciones.pdf');
         Route::get('/inscripciones/edit/{id}', [App\Http\Controllers\InscripcionesController::class, 'editarInscripcion'])->name('inscripciones.edit');
         Route::post('/inscripciones/delete/{id}', [App\Http\Controllers\InscripcionesController::class, 'eliminarInscripcion'])->name('inscripciones.delete');
         Route::post('/inscripciones/update/{id}', [App\Http\Controllers\InscripcionesController::class, 'actualizarInscripcion'])->name('inscripciones.actualizar');
@@ -61,6 +62,7 @@ Route::middleware(['auth', 'verified', 'checkUserStatus'])->group(function () {
     Route::group(['middleware' => ['auth']], function () {
         Route::get('/altaPagos/{id}', [App\Http\Controllers\PagosController::class, 'formulario'])->name('pagos.alta');
         Route::get('/formatoPago/{id}', [App\Http\Controllers\PagosController::class, 'formatoPago'])->name('pagos.formato');
+        // Route::get('/formatoCheque/{id}', [App\Http\Controllers\PagosController::class, 'formatoCheque'])->name('cheque.formato');
         Route::get('/listaPagos', [App\Http\Controllers\PagosController::class, 'index'])->name('pagos.lista');
         Route::post('/listaPagos/ingreso', [App\Http\Controllers\PagosController::class, 'nuevoIngreso'])->name('pagos.ingreso');
         Route::get('/pago/alta', [App\Http\Controllers\PagosController::class, 'formIngreso'])->name('pagos.nuevo');

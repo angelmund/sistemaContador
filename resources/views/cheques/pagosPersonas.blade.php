@@ -7,6 +7,7 @@
         <input type="hidden" value="{{ url('/') }}" id="url">
         <div class="card-body">
             <div class="text-center mb-3">
+                <a type="button" href="{{route('pagos.nuevo')}}" class="btn btn-primary"><i class="fas fa-dollar-sign"></i> Alta de pago o Cheque</a>
                 <button id="excelButton" class="btn btn-success"><i class="fas fa-file-excel"></i> Exportar a
                     Excel</button>
                 {{-- <button id="pdfButton" class="btn btn-danger"><i class="fas fa-file-pdf"></i> Exportar a

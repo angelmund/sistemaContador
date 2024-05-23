@@ -56,7 +56,7 @@ async function saveCheque() {
             body: formData
         });
         const data = await response.json();
-        handleResponse(data);
+        handleResponse(data, 'cheque');
     } catch (error) {
         console.error("Error al procesar la solicitud:", error);
     }
@@ -80,19 +80,21 @@ async function savePago() {
             body: formData
         });
         const data = await response.json();
-        handleResponse(data);
+        handleResponse(data, 'pago');
     } catch (error) {
         console.error("Error al procesar la solicitud:", error);
     }
 }
 
-function handleResponse(data) {
+function handleResponse(data, tipo) {
     switch (data.idnotificacion) {
         case 1:
             const url = $('#url').val();
-            // Abre la URL de la vista en una nueva pestaña
-            const vistaUrl = url + '/formatoPago/' + data.pagoId;
-            window.open(vistaUrl, '_blank');
+            if (tipo === 'pago') {
+                // Abre la URL de la vista en una nueva pestaña
+                const vistaUrl = url + '/formatoPago/' + data.pagoId;
+                window.open(vistaUrl, '_blank');
+            }
 
             // Esperar un breve período de tiempo antes de recargar la página
             setTimeout(function () {

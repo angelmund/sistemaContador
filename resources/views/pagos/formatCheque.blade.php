@@ -304,7 +304,7 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
     <script type="text/javascript" src="js/script.js"></script>
 
-    <title>Recibo de Pago</title>
+    <title>Recibo de Cheque</title>
 </head>
 
 <body>
@@ -324,7 +324,7 @@
             </div>
             <div class="numero__datos">
                 <p>Sucursal Bancaria</p>
-                <p>{{$pago->referencia_pago}}</p>
+                <p>{{$cheque->numero_cuentabancaria}}</p>
             </div>
         </header>
 
@@ -335,7 +335,7 @@
                     <!-- Nombre de proyecto-->
                     <p class="datos__negrita">Proyecto: </p>
                     <div class="datos__linea">
-                        <p>{{$pago->proyecto->nombre}}</p>
+                        <p>{{$cheque->proyecto->nombre}}</p>
                     </div>
                 </div>
                 <!--fin datos item-->
@@ -347,7 +347,7 @@
                 <div class="item__datos">
                     <p class="datos__negrita">Recibi de: </p>
                     <div class="datos__linea texto-grande">
-                        <p>{{$pago->inscripcione->nombre_completo}}</p>
+                        <p>{{$cheque->inscripcione->nombre_completo}}</p>
                     </div>
                 </div>
             </div>
@@ -429,7 +429,7 @@
             </div>
 
             <div class="header-recibo__QR firmas__QR">
-                <p>No. Pago</p>
+                <p>No. Cheque</p>
                 <div id="contenedorQR2" class="logo__img"></div>
                 <p class="idPago">{{$pago->id}}</p>
             </div>
@@ -556,7 +556,7 @@
             </div>
 
             <div class="header-recibo__QR firmas__QR">
-                <p>No. Pago</p>
+                <p>No. Cheque</p>
                 <div id="contenedorQR4" class="logo__img"></div>
                 <p class="idPago">{{$pago->id}}</p>
             </div>

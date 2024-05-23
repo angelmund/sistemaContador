@@ -39,10 +39,10 @@ class AdminController extends Controller
     public function nuevoUsuario(Request $request)
     {
         if (Auth::check()) {
-            
+
             try {
-              
-                
+
+
                 $validator = Validator::make($request->all(), [
                     'email' => 'unique:users,email|max:50',
                     'nombre' => 'string|max:255',
@@ -56,20 +56,21 @@ class AdminController extends Controller
                     ]);
                 }
                 DB::beginTransaction();
+                // dd($request->all());
                 $usuario = new User();
                 $usuario->name = $request->input('nombre');
                 $usuario->email = $request->input('email');
                 $usuario->email_verified_at = now();
-                $usuario->password = bcrypt("Benit24&"); // Encripta la contraseña por defecto
+                $usuario->password = bcrypt($request->input('password'));
+
                 $usuario->estado = 1; // Estado activo
                 // dd($usuario);
                 $usuario->save();
-            
+
                 // Asigna el rol al usuario
                 $rol = Role::findOrFail($request->input('rol'));
                 $usuario->assignRole($rol);
-                // dd($request->all());
-            
+
                 return response()->json([
                     'mensaje' => 'Usuario agregado con éxito',
                     'idnotificacion' => 1

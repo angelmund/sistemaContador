@@ -75,7 +75,7 @@
                         </td>
 
                         <td>
-
+                            <a href="{{ route('inscripciones.pdf', $pago->id) }}" class="btn btn-warning"><i class="fas fa-download"></i></a>
                             <button type="button" class="btn btn-primary abrir-inscripcion" data-bs-toggle="modal"
                                 data-bs-target="#EditModal{{ $pago->id}}" data-remote="{{$pago->id}}"><i
                                     class="fas fa-eye"></i></button>

@@ -78,7 +78,7 @@
                             </span>
                         </td>
                         <td>
-                            <button type="button" class="btn btn-warning"><i class="fas fa-download"></i></button>
+                            <a href="{{ route('inscripciones.pdf', $inscripcion->id) }}" class="btn btn-warning"><i class="fas fa-download"></i></a>
                             <button type="button" class="btn btn-primary abrir-inscripcion" data-bs-toggle="modal"
                                 data-bs-target="#EditInscripcion" data-bs-backdrop="false"
                                 data-remote="{{ route('inscripciones.edit', $inscripcion->id) }}"
@@ -88,7 +88,7 @@
 
 
 
-                            <a type="button" href="{{route('pagos.alta', $inscripcion->id)}}" class="btn btn-success"><i
+                            <a type="button" href="{{ route('personaPagos.inscripcion', ['id' => $inscripcion->id]) }}"  class="btn btn-success"><i
                                     class="fas fa-dollar-sign"></i></a>
                             @can('Eliminar')
                             <button type="button" id="btn_delete" class="btn btn-danger eliminar-inscripcion"

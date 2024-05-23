@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Models\Inscripcione;
 use App\Models\Proyecto;
 use Exception;
+use Dompdf\Dompdf;
 use PDF;
 use Carbon\Carbon;
 use Luecano\NumeroALetras\NumeroALetras;
@@ -182,7 +183,7 @@ class InscripcionesController extends Controller
 
                 DB::rollback();
                 return response()->json([
-                    'mensaje' => 'Error al guardar: ' . $e->getmessage(),
+                    'mensaje' => 'Error al guardar',
                     'idnotificacion' => 2
                 ]);
             }
@@ -356,7 +357,18 @@ class InscripcionesController extends Controller
     }
 
 
+    // public function pdf($id)
+    // {
 
+    //     if (Auth::check()) {
+    //         $inscripcion = Inscripcione::findOrFail($id);
+
+    //         $pdf = PDF::loadView('incripciones.pdf', compact('inscripcion'));
+    //         return $pdf->download('inscripcion.pdf');
+    //     } else {
+    //         return redirect()->to('/');
+    //     }
+    // }
 
     public function actualizarInscripcion($id, Request $request)
     {

@@ -37,10 +37,10 @@
                             <label for="nombre" class="form-label">Nombre Cliente:</label>
                             <input type="text" class="form-control" id="nombre" name="nombre" readonly>
                         </div>
-                        <div class="mb-3">
-                            <legend class="title text-center">Proyecto asigando</legend>
-                        </div>
                         {{--  <div class="mb-3">
+                            <legend class="title text-center">Proyecto asigando</legend>
+                        </div>  --}}
+                        <div class="mb-3">
                             <label for="id_proyecto" class="form-label">Clave Proyecto:</label>
                             <select name="id_proyecto" id="id_proyecto" class="form-select select2" required>
                                 <option value="" disabled selected>-- Selecciona un proyecto --</option>
@@ -51,14 +51,14 @@
                             <div class="invalid-feedback">
                                 Por favor selecciona un proyecto.
                             </div>
-                        </div>  --}}
+                        </div>
                         
 
-                        <div class="mb-3">
+                        {{--  <div class="mb-3">
                             <label for="nombreProyecto_n" class="form-label">Nombre Proyecto:</label>
                             <input type="text" class="form-control" id="nombreProyecto_n" name="nombreProyecto_n"
                                 readonly>
-                        </div>
+                        </div>  --}}
                         <div class="mb-3">
                             <legend class="title text-center">Información Pago</legend>
                         </div>

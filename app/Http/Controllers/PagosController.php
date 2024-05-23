@@ -154,7 +154,7 @@ class PagosController extends Controller
             } catch (\Exception $e) {
                 DB::rollback();
                 return response()->json([
-                    'mensaje' => 'Error al guardar el pago: ' . $e->getMessage(),
+                    'mensaje' => 'Error al guardar el pago',
                     'idnotificacion' => 3
                 ]);
             }
