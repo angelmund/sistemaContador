@@ -9,8 +9,8 @@
                 <!-- Contenido del modal -->
                 <input type="hidden" value="{{ url('/') }}" id="url">
                 <form id="form-editincripcion" action="#" method="POST" enctype="multipart/form-data">
-                    {{-- <input type="text" value="{{ $inscripcion->id }}" class="idInscripcion" id="idInscripcion">
-                    --}}
+                    <input type="hidden" value="" class="id" id="id">
+                  
                     <meta name="csrf-token" content="{{ csrf_token() }}">
                     @csrf
                     <div class="mb-3">
@@ -20,6 +20,7 @@
                         <div class="invalid-feedback">
                             Por favor, el nombre completo.
                         </div>
+                        
                     </div>
                     <div class="mb-3">
                         <label for="direccion" class="form-label ">Dirección:</label>
@@ -44,21 +45,21 @@
                         <label for="comite" class="form-label ">Comité:</label>
                         <input type="text" class="form-control mayuscula is-invalid" id="comite" name="comite" value="" required>
                         <div class="invalid-feedback">
-                            Por favor, ingresa una comité.
+                            Por favor, ingresa el comité.
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="alcaldia" class="form-label">Alcaldia:</label>
                         <input type="text" class="form-control mayuscula is-invalid" id="alcaldia" value="" name="alcaldia" required>
                         <div class="invalid-feedback">
-                            Por favor, ingresa una Alcaldia.
+                            Por favor, ingresa una alcaldia.
                         </div>
                     </div>
                     <div class="mb-3">
                         <label for="telefono" class="form-label">Teléfono:</label>
                         <input type="text" class="form-control mayuscula is-invalid" id="telefono" value="" name="telefono" required>
                         <div class="invalid-feedback">
-                            Por favor, ingresa una Teléfono.
+                            Por favor, ingresa un teléfono.
                         </div>
                     </div>
                     <div class="mb-3">
@@ -66,7 +67,7 @@
                         <input type="text" class="form-control mayuscula is-invalid" id="concepto" value="" name="concepto"
                             value="Inscripción" required>
                         <div class="invalid-feedback">
-                            Por favor, ingresa una Concepto.
+                            Por favor, ingresa una concepto.
                         </div>
                     </div>
                     <div class="mb-3">
@@ -75,7 +76,7 @@
                         <input type="text" class="form-control mayuscula is-invalid" id="importeInscripcion" name="importeInscripcion"
                             pattern="[0-9]+" value="" title="Ingresa solo números" value="1000" required>
                         <div class="invalid-feedback">
-                            Por favor, ingresa el Importe de Inscripción.
+                            Por favor, ingresa el importe de inscripción.
                         </div>
                     </div>
                     <div class="mb-3">
@@ -83,7 +84,7 @@
                             Ingreso:</label>
                         <input type="text" class="form-control mayuscula is-invalid" id="noSolicitud" name="noSolicitud" value="" required>
                         <div class="invalid-feedback">
-                            Por favor, ingresa el Número de solicitud.
+                            Por favor, ingresa el número de solicitud.
                         </div>
                     </div>
                     <div class="mb-3">
@@ -91,7 +92,7 @@
                         <input type="date" class="form-control mayuscula is-invalid" id="fechaDeposito" name="fechaDeposito" value=""
                             required>
                         <div class="invalid-feedback">
-                            Por favor, ingresa la Fecha de Depósito.
+                            Por favor, ingresa la fecha de Depósito.
                         </div>
                     </div>
 
@@ -103,7 +104,7 @@
                         </textarea>
                     </div>
                     <div class="modal-footer">
-                        <button type="submit" class="btn btn-primary btn_actualizar"><i
+                        <button type="button" class="btn btn-primary btn_actualizar"><i
                                 class="fas fa-save btn_save"></i> Actualizar inscripción</button>
 
                         <button type="button" class="btn btn-danger ms-2" id="limpiar" data-bs-dismiss="modal"><i

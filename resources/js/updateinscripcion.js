@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         // $('.select2').select2();
         // $('#claveProyecto').select2();
-        let nombreProyectoSeleccionado = '';
+
 
         //se crea un objeto con los id de los input para mapear los valores
         const inscripcion = {
@@ -26,27 +26,15 @@ document.addEventListener('DOMContentLoaded', function () {
             // Ine: '',
 
         };
-        let formularioValido = false;
 
 
-        //se obtienen los id de cada input 
-        const nombreNew = document.querySelector('#nombre');
-        const direccion = document.querySelector('#direccion');
-
-        const selectClaveProyecto = document.querySelector('#claveProyecto');
         const nombreProyectoInput = document.querySelector('#nombreProyecto_n');
-
-        const comite = document.querySelector('#comite'); //no es obligatorio
-        const alcaldiaN = document.querySelector('#alcaldia');
         const telefonoN = document.querySelector('#telefono');
-        const conceptoN = document.querySelector('#concepto');
         const importeinscripcionN = document.querySelector('#importeInscripcion');
-        const nosolicitudN = document.querySelector('#noSolicitud');
-        const fechadepositoN = document.querySelector('#fechaDeposito');
+
         const btnSubmit = document.querySelector('.btn_actualizar');
         // const fotoclienteN = document.querySelector('#fotoCliente');
         // const ineN = document.querySelector('#Ine');
-
 
 
         const formulario = document.querySelector('#form-editincripcion');
@@ -145,6 +133,7 @@ document.addEventListener('DOMContentLoaded', function () {
             return `${year}-${month}-${day}`; // Formato YYYY-MM-DD
         }
 
+
         // Función para consultar la inscripción
         function consultarInscripcion(url) {
             fetch(url)
@@ -160,9 +149,10 @@ document.addEventListener('DOMContentLoaded', function () {
                         return;
                     }
                     mostrarDatos(datos);
+
                     // Verifica si el modal se abre correctamente
                     $('#EditInscripcion').modal('show');
-                  
+
                 })
                 .catch(error => {
                     console.error('Error:', error);
@@ -178,6 +168,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Asignar valores a los campos del formulario
             $('#nombre').val(inscripcion.nombre_completo);
+            $('#id').val(inscripcion.id);
             $('#direccion').val(inscripcion.direccion);
             $('#comite').val(inscripcion.comite);
             $('#alcaldia').val(inscripcion.alcaldia);
@@ -218,27 +209,55 @@ document.addEventListener('DOMContentLoaded', function () {
             // console.log(datos);
         }
 
-        document.getElementById('form-editincripcion').addEventListener('submit', function(event) {
-            var inputs = this.getElementsByTagName('input');
-            var isValid = true;
-        
-            for (var i = 0; i < inputs.length; i++) {
-                if (!inputs[i].checkValidity()) {
-                    inputs[i].classList.add('is-invalid');
-                    isValid = false;
-                } else {
-                    inputs[i].classList.remove('is-invalid');
-                    inputs[i].classList.add('is-valid');
+        var form = document.getElementById('form-editincripcion');
+
+        $('#EditInscripcion').on('shown.bs.modal', function () {
+            // Remove validation classes
+            $('.mayuscula').removeClass('is-valid is-invalid');
+
+            form.addEventListener('submit', function (event) {
+                var inputs = this.getElementsByTagName('input');
+                var isValid = true;
+
+                for (var i = 0; i < inputs.length; i++) {
+                    if (!inputs[i].checkValidity()) {
+                        inputs[i].classList.add('is-invalid');
+                        isValid = false;
+                    } else {
+                        inputs[i].classList.remove('is-invalid');
+                        inputs[i].classList.add('is-valid');
+                    }
                 }
-            }
-        
-            if (!isValid) {
-                event.preventDefault();
+
+                if (!isValid) {
+                    event.preventDefault();
+                }
+            });
+        });
+
+        $('.mayuscula').on('input', function () {
+            var input = $(this);
+            var is_name = input.val();
+            if (is_name) {
+                input.removeClass("is-invalid").addClass("is-valid");
+            } else {
+                input.removeClass("is-valid").addClass("is-invalid");
             }
         });
 
-        async function updateinscripcion(id) {
+        btnSubmit.addEventListener("click", (e) => {
+            e.preventDefault();
+            if (form.checkValidity()) { // Verifica si el formulario es válido
+                confirSave("¿Los datos capturados, son correctos?", function () {
+                    updateinscripcion();
+                });
+            }
+        });
+
+        async function updateinscripcion() {
             const url = $('#url').val();
+            const id = $('#id').val();
+            console.log(id);
             try {
                 const formData = new FormData($('#form-editincripcion')[0]);
                 const claveProyectoValue = $('#claveProyecto').val();

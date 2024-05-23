@@ -51,7 +51,7 @@
                 <thead>
                     <tr>
                         <th class="centrar">Folio</th>
-                        <th class="centrar">Nombre</th>
+                        <th class="centrar">Nombre encargado</th>
                         <th class="centrar">Dirección</th>
                         <th class="centrar">Clave Proyecto</th>
                         <th class="centrar">Nombre del Proyecto</th>

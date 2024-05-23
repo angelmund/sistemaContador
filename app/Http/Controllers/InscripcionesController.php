@@ -412,7 +412,7 @@ class InscripcionesController extends Controller
                 // $inscripcion->hora_registro = date("H:i:s");
                 $inscripcion->observaciones = $request->input('observaciones');
                 $inscripcion->estado = 1;
-                dd($inscripcion);
+                // dd($inscripcion);
                 $inscripcion->save();
 
                 DB::commit();
