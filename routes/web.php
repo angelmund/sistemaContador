@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\contadorRegistrosController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,9 +18,10 @@ use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'verified', 'checkUserStatus'])->group(function () {
     // Rutas que requieren autenticación y verificación del usuario
-    Route::get('/dashboard', function () {
-        return view('dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
+    Route::get('/dashboard', [contadorRegistrosController::class, 'numInscripciones'])
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
+    
     
     Route::middleware('auth', 'verified')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -38,9 +40,9 @@ Route::middleware(['auth', 'verified', 'checkUserStatus'])->group(function () {
         Route::get('/inscripciones/formato/{id}', [App\Http\Controllers\InscripcionesController::class, 'mostrarFormato'])->name('inscripciones.formato');
         Route::get('inscripciones/{id}/pdf', [App\Http\Controllers\InscripcionesController::class, 'mostrarFormato'])->name('inscripciones.pdf');
         Route::get('/inscripciones/edit/{id}', [App\Http\Controllers\InscripcionesController::class, 'editarInscripcion'])->name('inscripciones.edit');
+        Route::get('/pago/alta/{id}', [App\Http\Controllers\InscripcionesController::class, 'editarInscripcion'])->name('inscripciones.edit');
         Route::post('/inscripciones/delete/{id}', [App\Http\Controllers\InscripcionesController::class, 'eliminarInscripcion'])->name('inscripciones.delete');
         Route::post('/inscripciones/update/{id}', [App\Http\Controllers\InscripcionesController::class, 'actualizarInscripcion'])->name('inscripciones.actualizar');
-        // Route::get('/inscripciones/edit/{id}', [App\Http\Controllers\InscripcionesController::class, 'editInscripcion'])->name('inscripciones.edit');
     
     })->middleware(['auth', 'verified'])->name('inscripciones');
     
@@ -66,6 +68,9 @@ Route::middleware(['auth', 'verified', 'checkUserStatus'])->group(function () {
         Route::get('/listaPagos', [App\Http\Controllers\PagosController::class, 'index'])->name('pagos.lista');
         Route::post('/listaPagos/ingreso', [App\Http\Controllers\PagosController::class, 'nuevoIngreso'])->name('pagos.ingreso');
         Route::get('/pago/alta', [App\Http\Controllers\PagosController::class, 'formIngreso'])->name('pagos.nuevo');
+        Route::get('/pagos/ganacia/{year}', [App\Http\Controllers\PagosController::class, 'MesChequeGanacias'])->name('pagos.ganacia');
+        Route::get('/pagos/mes/{year}', [App\Http\Controllers\PagosController::class, 'MesPagos'])->name('pagos.mes');
+
     })->middleware(['auth', 'verified'])->name('pagos');
     
     //Ruta cheques 

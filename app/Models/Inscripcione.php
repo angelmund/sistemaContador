@@ -65,6 +65,7 @@ class Inscripcione extends Model
 		'fecha_registro',
 		'url_foto_cliente',
 		'url_foto_ine',
+		'observaciones',
 		'hora_registro',
 		'estado'
 	];

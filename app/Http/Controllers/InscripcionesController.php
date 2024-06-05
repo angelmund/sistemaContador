@@ -22,7 +22,7 @@ class InscripcionesController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            $inscripciones = Inscripcione::all();
+            $inscripciones = Inscripcione::orderBy('fecha_registro', 'desc')->get();
             $proyectos = Proyecto::pluck('nombre');
             $selectclaveproyecto = Proyecto::where('estado', true)->orderBy('clave_proyecto', 'asc')->pluck('clave_proyecto', 'id');
             // $proyecto = Proyecto::select('clave_proyecto', 'nombre')->where('id', 'clave_proyecto')->first();
@@ -330,6 +330,8 @@ class InscripcionesController extends Controller
     //         return redirect()->to('/');
     //     }
     // }
+
+    //crea una funcion que me devuleva el numero de 
     public function editarInscripcion($id)
     {
         if (Auth::check()) {

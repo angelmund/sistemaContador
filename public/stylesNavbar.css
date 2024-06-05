@@ -165,6 +165,7 @@
 
 .submenu__item:hover {
     background-color: white; /* Color de fondo blanco al pasar el mouse (hover) */
+    color: black;
 }
 
 .submenu__item:hover a {
@@ -176,8 +177,8 @@
 
 }
 
-.item__link {
-
+.item__link span:hover, .item__link .fas:hover{
+ color: black;
 }
 
 /****************************************
@@ -212,4 +213,9 @@
 
 .salir:hover {
 	color: #c0392b;
+}
+
+.menu__nav-bar, .icon-btn, .submenu__item, .menu__nav-bar .fas {
+    font-size: 16px !important;
+
 }

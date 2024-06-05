@@ -156,9 +156,13 @@
 		    </div>
 
 		    <ul class="nav-bar__menu">
-                <a href="{{route('dashboard')}}" class="icon-btn title_icon fas fa-home">Inicio</a>
+                <li class="menu__submenu">
+			    	<a href="{{route('dashboard')}}" class="submenu__title flex">
+			    		<i class="icon-btn title__icon fas fa-home"></i>
+			    	    <p class="title__text">Inicio</p>
+			    	</a>
+			    </li>
                 {{--  <a href="{{route('cheques.lista')}}" class="icon-btn title_icon fas fa-home">Lista cheques y pagos</a>  --}}
-                <br>
 	        <!--Items Desplegable-->
 			    <!--Menu__subitems-->
 			    <li class="menu__submenu">
@@ -188,7 +192,7 @@
 				    </ul>
 			    </li>
 			    <!--Fin Menu__subitems-->
-
+                @can('Administrar')
                 <!--Menu__subitems-->
 			    <li class="menu__submenu">
 			    	<div class="submenu__title flex">
@@ -226,6 +230,8 @@
 				    </ul>
 			    </li>
 			    <!--Fin Menu__subitems-->
+                @endcan
+               
 
 			    <!--Menu__subitems-->
 			    <li class="menu__submenu">

@@ -23,7 +23,7 @@ class PagosController extends Controller
     public function index()
     {
         if (Auth::check()) {
-            $pagos = Pago::all();
+            $pagos = Pago::orderBy('fecha', 'desc')->get();
             return view::make('pagos.listaPagos', compact('pagos'));
         } else {
             return redirect()->to('/');
@@ -44,10 +44,10 @@ class PagosController extends Controller
     {
         if (Auth::check()) {
             // Obtener todos los cheques, activos e inactivos
-            $cheques = Cheque::all();
+            $cheques = Cheque::orderBy('fecha', 'desc')->get();
 
             // Obtener todos los pagos, activos e inactivos
-            $pagos = Pago::all();
+            $pagos = Pago::orderBy('fecha', 'desc')->get();
 
             // Calcular la suma de los montos de los cheques activos
             $totalMontoCheques = $cheques->where('estado', 1)->sum('monto');
@@ -89,6 +89,7 @@ class PagosController extends Controller
             ]);
 
             try {
+                // dd($request->all());
                 DB::beginTransaction();
 
                 $conceptoPago = $request->input('conceptoPago');
@@ -109,6 +110,7 @@ class PagosController extends Controller
                     $pago->id_proyecto = $request->input('id_proyecto');
                     $pago->id_usuario = Auth::id();
                     $pago->estado = 1;
+
                     $pago->save();
 
                     DB::commit();
@@ -119,7 +121,16 @@ class PagosController extends Controller
                         'pagoId' => $pago->id // Agrega el ID del registro guardado
                     ]);
                 } elseif ($conceptoPago === 'cheque') {
-                    if ($sumaPagos === 0) {
+                    // Buscar un cheque con el mismo número
+                    $chequeExistente = Cheque::firstWhere('numero_cheque', $request->input('numeroChequePago'));
+
+                    if ($chequeExistente) {
+                        // El número de cheque ya existe
+                        return response()->json([
+                            'mensaje' => 'El número de cheque ya existe.',
+                            'idnotificacion' => 5
+                        ]);
+                    } elseif ($sumaPagos === 0) {
                         // El cliente no tiene pagos registrados
                         return response()->json([
                             'mensaje' => 'El cliente no tiene pagos registrados.',
@@ -163,17 +174,15 @@ class PagosController extends Controller
         }
     }
 
-
-
-
     public function formIngreso()
     {
         if (Auth::check()) {
 
             $inscripciones = Inscripcione::all();
+            $proyectos = Proyecto::pluck('nombre');
             $selectclaveproyecto = Proyecto::where('estado', true)->orderBy('clave_proyecto', 'asc')->pluck('clave_proyecto', 'id');
 
-            return view::make('pagos.altaForm', compact('inscripciones', 'selectclaveproyecto'));
+            return view::make('pagos.altaForm', compact('inscripciones', 'selectclaveproyecto', 'proyectos'));
         } else {
             return redirect()->to('/');
         }
@@ -330,5 +339,87 @@ class PagosController extends Controller
         } else {
             return redirect()->to('/');
         }
+    }
+
+
+    public function MesChequeGanacias($year = null)
+    {
+        // Si no se proporciona un año, usar el año actual
+        if ($year === null) {
+            $year = date('Y');
+        }
+
+        // Inicializa un array para almacenar los resultados
+        $results = [];
+
+        // Itera sobre cada mes del año
+        for ($month = 1; $month <= 12; $month++) {
+            // Obtener todos los pagos para el mes y año actual que tienen un estado de 1
+            $payments = Inscripcione::where('estado', 1)
+                ->whereYear('fecha_registro', $year)
+                ->whereMonth('importe', $month)
+                ->get();
+
+            // Suma los montos de los pagos
+            $totalPayments = $payments->sum('importe');
+
+            // Obtenertodos los cheques activos para el mes y año actual
+            $checks = Inscripcione::where('estado', 1)
+                ->whereYear('fecha_registro', $year)
+                ->whereMonth('fecha_registro', $month)
+                ->get();
+
+            // Suma los montos de los cheques
+            $totalChecks = $checks->sum('monto');
+
+            // Resta la suma de los cheques de la suma de los pagos
+            $total = $totalPayments - $totalChecks;
+
+            // Almacena el total en el array de resultados
+            $results[] = [
+                'mes' => $month,
+                'tImporte' => $payments->count(),
+                'ganancia' => $total
+            ];
+        }
+
+        // Devuelve los resultados como un objeto JSON
+        return response()->json($results);
+    }
+
+
+    public function MesPagos($currentYear = null)
+    {
+        // Obtener el año actual
+        // Si no se proporciona un año, usar el año actual
+        if ($currentYear === null) {
+            $currentYear = date('Y');
+        }
+       
+
+        // Inicializa un array para almacenar los resultados
+        $results = [];
+
+        // Itera sobre cada mes del año
+        for ($month = 1; $month <= 12; $month++) {
+            // Obtener todos los pagos para el mes y año actual que tienen un estado de 1
+            $payments = Pago::where('estado', 1)
+                ->whereYear('fecha', $currentYear)
+                ->whereMonth('fecha', $month)
+                ->get();
+
+            // Suma los montos de los pagos
+            $totalPayments = $payments->sum('monto');
+
+            // Almacena el total en el array de resultados
+            $results[] = [
+                'mes' => $month,
+                'nPagos' => $payments->count(),
+                'totalPagos' => $totalPayments,
+            ];
+        }
+
+        // Devuelve los resultados como un objeto JSON
+        return response()->json($results);
     }
 }

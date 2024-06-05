@@ -60,6 +60,7 @@ if ($('#example').length > 0) {
                     titleAttr: 'Imprimir'
                 },
             ],
+            order: [[0, 'desc']], 
             responsive: true,
             autoWidth: false,
             

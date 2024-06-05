@@ -52,7 +52,8 @@ document.addEventListener('DOMContentLoaded', function () {
                         });
                         setTimeout(function () {
                             formulario.reset();
-                            window.location.reload();
+                            const vistaUrl = url + "/usuarios";
+                            window.location.href = vistaUrl;
                         }, 1000);
                         break;
 

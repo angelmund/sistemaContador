@@ -71,6 +71,8 @@ class AdminController extends Controller
                 $rol = Role::findOrFail($request->input('rol'));
                 $usuario->assignRole($rol);
 
+                DB::commit();
+
                 return response()->json([
                     'mensaje' => 'Usuario agregado con éxito',
                     'idnotificacion' => 1

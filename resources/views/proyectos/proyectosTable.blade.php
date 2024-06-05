@@ -19,7 +19,7 @@
             </div>
 
 
-            <table id="example" class="table table-striped responsive" style="width:100%">
+            <table id="example" class="table table-striped responsive consulta" style="width:100%">
                 <thead>
                     <tr>
                         <th class="centrar">Folio</th>
@@ -36,8 +36,9 @@
                         <td>${{ number_format($inscripcion->totalPagos, 0, '.', ',') }}</td>
                         <td>
                             <button type="button" class="btn btn-primary abrir-inscripcion" data-bs-toggle="modal"
-                                data-bs-target="#EditModal{{$inscripcion->id}}" data-bs-backdrop="false"
-                                data-id="{{$inscripcion->id}}">
+                                data-bs-target="#EditInscripcion" data-bs-backdrop="false"
+                                data-remote="{{ route('inscripciones.edit', $inscripcion->id) }}"
+                                data-id="{{ $inscripcion->id }}">
                                 <i class="fas fa-eye"></i>
                             </button>
                             <a href="{{route('personaPagos.inscripcion', $inscripcion->id)}}" type="button" class="btn btn-success"><i class="fas fa-dollar-sign"></i></a>
@@ -50,14 +51,15 @@
                             @endcan
                         </td>
                     </tr>
-                    @include('incripciones.edit', ['modalId' => $inscripcion->id])
+                    {{--  @include('incripciones.edit', ['modalId' => $inscripcion->id])  --}}
+                    @include('incripciones.edit')
                     @endforeach
                 </tbody>
             </table>
 
 
         </div>
-        {{-- @include('incripciones.edit'); --}}
+        
     </div>
 
 

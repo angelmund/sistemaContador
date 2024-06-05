@@ -15,7 +15,7 @@
                     @csrf
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre Completo:</label>
-                        <input type="text" class="form-control mayuscula is-invalid" value="" id="nombre" name="nombre nombre_completo"
+                        <input type="text" class="form-control mayuscula is-invalid" value="" id="nombre_completo" name="nombre nombre_completo"
                             required>
                         <div class="invalid-feedback">
                             Por favor, el nombre completo.
@@ -98,13 +98,13 @@
 
 
                     <div class="mb-3">
-                        <label for="observaciones" class="form-label">Observaciones:</label>
-                        <textarea type="text" class="form-control" id="observaciones" name="observaciones" required>
+                        <label for="observaciones_consulta" class="form-label">Observaciones:</label>
+                        <textarea type="text" class="form-control" id="observaciones_consulta" name="observaciones_consulta" required>
 
                         </textarea>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary btn_actualizar"><i
+                        <button type="button" class="btn btn-primary btn_actualizar" disabled><i
                                 class="fas fa-save btn_save"></i> Actualizar inscripción</button>
 
                         <button type="button" class="btn btn-danger ms-2" id="limpiar" data-bs-dismiss="modal"><i

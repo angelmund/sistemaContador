@@ -1,4 +1,5 @@
-
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.3.1/dist/js/tom-select.complete.min.js"></script>
 <x-app-layout>
 
     <div class="container">
@@ -10,13 +11,14 @@
                     <form class="needs-validation" id="formAlta-pagos" action="#" method="POST"
                         enctype="multipart/form-data" class="bg-Light p-4 rounded needs-validation" novalidate>
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                        <input type="hidden" id="id_proyecto" value="">
                         <div class="row mb-3">
-                        
+
                             <div class="col">
                                 <label for="id_cliente">Folio Cliente:</label>
-                                <select id="id_cliente" class="form-control select2" name="id_cliente" required>
+                                <select id="id_cliente" class="form-control select-beast" name="id_cliente" required>
                                     <option value="" disabled selected>-- Selecciona un folio --</option>
-                                    
+
                                     @foreach ($inscripciones as $inscripcion)
                                     <option value="{{ $inscripcion->id }}">{{ $inscripcion->id }}</option>
                                     @endforeach
@@ -27,7 +29,8 @@
                             </div>
 
                             <div class="col-auto">
-                                <button type="button" class="btn btn-primary">
+                                <button type="button" class="btn btn-primary abrir-id" id="id_user"
+                                    value="">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
@@ -37,28 +40,28 @@
                             <label for="nombre" class="form-label">Nombre Cliente:</label>
                             <input type="text" class="form-control" id="nombre" name="nombre" readonly>
                         </div>
-                        {{--  <div class="mb-3">
+                        {{-- <div class="mb-3">
                             <legend class="title text-center">Proyecto asigando</legend>
-                        </div>  --}}
-                        <div class="mb-3">
+                        </div> --}}
+                        {{-- <div class="mb-3">
                             <label for="id_proyecto" class="form-label">Clave Proyecto:</label>
                             <select name="id_proyecto" id="id_proyecto" class="form-select select2" required>
                                 <option value="" disabled selected>-- Selecciona un proyecto --</option>
                                 @foreach ($selectclaveproyecto as $id => $clave_proyecto)
-                                    <option value="{{ $id }}">{{ $clave_proyecto }}</option>
+                                <option value="{{ $id }}">{{ $clave_proyecto }}</option>
                                 @endforeach
                             </select>
                             <div class="invalid-feedback">
                                 Por favor selecciona un proyecto.
                             </div>
-                        </div>
-                        
+                        </div> --}}
 
-                        {{--  <div class="mb-3">
+
+                        {{-- <div class="mb-3">
                             <label for="nombreProyecto_n" class="form-label">Nombre Proyecto:</label>
                             <input type="text" class="form-control" id="nombreProyecto_n" name="nombreProyecto_n"
                                 readonly>
-                        </div>  --}}
+                        </div> --}}
                         <div class="mb-3">
                             <legend class="title text-center">Información Pago</legend>
                         </div>
@@ -137,7 +140,18 @@
             </div>
         </div>
     </div>
+    @include('pagos.inscripcionId')
 
-
-    
+    <script>
+        $(document).ready(function() {
+            
+            new TomSelect(".select-beast",{
+                create: true,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                }
+            });
+        });
+    </script>
 </x-app-layout>

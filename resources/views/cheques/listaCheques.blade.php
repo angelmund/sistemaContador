@@ -55,8 +55,8 @@
             <table id="example" class="table table-striped responsive" style="width:100%">
                 <thead>
                     <tr>
+                        <th class="centrar">N&uacute;mero</th>
                         <th class="centrar">Folio del cliente</th>
-                        <th class="centrar">Folio Cheque/Pago</th>
                         <th class="centrar">Cliente</th>
                         <th class="centrar">Monto</th>
                         <th class="centrar">Clave de proyecto</th>
@@ -70,8 +70,8 @@
                 <tbody>
                     @foreach ($cheques as $cheque)
                     <tr>
+                        <td>{{$cheque->id}}</td>
                         <td>{{$cheque->inscripcione->id }}</td>
-                        <td>Folio Cheque:{{$cheque->id}}</td>
                         <td>{{$cheque->inscripcione->nombre_completo}}</td>
                         
                         <td>
@@ -114,8 +114,8 @@
                     @endforeach
                     @foreach ($pagos as $pago)
                     <tr>
+                        <td>{{$pago->id}}</td>
                         <td>{{$pago->inscripcione->id}}</td>
-                        <td>Folio Pago:{{$pago->id}}</td>
                         <td>{{$pago->inscripcione->nombre_completo}}</td>
                         
                         <td>
