@@ -26,6 +26,7 @@ import './usuario';
 import './graficas';
 import './proyectosTableconsulta';
 
+
 // Importa Alpine.js
 import Alpine from 'alpinejs';
 window.Alpine = Alpine;

@@ -2,11 +2,10 @@ if ($('.consulta').length > 0) {
 
 
     // Evento para abrir el modal y cargar los datos
-    $('.abrir').click(function () {
-        // Obtener el ID del botón que ha sido clicado
-        var id = $(this).attr('data-id');
-        var ruta = $('#url').val();
-        var url = ruta + '/pago/alta/' + id;
+    $('#example').on('click', '.abrir-inscripcion', function (event) {
+        event.preventDefault();
+        // Obtener la url del botón que ha sido clicado
+        var url = $(this).data('remote');
         consultarInscripcion(url);
     });
 
@@ -37,7 +36,7 @@ if ($('.consulta').length > 0) {
                 mostrarDatos(datos);
 
                 // Verifica si el modal se abre correctamente
-                $('#EditInscripcion').modal('show');
+                $('#ConsultInscripcion').modal('show');
 
             })
             .catch(error => {
@@ -95,7 +94,7 @@ if ($('.consulta').length > 0) {
         // console.log(datos);
     }
 
-    var form = document.getElementById('form-consulta');
+    var form = document.getElementById('form-consultform');
 
     $('#VerInscripcion').on('shown.bs.modal', function () {
         // Remove validation classes
@@ -121,14 +120,5 @@ if ($('.consulta').length > 0) {
         });
     });
 
-    $('.mayuscula').on('input', function () {
-        var input = $(this);
-        var is_name = input.val();
-        if (is_name) {
-            input.removeClass("is-invalid").addClass("is-valid");
-        } else {
-            input.removeClass("is-valid").addClass("is-invalid");
-        }
-    });
 
 }

@@ -130,9 +130,13 @@ if ($('#example').length > 0) {
                 var date = moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD');
                 if (date >= fechaInicio && date <= fechaFinal) {
                     filteredDates.push(value); // Almacenar fecha que cumple con el criterio de búsqueda
-                    console.log(filteredDates);
+                    // console.log(filteredDates);
                 }
             });
+            if (filteredDates.length === 0) {
+                alertaInfo("No hay registros que coincidan con el rango de fechas especificado.");
+            }
+            
         
             // Aplicar la búsqueda de las fechas filtradas en toda la columna
             dt.column(5).search(filteredDates.join('|'), true, false).draw();
@@ -153,6 +157,9 @@ if ($('#example').length > 0) {
                         filteredFolios.push(value); // Almacenar folio que cumple con el criterio de búsqueda
                     }
                 });
+                if (filteredFolios.length === 0) {
+                    alertaInfo("No hay registros que coincidan con el rango de folios especificado.");
+                }
         
                 // Aplicar la búsqueda de los folios filtrados en toda la columna
                 dt.column(0).search(filteredFolios.join('|'), true, false).draw();

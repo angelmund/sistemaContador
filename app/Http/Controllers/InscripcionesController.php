@@ -378,34 +378,7 @@ class InscripcionesController extends Controller
 
         if (Auth::check()) {
             // dd($request->all());
-            $request->validate([
-                // 'nombredelcampo' => 'required | email | unique:tabla', 
-                'nombre' => 'required',
-                'direccion' => 'required',
-                // 'descripcion_edit' => 'required',
-                // 'claveProyecto' => 'required',
-                // 'nombreProyecto' => 'required',
-                // 'comite' => 'required',
-                'alcaldia' => 'required',
-                'telefono' => 'required | numeric',
-                'concepto' => 'required',
-                'importeInscripcion' => 'required | numeric',
-                'noSolicitud' => 'required',
-                'fechaDeposito' => 'required',
-                // 'fotoCliente' => 'image|mimes:jpeg,png,jpg',
-                // 'Ine' => 'image|mimes:jpeg,png,jpg',
-            ], [
-                'nombre.required' => 'El campo nombre completo es requerido',
-                'direccion.required' => 'El campo direccion es requerido',
-                // 'claveProyecto.required' => 'La clave del proyecto es requerida',
-                'alcaldia.required' => 'El campo alcaldía es requerido',
-                'telefono.required' => 'El campo teléfono es requerido',
-                'concepto.required' => 'El campo comcepto es requerido',
-                'importeInscripcion.required' => 'El campo Importe Inscripción es requerido',
-                'noSolicitud.required' => 'El número de solicitud es requerida',
-                'fechaDeposito.required' => 'La fecha del depósito es requerida',
-
-            ]);
+            
             try {
                 DB::beginTransaction();
                 // dd($request->all());

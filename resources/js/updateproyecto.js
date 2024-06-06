@@ -4,7 +4,7 @@ let formularioValido = false;
 // Verifica si hay elementos que requieren form-proyecto en la página actual
 if ($('#formedit-proyecto').length > 0) {
     document.addEventListener('DOMContentLoaded', function () {
-       
+
         //se crea un objeto con los id de los input para mapear los valores
         const proyecto = {
             //tienen que coicidir con el mismo id de cada campo
@@ -17,7 +17,7 @@ if ($('#formedit-proyecto').length > 0) {
             presupuesto_edit: '',
 
         };
-       
+
 
 
         //se obtienen los id de cada input 
@@ -34,7 +34,7 @@ if ($('#formedit-proyecto').length > 0) {
         const btnCancelar = document.querySelector('#btn_cerrar');
         const btnEquis = document.querySelector('.btn-close');
         const btnabrirModal = document.querySelectorAll('.abrir-modal');
-        const btnEliminar =  document.querySelectorAll('.eliminar-modal');
+        const btnEliminar = document.querySelectorAll('.eliminar-modal');
 
         // Deshabilitar el botón de submit al inicio
         // btnSubmit.disabled = true;
@@ -113,7 +113,7 @@ if ($('#formedit-proyecto').length > 0) {
             // Actualizar el estado del formulario
             comprobarFormulario();
         }
-        
+
         // muestra alerta 
         function mostrarAlerta(mensaje, referencia) {
             limpiarAlerta(referencia);
@@ -227,12 +227,12 @@ if ($('#formedit-proyecto').length > 0) {
             // Modificar la acción del formulario para que apunte al ID específico
             const formedit = document.querySelector('#formedit-proyecto');
             formedit.action = '/proyectos/update/' + idproyecto;
-        
+
             //  ID en algún lugar accesible para su posterior uso
             formedit.dataset.proyectoId = idproyecto;
 
         }
-    
+
         async function updateproyecto() {
             const id = document.querySelector('#formedit-proyecto').dataset.proyectoId;
             const url = $('#url').val();
@@ -296,9 +296,9 @@ if ($('#formedit-proyecto').length > 0) {
             }
         }
 
-        
-       
-        $('#example').on('click', '.eliminar', function(event) {
+
+
+        $('#example').on('click', '.eliminar', function (event) {
             event.preventDefault();
             // Obtener el id del botón que ha sido clicado
             var id = $(this).data('id');
@@ -306,7 +306,7 @@ if ($('#formedit-proyecto').length > 0) {
                 deleteProyecto(id);
             });
         });
-        
+
         async function deleteProyecto(id) {
             const url = $('#url').val();
             try {
@@ -318,7 +318,7 @@ if ($('#formedit-proyecto').length > 0) {
                         'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
                 });
-        
+
                 const data = await response.json();
                 switch (data.idnotificacion) {
                     case 1:
@@ -333,7 +333,7 @@ if ($('#formedit-proyecto').length > 0) {
                             window.location.reload();
                         }, 1000);
                         break;
-        
+
                     case 2:
                         Swal.fire({
                             icon: "error",
@@ -341,8 +341,15 @@ if ($('#formedit-proyecto').length > 0) {
                             text: data.mensaje
                         });
                         break;
-                    
-        
+                    case 3:
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: data.mensaje
+                        });
+                        break;
+
+
                     default:
                         Swal.fire({
                             icon: "info",
@@ -350,7 +357,7 @@ if ($('#formedit-proyecto').length > 0) {
                             text: "Error desconocido"
                         });
                 }
-        
+
             } catch (error) {
                 console.error("Error al procesar la solicitud:", error);
             }

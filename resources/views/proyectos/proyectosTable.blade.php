@@ -35,9 +35,8 @@
                         <td>{{ $inscripcion->nombre_completo }}</td>
                         <td>${{ number_format($inscripcion->totalPagos, 0, '.', ',') }}</td>
                         <td>
-                            <button type="button" class="btn btn-primary abrir-inscripcion" data-bs-toggle="modal"
-                                data-bs-target="#EditInscripcion" data-bs-backdrop="false"
-                                data-remote="{{ route('inscripciones.edit', $inscripcion->id) }}"
+                            <button type="button" class="btn btn-primary abrir" data-bs-toggle="modal"
+                                data-bs-target="#VerInscripcion" 
                                 data-id="{{ $inscripcion->id }}">
                                 <i class="fas fa-eye"></i>
                             </button>
@@ -52,7 +51,7 @@
                         </td>
                     </tr>
                     {{--  @include('incripciones.edit', ['modalId' => $inscripcion->id])  --}}
-                    @include('incripciones.edit')
+                    @include('proyectos.consultRegistro')
                     @endforeach
                 </tbody>
             </table>

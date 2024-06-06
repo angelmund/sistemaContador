@@ -119,8 +119,10 @@ document.addEventListener('DOMContentLoaded', function () {
         // Evento para abrir el modal y cargar los datos
         $('#example').on('click', '.abrir-inscripcion', function (event) {
             event.preventDefault();
-            // Obtener la url del botón que ha sido clicado
-            var url = $(this).data('remote');
+            var id = $(this).attr('data-id');
+            var ruta = $('#url').val();
+            var url = ruta + '/inscripciones/edit/' + id;
+            // console.log(url);
             consultarInscripcion(url);
         });
 
@@ -159,13 +161,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         }
 
-        // Función para mostrar los datos en el formulario del modal
         function mostrarDatos(datos) {
-            //obtener los datos de mi json enviado desde el back
+            // Obtener los datos de mi json enviado desde el back
             const inscripcion = datos.inscripcion;
             const selectclaveproyecto = Object.entries(datos.selectclaveproyecto);
             const proyecto = datos.proyecto;
-
+        
             // Asignar valores a los campos del formulario
             $('#nombre').val(inscripcion.nombre_completo);
             $('#id').val(inscripcion.id);
@@ -178,14 +179,13 @@ document.addEventListener('DOMContentLoaded', function () {
             // Asignar el nombre del proyecto, o una cadena vacía si no hay proyecto
             $('#nombreProyecto_n').val(proyecto ? proyecto.nombre : '');
             $('#noSolicitud').val(inscripcion.numero_solicitud);
-
+        
             // Convertir y asignar la fecha formateada
             const fechaFormateada = formatearFecha(inscripcion.fecha_deposito);
-
             $('#fechaDeposito').val(fechaFormateada);
-
+        
             $('#observaciones').val(inscripcion.observaciones);
-
+        
             // Llenar el select y seleccionar la clave del proyecto
             const select = document.getElementById('claveProyecto');
             select.innerHTML = ''; // Limpiar opciones existentes
@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', function () {
             defaultOption.value = '';
             defaultOption.textContent = 'No Asignado';
             select.appendChild(defaultOption);
-
+        
             selectclaveproyecto.forEach(([id, clave]) => {
                 const option = document.createElement('option');
                 option.value = id;
@@ -203,11 +203,17 @@ document.addEventListener('DOMContentLoaded', function () {
                 }
                 select.appendChild(option);
             });
-
-
-
-            // console.log(datos);
+        
+            // Inicializar Tom Select después de llenar el select
+            new TomSelect("#claveProyecto", {
+                create: true,
+                sortField: {
+                    field: "text",
+                    direction: "asc"
+                }
+            });
         }
+        
 
         var form = document.getElementById('form-editincripcion');
 
@@ -256,8 +262,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         async function updateinscripcion() {
             const url = $('#url').val();
+            // console.log(url);
             const id = $('#id').val();
-            console.log(id);
+            // console.log(id);
             try {
                 const formData = new FormData($('#form-editincripcion')[0]);
                 const claveProyectoValue = $('#claveProyecto').val();
@@ -267,6 +274,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 formData.append('claveProyecto', claveProyectoFinalValue);
                 formData.append('telefono', telefonoValue);
+                // console.log(formData);
 
                 const response = await fetch(url + '/inscripciones/update/' + id, {
                     method: 'POST',
@@ -279,24 +287,35 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
 
                 const data = await response.json();
-                if (data.idnotificacion == 1) {
-                    Swal.fire({
-                        title: data.mensaje,
-                        icon: "success",
-                        showConfirmButton: false,
-                        timer: 1500,
-                        timerProgressBar: true
-                    });
-                    setTimeout(function () {
-                        $('#form-editincripcion')[0].reset();
-                        window.location.reload();
-                    }, 1500);
-                } else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Oops...",
-                        text: "Ocurrió un error al guardar!"
-                    });
+                switch (data.idnotificacion) {
+                    case 1:
+                        Swal.fire({
+                            title: data.mensaje,
+                            icon: "success",
+                            showConfirmButton: false,
+                            timer: 1000,
+                            timerProgressBar: true
+                        });
+                        setTimeout(function () {
+                            window.location.reload();
+                        }, 1000);
+                        break;
+
+                    case 2:
+                        Swal.fire({
+                            icon: "error",
+                            title: "Oops...",
+                            text: data.mensaje
+                        });
+                        break;
+
+
+                    default:
+                        Swal.fire({
+                            icon: "info",
+                            title: "Info...",
+                            text: "Error desconocido"
+                        });
                 }
             } catch (error) {
                 console.error("Error al procesar la solicitud:", error);

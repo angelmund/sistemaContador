@@ -138,7 +138,6 @@ function handleResponse(data, tipo) {
 // Escucha cambios en el elemento select de clientes para cargar los nombres de cada cliente 
 $('#id_cliente').change(function () {
     var idSeleccionado = $(this).val();
-    console.log(idSeleccionado);
     if (idSeleccionado) {
         $.get('/inscripciones/relacion/nombre/' + idSeleccionado, function (data) {
             if (data && data.nombre_completo && data.id_proyecto) {
@@ -173,7 +172,6 @@ $(document).ready(function () {
         var id = $(this).val();
         var ruta = $('#url').val();
         var url = ruta + '/pago/alta/' + id;
-        console.log(url);
         consultarInscripcion(url);
     });
     // Función para convertir y formatear la fecha en el formato esperado por un input de tipo date
@@ -201,11 +199,10 @@ $(document).ready(function () {
                     return;
                 }
 
-                console.log(datos);
                 mostrarDatos(datos);
 
                 // Verifica si el modal se abre correctamente
-                $('#EditInscripcion').modal('show');
+                $('#ConsultInscripcion').modal('show');
 
             })
             .catch(error => {

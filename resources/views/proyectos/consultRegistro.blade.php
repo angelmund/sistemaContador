@@ -1,4 +1,4 @@
-<div class="modal fade" id="ConsultInscripcion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="VerInscripcion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -8,16 +8,15 @@
             <div class="modal-body">
                 <!-- Contenido del modal -->
                 <input type="hidden" value="{{ url('/') }}" id="url">
-                <form id="form-consultform" action="#" method="POST" enctype="multipart/form-data">
+                <form id="form-consulta" action="#" method="POST" enctype="multipart/form-data">
                     <input type="hidden" value="" class="id" id="id">
                   
                     <meta name="csrf-token" content="{{ csrf_token() }}">
                     @csrf
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre Completo:</label>
-                        <input type="text" class="form-control mayuscula is-valid" value="" id="nombre_completo" name="nombre nombre_completo">
-                        
-                        
+                        <input type="text" class="form-control mayuscula is-valid" value="" id="nombre" name="nombre nombre_completo"
+                            >
                     </div>
                     <div class="mb-3">
                         <label for="direccion" class="form-label ">Dirección:</label>
@@ -25,14 +24,14 @@
                         
                     </div>
                     <div class="mb-3">
-                        <label for="claveProyecto" class="form-label ">Clave Proyecto:</label>
+                        <label for="claveProyecto" class="form-label is-valid">Clave Proyecto:</label>
                         <select name="claveProyecto" id="claveProyecto" class="form-select is-valid">
                             <!-- Las opciones se llenarán dinámicamente mediante JavaScript -->
                         </select>
                     </div>
 
                     <div class="mb-3">
-                        <label for="nombreProyecto_n" class="form-label">Nombre Proyecto:</label>
+                        <label for="nombreProyecto_n" class="form-label ">Nombre Proyecto:</label>
                         <input type="text" class="form-control is-valid" id="nombreProyecto_n" value="" name="nombreProyecto_n"
                             readonly>
                     </div>
@@ -44,18 +43,18 @@
                     <div class="mb-3">
                         <label for="alcaldia" class="form-label">Alcaldia:</label>
                         <input type="text" class="form-control mayuscula is-valid" id="alcaldia" value="" name="alcaldia" >
-                    
+                        
                     </div>
                     <div class="mb-3">
                         <label for="telefono" class="form-label">Teléfono:</label>
                         <input type="text" class="form-control mayuscula is-valid" id="telefono" value="" name="telefono" >
-                        
+                    
                     </div>
                     <div class="mb-3">
                         <label for="concepto" class="form-label">Concepto:</label>
                         <input type="text" class="form-control mayuscula is-valid" id="concepto" value="" name="concepto"
                             value="Inscripción" >
-                        
+                      
                     </div>
                     <div class="mb-3">
                         <label for="importeInscripcion" class="form-label">Importe
@@ -74,18 +73,18 @@
                         <label for="fechaDeposito" class="form-label">Fecha de Depósito:</label>
                         <input type="date" class="form-control mayuscula is-valid" id="fechaDeposito" name="fechaDeposito" value=""
                             >
-                       
+                     
                     </div>
 
 
                     <div class="mb-3">
-                        <label for="observaciones_consulta" class="form-label ">Observaciones:</label>
-                        <textarea type="text" class="form-control is-valid" id="observaciones_consulta" name="observaciones_consulta" >
+                        <label for="observaciones" class="form-label ">Observaciones:</label>
+                        <textarea type="text" class="form-control is-valid" id="observaciones" name="observaciones" >
 
                         </textarea>
                     </div>
                     <div class="modal-footer">
-                     
+                       
 
                         <button type="button" class="btn btn-danger ms-2" id="limpiar" data-bs-dismiss="modal"><i
                                 class="fas fa-close"></i> Cerrar</button>

@@ -51,7 +51,7 @@
                 <thead>
                     <tr>
                         <th class="centrar">Folio</th>
-                        <th class="centrar">Nombre encargado</th>
+                        <th class="centrar">Nombre del inscrito</th>
                         <th class="centrar">Dirección</th>
                         <th class="centrar">Clave Proyecto</th>
                         <th class="centrar">Nombre del Proyecto</th>
@@ -65,7 +65,8 @@
                     @foreach ($inscripciones as $inscripcion)
                     <tr>
                         <td>{{$inscripcion->id}}</td>
-                        <td>{{ optional($inscripcion->proyecto)->encargado ?? 'No Asignado' }}</td>
+                        {{--  <td>{{ optional($inscripcion->proyecto)->encargado ?? 'No Asignado' }}</td>  --}}
+                        <td>{{ $inscripcion->nombre_completo }}</td>
                         <td>{{ $inscripcion->direccion }}</td>
                         <td>{{ $inscripcion->clave_proyecto ? $inscripcion->clave_proyecto : 'No Asignado' }}</td>
                         <td>{{ optional($inscripcion->proyecto)->nombre ?? 'No Asignado' }}</td>
@@ -80,8 +81,7 @@
                         <td>
                             <a href="{{ route('inscripciones.pdf', $inscripcion->id) }}" class="btn btn-warning"><i class="fas fa-download"></i></a>
                             <button type="button" class="btn btn-primary abrir-inscripcion" data-bs-toggle="modal"
-                                data-bs-target="#EditInscripcion" data-bs-backdrop="false"
-                                data-remote="{{ route('inscripciones.edit', $inscripcion->id) }}"
+                                data-bs-target="#EditInscripcion" 
                                 data-id="{{ $inscripcion->id }}">
                                 <i class="fas fa-eye"></i>
                             </button>
@@ -99,7 +99,7 @@
                         </td>
                     </tr>
 
-                    @include('incripciones.edit', ['modalId' => $inscripcion->id])
+                    @include('incripciones.edit')
 
                     @yield('pagos.altaPagos')
                     @endforeach

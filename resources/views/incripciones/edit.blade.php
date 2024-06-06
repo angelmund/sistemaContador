@@ -1,3 +1,4 @@
+
 <div class="modal fade" id="EditInscripcion" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -15,7 +16,7 @@
                     @csrf
                     <div class="mb-3">
                         <label for="nombre" class="form-label">Nombre Completo:</label>
-                        <input type="text" class="form-control mayuscula is-invalid" value="" id="nombre" name="nombre nombre_completo"
+                        <input type="text" class="form-control mayuscula is-invalid" value="" id="nombre" name="nombre"
                             required>
                         <div class="invalid-feedback">
                             Por favor, el nombre completo.
@@ -31,7 +32,7 @@
                     </div>
                     <div class="mb-3">
                         <label for="claveProyecto" class="form-label ">Clave Proyecto:</label>
-                        <select name="claveProyecto" id="claveProyecto" class="form-select select2">
+                        <select name="claveProyecto" id="claveProyecto" class="form-select select-beast">
                             <!-- Las opciones se llenarán dinámicamente mediante JavaScript -->
                         </select>
                     </div>
