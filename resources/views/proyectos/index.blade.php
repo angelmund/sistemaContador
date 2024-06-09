@@ -84,9 +84,9 @@
 
                         <td>
                             {{--  <button type="button" class="btn btn-warning"><i class="fas fa-download"></i></button>  --}}
-                            <button type="button" id="editButton" class="btn btn-primary abrir-modal"
+                            <button type="button" id="editButton" class="btn btn-primary abrir-proyecto"
                                 data-bs-toggle="modal" data-bs-target="#editModal"
-                                data-remote="{{route('proyectos.edit',$proyecto->id)}}"><i
+                                data-remote="{{route('proyectos.edit',$proyecto->id)}}" data-id="{{$proyecto->id}}"><i
                                     class="fas fa-eye"></i></button>
                             {{--  <button type="button" class="btn btn-success"><i class="fas fa-dollar-sign"></i></button>  --}}
 

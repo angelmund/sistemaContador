@@ -185,20 +185,19 @@ if ($('#formedit-proyecto').length > 0) {
             }
         });
 
-        btnabrirModal.forEach(btn => {
-            btn.addEventListener('click', consultarproyecto);
-            // console.log(consultarproyecto);
+        // Evento para abrir el modal y cargar los datos
+        $('#example').on('click', '.abrir-proyecto', function (event) {
+            event.preventDefault();
+            var id = $(this).attr('data-id');
+            var ruta = $('#url').val();
+            var url = ruta + '/proyectos/edit/' + id;
+            consultarproyecto(url);
         });
 
-        function consultarproyecto(event) {
-            const url = event.currentTarget.getAttribute('data-remote');
-            // const idproyecto = event.currentTarget.getAttribute('data-remote');
-            // const url = '/proyectos/update/' + idproyecto;
+        function consultarproyecto(url) {
             fetch(url)
                 .then(respuesta => respuesta.json())
                 .then(resultado => {
-                    // console.log('Datos recibidos del servidor:', resultado);
-
                     // Verifica si el modal se abre correctamente
                     $('#editModal').modal('show');
 
@@ -210,8 +209,6 @@ if ($('#formedit-proyecto').length > 0) {
         }
 
         function llenarModal(data) {
-            // console.log('Datos recibidos para llenar el modal:', data);
-
             //  selectores en el DOM
             claveProyecto.value = data.clave_proyecto;
             nombreProyecto_edit.value = data.nombre;
@@ -230,7 +227,6 @@ if ($('#formedit-proyecto').length > 0) {
 
             //  ID en algún lugar accesible para su posterior uso
             formedit.dataset.proyectoId = idproyecto;
-
         }
 
         async function updateproyecto() {

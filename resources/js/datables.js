@@ -60,10 +60,10 @@ if ($('#example').length > 0) {
                     titleAttr: 'Imprimir'
                 },
             ],
-            order: [[0, 'desc']], 
+            order: [[0, 'desc']],
             responsive: true,
             autoWidth: false,
-            
+
         });
 
         // // Inicializar el rango de fechas con flatpickr
@@ -87,11 +87,19 @@ if ($('#example').length > 0) {
 
 
                 $(".fechaDivs").show();
+                $('#fechaInicio').val('');
+                $('#fechaFinal').val('');
+                $('#folioI').val('');
+                $('#folioF').val('');
             }
             if (tipoBusqueda === "Folio") {
 
                 $(".folioDivs").show();
                 $('.filtrar').show();
+                $('#fechaInicio').val('');
+                $('#fechaFinal').val('');
+                $('#folioI').val('');
+                $('#folioF').val('');
             }
 
         });
@@ -99,14 +107,14 @@ if ($('#example').length > 0) {
         $('#fechaInicio, #fechaFinal').on('change', function () {
             var fechaInicio = $('#fechaInicio').val();
             var fechaFinal = $('#fechaFinal').val();
-            
+
             if (fechaInicio == '' || fechaFinal == '') {
                 alertaInfo("Ingrese fecha de inicio y fin");
             } else {
                 filtrarPorRangoDeFechas(fechaInicio, fechaFinal);
             }
         });
-        
+
 
         $('#filtrar').on('click', function () {
             var folioInicio = $('#folioI').val();
@@ -115,16 +123,16 @@ if ($('#example').length > 0) {
                 alertaInfo("Ingrese folio de inicio y folio final");
             } else {
                 // Aplicar filtro de rango de folios
-                filtrarPorRangoDefolio(folioInicio,folioFinal);
+                filtrarPorRangoDefolio(folioInicio, folioFinal);
             }
         });
         function filtrarPorRangoDeFechas(fechaInicio, fechaFinal) {
             var filteredDates = []; // Almacenar fechas que cumplen con el criterio de búsqueda
-        
+
             // Convertir fechaInicio y fechaFinal al formato 'Y-m-d'
             // var fechaInicioFormatoCorrecto = moment(fechaInicio, 'DD/MM/YYYY').format('YYYY-MM-DD');
             // var fechaFinalFormatoCorrecto = moment(fechaFinal, 'DD/MM/YYYY').format('YYYY-MM-DD');
-        
+
             // Iterar sobre cada fila de la columna de fechas
             dt.column(5).data().each(function (value) {
                 var date = moment(value, 'DD/MM/YYYY').format('YYYY-MM-DD');
@@ -133,21 +141,24 @@ if ($('#example').length > 0) {
                     // console.log(filteredDates);
                 }
             });
-            if (filteredDates.length === 0) {
-                alertaInfo("No hay registros que coincidan con el rango de fechas especificado.");
+            if (filteredDates.length > 0) {
+                // Aplicar la búsqueda de las fechas filtradas en toda la columna
+                dt.column(5).search(filteredDates.join('|'), true, false).draw();
+            } else {
+                // Si no hay resultados, limpiar la búsqueda para mostrar el mensaje de "No se encontraron resultados"
+                dt.column(0).search('^$', true, false).draw();
             }
-            
-        
-            // Aplicar la búsqueda de las fechas filtradas en toda la columna
-            dt.column(5).search(filteredDates.join('|'), true, false).draw();
+
+
+
         }
         function filtrarPorRangoDefolio(folioInicio, folioFinal) {
             var filteredFolios = []; // Almacenar folios que cumplen con el criterio de búsqueda
-        
+
             // Convertir los folios a números enteros
             var inicio = parseInt(folioInicio);
             var final = parseInt(folioFinal);
-        
+
             // Verificar si el folio de inicio es menor que el folio final
             if (inicio < final) {
                 // Iterar sobre cada fila de la columna de folios
@@ -157,17 +168,20 @@ if ($('#example').length > 0) {
                         filteredFolios.push(value); // Almacenar folio que cumple con el criterio de búsqueda
                     }
                 });
-                if (filteredFolios.length === 0) {
-                    alertaInfo("No hay registros que coincidan con el rango de folios especificado.");
-                }
-        
                 // Aplicar la búsqueda de los folios filtrados en toda la columna
-                dt.column(0).search(filteredFolios.join('|'), true, false).draw();
+                if (filteredFolios.length > 0) {
+                    dt.column(0).search(filteredFolios.join('|'), true, false).draw();
+                } else {
+                    // Si no hay resultados, limpiar la búsqueda para mostrar el mensaje de "No se encontraron resultados"
+                    dt.column(0).search('^$', true, false).draw();
+                }
+
+
             } else {
                 alertaInfo("El folio de inicio debe ser menor al folio final");
             }
         }
-        
+
         // Restablecer filtros cuando se cambia el tipo de búsqueda
         $(".status_id").on("change", function () {
             dt.search('').draw(); // Limpiar el filtro

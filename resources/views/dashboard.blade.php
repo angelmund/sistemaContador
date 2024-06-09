@@ -231,6 +231,7 @@
       </div>
     </a>
 
+    @can('Administrar')
     <a href="{{route('usuarios.index')}}" class="menu__boton">
       <div class="boton__info">
         <h3 class="info__titulo">Usuarios</h3>
@@ -240,6 +241,7 @@
         <i class="fas fa-user"></i>
       </div>
     </a>
+    @endcan
   </section>
 
   <div class="container-graficas">
