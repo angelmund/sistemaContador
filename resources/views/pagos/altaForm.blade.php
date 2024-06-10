@@ -11,7 +11,7 @@
                     <form class="needs-validation" id="formAlta-pagos" action="#" method="POST"
                         enctype="multipart/form-data" class="bg-Light p-4 rounded needs-validation" novalidate>
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="hidden" id="id_proyecto" value="">
+                        <input type="text" id="id_proyecto" value="">
                         <div class="row mb-3">
 
                             <div class="col">

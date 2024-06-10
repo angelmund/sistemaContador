@@ -47,7 +47,8 @@ document.addEventListener('DOMContentLoaded', function () {
 async function saveCheque() {
     const url = $('#url').val();
     const formData = new FormData($('#formAlta-pagos')[0]);
-    console.log(formData);
+    formData.append('id_proyecto', $('#id_proyecto').val());
+    // console.log(formData);
     try {
         const response = await fetch(url + '/listaPagos/ingreso', {
             method: 'POST',
@@ -95,40 +96,47 @@ function handleResponse(data, tipo) {
                 // Abre la URL de la vista en una nueva pestaña
                 const vistaUrl = url + '/formatoPago/' + data.pagoId;
                 window.open(vistaUrl, '_blank');
+            } else if (tipo === 'cheque') {
+                Swal.fire({
+                    icon: "success",
+                    title: "Éxito",
+                    text: data.mensaje,
+                });
+                // Esperar un breve período de tiempo antes de recargar la página
+                setTimeout(function () {
+                    document.getElementById('formAlta-pagos').reset();
+                    window.location.reload();
+                }, 1000); // Espera 1 segundo
             }
 
-            // Esperar un breve período de tiempo antes de recargar la página
-            setTimeout(function () {
-                document.getElementById('formAlta-pagos').reset();
-                window.location.reload();
-            }, 1000); // Espera 1 segundo
+
             break;
         case 2:
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "El monto del cheque supera el total de los pagos realizados por el cliente."
+                text: data.mensaje,
             });
             break;
         case 3:
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Error al guardar el pago: " + data.mensaje
+                text: data.mensaje,
             });
             break;
         case 4:
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "El cliente no tiene pagos registrados."
+                text: data.mensaje,
             });
             break;
         default:
             Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: "Ocurrió un error desconocido."
+                text: data.mensaje,
             });
             break;
     }
@@ -141,6 +149,7 @@ $('#id_cliente').change(function () {
     if (idSeleccionado) {
         $.get('/inscripciones/relacion/nombre/' + idSeleccionado, function (data) {
             if (data && data.nombre_completo && data.id_proyecto) {
+                // console.log(data);
                 $('#nombre').val(data.nombre_completo);
                 $('#id_proyecto').val(data.id_proyecto);
                 // Asignar el valor del ID seleccionado al botón
