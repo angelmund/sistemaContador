@@ -83,9 +83,9 @@
                                 @endif
                             </span>
                         </td>
-                        <td>{{$cheque->proyecto->clave_proyecto}}</td>
+                        <td>{{$cheque->proyecto->clave_proyecto ?? 'No aplica'}}</td>
                         <td>{{ \Carbon\Carbon::parse($cheque->fecha)->format('d/m/Y') }}</td>
-                        <td> {{$cheque->proyecto->nombre}}</td>
+                        <td> {{$cheque->proyecto->nombre ?? 'No aplica'}}</td>
                         <td>
                             <span class="badge rounded-pill"
                                 style="background-color: {{ $cheque->estado == 1 ? 'green' : 'red' }}; color: white;">
@@ -128,9 +128,9 @@
                             </span>
 
                         </td>
-                        <td>{{$pago->proyecto->clave_proyecto}}</td>
+                        <td>{{$pago->proyecto->clave_proyecto ?? 'No aplica'}}</td>
                         <td>{{ \Carbon\Carbon::parse($pago->fecha)->format('d/m/Y') }}</td>
-                        <td>{{$pago->proyecto->nombre}}</td>
+                        <td>{{$pago->proyecto->nombre ?? 'No aplica'}}</td>
                         <td>
                             <span class="badge rounded-pill"
                                 style="background-color: {{ $pago->estado == 1 ? 'green' : 'red' }}; color: white;">
