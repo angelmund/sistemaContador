@@ -11,7 +11,7 @@
                     <form class="needs-validation" id="formAlta-pagos" action="#" method="POST"
                         enctype="multipart/form-data" class="bg-Light p-4 rounded needs-validation" novalidate>
                         <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                        <input type="text" id="id_proyecto" value="">
+                        <input type="hidden" id="id_proyecto" value="">
                         <div class="row mb-3">
 
                             <div class="col">
@@ -39,6 +39,10 @@
                         <div class="mb-3">
                             <label for="nombre" class="form-label">Nombre Cliente:</label>
                             <input type="text" class="form-control" id="nombre" name="nombre" readonly>
+                        </div>
+                        <div class="mb-3">
+                            <label for="acumulado" class="form-label">Monto actual:</label>
+                            <input type="text" class="form-control" id="acumulado" name="acumulado" readonly>
                         </div>
                         {{-- <div class="mb-3">
                             <legend class="title text-center">Proyecto asigando</legend>

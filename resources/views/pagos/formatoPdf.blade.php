@@ -335,7 +335,13 @@
                     <!-- Nombre de proyecto-->
                     <p class="datos__negrita">Proyecto: </p>
                     <div class="datos__linea">
-                        <p>{{$pago->proyecto->nombre}}</p>
+                        <p>
+                            @if($pago->proyecto)
+                                {{$pago->proyecto->nombre}}
+                            @else
+                                No aplica
+                            @endif
+                        </p>
                     </div>
                 </div>
                 <!--fin datos item-->
@@ -462,7 +468,13 @@
                     <!-- Nombre de proyecto-->
                     <p class="datos__negrita">Proyecto: </p>
                     <div class="datos__linea">
-                        <p>{{$pago->proyecto->nombre}}</p>
+                        <p>
+                            @if($pago->proyecto)
+                                {{$pago->proyecto->nombre}}
+                            @else
+                                No aplica
+                            @endif
+                        </p>
                     </div>
                 </div>
                 <!--fin datos item-->

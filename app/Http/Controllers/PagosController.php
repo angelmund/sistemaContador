@@ -139,7 +139,7 @@ class PagosController extends Controller
                     } elseif ($request->input('monto') > $sumaPagos) {
                         // El monto del cheque supera el total de los pagos realizados por el cliente
                         return response()->json([
-                            'mensaje' => 'El monto del cheque supera el total de los pagos realizados por el cliente.',
+                            'mensaje' => 'El monto del cheque excede el saldo actual disponible del cliente. Por favor, ingrese un monto que no supere el saldo actual.',
                             'idnotificacion' => 2
                         ]);
                     } else {
@@ -165,7 +165,7 @@ class PagosController extends Controller
             } catch (\Exception $e) {
                 DB::rollback();
                 return response()->json([
-                    'mensaje' => 'Error al guardar:',
+                    'mensaje' => 'Error al guardar',
                     'idnotificacion' => 3
                 ]);
             }
@@ -193,14 +193,30 @@ class PagosController extends Controller
         if ($id == 0) {
             return response()->json(['mensaje' => 'Registro no encontrado'], 404);
         } else {
-            $inscripcion = Inscripcione::with('proyecto')->select('id', 'nombre_completo', 'clave_proyecto')->where('id', $id)->first();
+            $inscripcion = Inscripcione::with(['proyecto' => function ($query) {
+                $query->withDefault([
+                    'nombre' => 'No asignado',
+                    'id' => 0
+                ]);
+            }])->select('id', 'nombre_completo', 'clave_proyecto')->where('id', $id)->first();
 
             if ($inscripcion) {
+                $cheques = $inscripcion->cheques()->where('estado', 1)->get();
+                $totalMontoCheques = $cheques->sum('monto'); // Sumar los montos de los cheques
+
+                $pagos = $inscripcion->pagos()->where('estado', 1)->get();
+                $totalMontoPagos = $pagos->sum('monto'); // Sumar los montos de los pagos
+
+                $mostrarTotal = $totalMontoPagos - $totalMontoCheques; // Calcular el total mostrando la diferencia entre los montos de pagos y cheques
+
                 return response()->json([
                     'id' => $inscripcion->id,
                     'nombre_completo' => $inscripcion->nombre_completo,
                     'nombre_proyecto' => $inscripcion->proyecto->nombre, // Obtener el nombre del proyecto a través de la relación
                     'id_proyecto' => $inscripcion->proyecto->id, // Obtener el id del proyecto a través de la relación
+                    // 'total_cheques' => $totalMontoCheques,
+                    // 'total_pagos' => $totalMontoPagos,
+                    'monto' => $mostrarTotal
                 ]);
             } else {
                 return response()->json(['mensaje' => 'Registro no encontrado'], 404);
@@ -395,7 +411,7 @@ class PagosController extends Controller
         if ($currentYear === null) {
             $currentYear = date('Y');
         }
-       
+
 
         // Inicializa un array para almacenar los resultados
         $results = [];

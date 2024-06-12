@@ -148,27 +148,31 @@ $('#id_cliente').change(function () {
     var idSeleccionado = $(this).val();
     if (idSeleccionado) {
         $.get('/inscripciones/relacion/nombre/' + idSeleccionado, function (data) {
-            if (data && data.nombre_completo && data.id_proyecto) {
+            if (data && data.nombre_completo) {
                 // console.log(data);
                 $('#nombre').val(data.nombre_completo);
-                $('#id_proyecto').val(data.id_proyecto);
+                $('#id_proyecto').val(data.id_proyecto || '');
+                $('#acumulado').val(data.monto || '0');
                 // Asignar el valor del ID seleccionado al botón
                 $('.abrir-id').val(idSeleccionado);
             } else {
                 $('#nombre').val('');
                 $('#id_proyecto').val('');
+                $('#acumulado').val('');
                 // Limpiar el valor del botón si no hay datos
                 $('.abrir-id').val('');
             }
         }).fail(function () {
             $('#nombre').val('');
             $('#id_proyecto').val('');
+            $('#acumulado').val('');
             // Limpiar el valor del botón si la solicitud falla
             $('.abrir-id').val('');
         });
     } else {
         $('#nombre').val('');
         $('#id_proyecto').val('');
+        $('#acumulado').val('');
         // Limpiar el valor del botón si no se selecciona un ID
         $('.abrir-id').val('');
     }
@@ -179,6 +183,7 @@ $(document).ready(function () {
     $('.abrir-id').click(function () {
         // Obtener el ID del botón que ha sido clicado
         var id = $(this).val();
+        // console.log(id);
         var ruta = $('#url').val();
         var url = ruta + '/pago/alta/' + id;
         consultarInscripcion(url);
