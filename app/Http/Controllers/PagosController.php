@@ -231,7 +231,7 @@ class PagosController extends Controller
         // Recuperar el registro de la base de datos usando el ID proporcionado
         $pago = Pago::find($id);
         $cheque = Cheque::find($id);
-    
+
         if ($pago) {
             $transaccion = $pago;
             $tipo = 'pago';
@@ -242,24 +242,24 @@ class PagosController extends Controller
             // Manejar el caso cuando el pago o cheque no existe
             return redirect()->back()->with('error', 'La transacción no existe.');
         }
-    
+
         $proyecto = Proyecto::pluck('nombre');
-    
+
         // Instanciar con NumeroALetras para pasar del número a como se escribe
         $formatter = new NumeroALetras();
-    
+
         // Convertir el número a palabras
         $importeEnPalabras = $transaccion->monto == 0 ? 'Monto no especificado' : $formatter->toWords($transaccion->monto);
-    
+
         // Convertir la fecha a un objeto Carbon
         $fecha_deposito = Carbon::parse($transaccion->fecha);
-    
+
         // Formatea la fecha en D-m-y
         $fecha_formateada = $fecha_deposito->isoFormat('dddd, D [de] MMMM [del] YYYY');
-    
+
         return view('pagos.formatoPdf', compact('importeEnPalabras', 'fecha_formateada', 'transaccion', 'proyecto', 'tipo'));
     }
-    
+
     //cancelar cheque
     public function cancelarCheque($id)
     {
@@ -388,22 +388,22 @@ class PagosController extends Controller
             // Obtener todos los pagos para el mes y año actual que tienen un estado de 1
             $payments = Inscripcione::where('estado', 1)
                 ->whereYear('fecha_registro', $year)
-                ->whereMonth('importe', $month)
+                ->whereMonth('fecha_registro', $month)  // Cambiado a 'fecha_registro'
                 ->get();
 
             // Suma los montos de los pagos
             $totalPayments = $payments->sum('importe');
 
-            // Obtenertodos los cheques activos para el mes y año actual
+            // Obtenertodos las inscripciones activos para el mes y año actual
             $checks = Inscripcione::where('estado', 1)
                 ->whereYear('fecha_registro', $year)
                 ->whereMonth('fecha_registro', $month)
                 ->get();
 
-            // Suma los montos de los cheques
+            // Suma los montos de las inscripciones
             $totalChecks = $checks->sum('monto');
 
-            // Resta la suma de los cheques de la suma de los pagos
+            // Resta la suma de las inscripciones de los importes
             $total = $totalPayments - $totalChecks;
 
             // Almacena el total en el array de resultados
@@ -417,6 +417,7 @@ class PagosController extends Controller
         // Devuelve los resultados como un objeto JSON
         return response()->json($results);
     }
+
 
 
     public function MesPagos($currentYear = null)
