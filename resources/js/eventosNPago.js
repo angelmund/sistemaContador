@@ -19,6 +19,7 @@ $(document).ready(function () {
                 $('.cheque').removeClass('d-none'); // Mostrar los elementos
                 $('#numeroChequePago').prop('required', true); // Hacer obligatorio el campo
                 $('#NumeroCuentaBancaria').prop('required', true); // Hacer obligatorio el campo
+                $('.observaciones').addClass('d-none'); // Ocultar el campo de observaciones
             } else {
                 $('.cheque').addClass('d-none'); // Ocultar los elementos
                 $('#numeroChequePago').prop('required', false); // No hacer obligatorio el campo
@@ -26,7 +27,9 @@ $(document).ready(function () {
                 // Limpiar y quitar clases de validación
                 $('#numeroChequePago').val('').removeClass('is-invalid is-valid');
                 $('#NumeroCuentaBancaria').val('').removeClass('is-invalid is-valid');
+                $('.observaciones').removeClass('d-none'); // Mostrar el campo de observaciones
             }
+            
         }
 
         const nCuenta = document.querySelector('#NumeroCuentaBancaria');

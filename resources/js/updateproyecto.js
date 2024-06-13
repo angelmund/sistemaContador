@@ -210,13 +210,14 @@ if ($('#formedit-proyecto').length > 0) {
 
         function llenarModal(data) {
             //  selectores en el DOM
-            claveProyecto.value = data.clave_proyecto;
-            nombreProyecto_edit.value = data.nombre;
-            descripcion_edit.value = data.descripcion;
-            ubicacion_edit.value = data.ubicacion;
-            encargado_edit.value = data.encargado;
-            cantMaxParticipantes_edit.value = data.cantMaxParticipantes;
-            presupuesto_edit.value = data.presupuesto;
+
+            $('#claveProyecto_edit').val(data.clave_proyecto);
+            $('#nombreProyecto_edit').val(data.nombre);
+            $('#descripcion_edit').val(data.descripcion);
+            $('#ubicacion_edit').val(data.ubicacion);
+            $('#encargado_edit').val(data.encargado);
+            $('#presupuesto_edit').val(data.presupuesto);
+            $('#cantMaxParticipantes_edit').val(data.cantMaxParticipantes);
 
             // ID del registro actual sea correcto
             const idproyecto = data.id;

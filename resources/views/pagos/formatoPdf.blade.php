@@ -315,7 +315,6 @@
             <div class="header-recibo__logo">
                 <img class="logo__img" src="{{asset('img/logoB.png')}}" alt="logo benita galeana">
             </div>
-
             <div class="header-recibo__info">
                 <h1 class="info__titulo">Unión Popular Benita Galeana, A C.</h1>
                 <h5>R.C.F UPB-981</h5>
@@ -324,131 +323,107 @@
             </div>
             <div class="numero__datos">
                 <p>Sucursal Bancaria</p>
-                <p>{{$pago->referencia_pago}}</p>
+                <p>{{ $transaccion->referencia_pago ?? $transaccion->numero_cheque }}</p>
             </div>
         </header>
-
+        
         <div class="recibo__info">
             <div class="info__item">
-                <!--datos item-->
                 <div class="item__datos">
-                    <!-- Nombre de proyecto-->
                     <p class="datos__negrita">Proyecto: </p>
                     <div class="datos__linea">
                         <p>
-                            @if($pago->proyecto)
-                                {{$pago->proyecto->nombre}}
+                            @if($transaccion->proyecto)
+                                {{ $transaccion->proyecto->nombre }}
                             @else
                                 No aplica
                             @endif
                         </p>
                     </div>
                 </div>
-                <!--fin datos item-->
             </div>
-
-            <!-- info item -->
             <div class="info__item">
-                <!--datos item-->
                 <div class="item__datos">
                     <p class="datos__negrita">Recibi de: </p>
                     <div class="datos__linea texto-grande">
-                        <p>{{$pago->inscripcione->nombre_completo}}</p>
+                        <p>{{ $transaccion->inscripcione->nombre_completo }}</p>
                     </div>
                 </div>
             </div>
-
-            <!-- info item -->
             <div class="info__item">
-                <!--datos item-->
                 <div class="item__datos">
                     <p class="datos__negrita">La cantidad de $: </p>
                     <div class="datos__linea">
-                        <p>{{$pago->monto}}<span>.00</span></p>
+                        <p>{{ $transaccion->monto }}<span>.00</span></p>
                     </div>
                 </div>
-                <!--fin datos item-->
-                <!--datos item-->
                 <div class="item__datos">
                     <p class="datos__negrita">Por concepto de: </p>
                     <div class="datos__linea">
-                        <p>{{$pago->descripcion}}</p>
+                        <p>{{ ucfirst($tipo) }}</p>
                     </div>
                 </div>
-                <!--fin datos item-->
             </div>
-
-            <!-- info item -->
             <div class="info__item">
-                <!--datos item-->
                 <div class="item__datos">
                     <div class="datos__linea">
-                        <p class="texto-centrar texto-grande">{{$importeEnPalabras}}<span> PESOS</span></p>
+                        <p class="texto-centrar texto-grande">{{ $importeEnPalabras }}<span> PESOS</span></p>
                     </div>
                 </div>
-                <!--fin datos item-->
             </div>
-
-            <!-- info item -->
             <div class="info__item fecha__item">
-                <!--datos item-->
                 <div class="item__datos">
                     <p class="datos__negrita">Fecha recibo: </p>
                     <div class="datos__linea">
-                        <p>{{$fecha_formateada}}</p>
+                        <p>{{ $fecha_formateada }}</p>
                     </div>
                 </div>
-                <!--fin datos item-->
                 <div class="item__datos">
                     <p class="datos__negrita">Fecha deposito: </p>
                     <div class="datos__linea">
-                        <p>{{$fecha_formateada}}</p>
+                        <p>{{ $fecha_formateada }}</p>
                     </div>
                 </div>
             </div>
-
-            <!-- info item -->
             <div class="info__item">
-                <!--datos item-->
                 <div class="item__datos">
                     <p class="datos__negrita">Observaciones: </p>
                     <div class="datos__linea">
-                        <p class="texto-centrar">{{$pago->descripcion}}</p>
+                        <p class="texto-centrar">{{ $transaccion->descripcion }}</p>
                     </div>
                 </div>
-                <!--fin datos item-->
             </div>
         </div>
-
+        
         <div class="recibo__firmas centrarQR">
             <div class="header-recibo__QR firmas__QR">
                 <p>Folio</p>
                 <div id="contenedorQR1" class="logo__img"></div>
-                <p class="idFolio">{{$pago->id_cliente}}</p>
+                <p class="idFolio">{{ $transaccion->id_cliente }}</p>
             </div>
-
+        
             <div class="firmas_firma">
                 <div class="firma__texto">
                     <p class="datos__negrita">C.P. Jose Javier Hernandez Perales</p>
                     <p>Firma</p>
                 </div>
             </div>
-
+        
             <div class="header-recibo__QR firmas__QR">
-                <p>No. Pago</p>
+                <p>No. {{ ucfirst($tipo) }}</p>
                 <div id="contenedorQR2" class="logo__img"></div>
-                <p class="idPago">{{$pago->id}}</p>
+                <p class="idPago">{{ $transaccion->id }}</p>
             </div>
         </div>
-
-        <!--Separador ALV-->
+        
+        
         <div class="separador"></div>
-
+        
         <header class="header-recibo">
             <div class="header-recibo__logo">
                 <img class="logo__img" src="{{asset('img/logoB.png')}}" alt="logo benita galeana">
             </div>
-
+        
             <div class="header-recibo__info">
                 <h1 class="info__titulo">Unión Popular Benita Galeana, A C.</h1>
                 <h5>R.C.F UPB-981</h5>
@@ -457,20 +432,19 @@
             </div>
             <div class="numero__datos">
                 <p>Sucursal Bancaria</p>
-                <p>{{$pago->referencia_pago}}</p>
+                <p>{{ $transaccion->referencia_pago ?? $transaccion->numero_cheque }}</p>
             </div>
         </header>
-
+        
         <div class="recibo__info">
             <div class="info__item">
                 <!--datos item-->
                 <div class="item__datos">
-                    <!-- Nombre de proyecto-->
                     <p class="datos__negrita">Proyecto: </p>
                     <div class="datos__linea">
                         <p>
-                            @if($pago->proyecto)
-                                {{$pago->proyecto->nombre}}
+                            @if($transaccion->proyecto)
+                                {{ $transaccion->proyecto->nombre }}
                             @else
                                 No aplica
                             @endif
@@ -479,25 +453,25 @@
                 </div>
                 <!--fin datos item-->
             </div>
-
+        
             <!-- info item -->
             <div class="info__item">
                 <!--datos item-->
                 <div class="item__datos">
                     <p class="datos__negrita">Recibi de: </p>
                     <div class="datos__linea texto-grande">
-                        <p>{{$pago->inscripcione->nombre_completo}}</p>
+                        <p>{{ $transaccion->inscripcione->nombre_completo }}</p>
                     </div>
                 </div>
             </div>
-
+        
             <!-- info item -->
             <div class="info__item">
                 <!--datos item-->
                 <div class="item__datos">
                     <p class="datos__negrita">La cantidad de $: </p>
                     <div class="datos__linea">
-                        <p>{{$pago->monto}}<span>.00</span></p>
+                        <p>{{ $transaccion->monto }}<span>.00</span></p>
                     </div>
                 </div>
                 <!--fin datos item-->
@@ -505,23 +479,23 @@
                 <div class="item__datos">
                     <p class="datos__negrita">Por concepto de: </p>
                     <div class="datos__linea">
-                        <p>{{$pago->descripcion}}</p>
+                        <p>{{ ucfirst($tipo) }}</p>
                     </div>
                 </div>
                 <!--fin datos item-->
             </div>
-
+        
             <!-- info item -->
             <div class="info__item">
                 <!--datos item-->
                 <div class="item__datos">
                     <div class="datos__linea">
-                        <p class="texto-centrar texto-grande">{{$importeEnPalabras}} <span> PESOS</span></p>
+                        <p class="texto-centrar texto-grande">{{ $importeEnPalabras }}<span> PESOS</span></p>
                     </div>
                 </div>
                 <!--fin datos item-->
             </div>
-
+        
             <!-- info item -->
             <div class="info__item fecha__item">
                 <!--datos item-->
@@ -539,42 +513,42 @@
                     </div>
                 </div>
             </div>
-
+        
             <!-- info item -->
             <div class="info__item">
                 <!--datos item-->
                 <div class="item__datos">
                     <p class="datos__negrita">Observaciones: </p>
                     <div class="datos__linea">
-                        <p class="texto-centrar">{{$pago->descripcion}}</p>
+                        <p class="texto-centrar">{{ $transaccion->descripcion }}</p>
                     </div>
                 </div>
                 <!--fin datos item-->
             </div>
         </div>
-
+        
         <div class="recibo__firmas centrarQR">
             <div class="header-recibo__QR firmas__QR">
                 <p>Folio</p>
                 <div id="contenedorQR3" class="logo__img"></div>
-                <p class="idFolio">{{$pago->id_cliente}}</p>
+                <p class="idFolio">{{ $transaccion->id_cliente }}</p>
             </div>
-
+        
             <div class="firmas_firma">
                 <div class="firma__texto">
                     <p class="datos__negrita">C.P. Jose Javier Hernandez Perales</p>
                     <p>Firma</p>
                 </div>
             </div>
-
+        
             <div class="header-recibo__QR firmas__QR">
-                <p>No. Pago</p>
+                <p>No. {{ ucfirst($tipo) }}</p>
                 <div id="contenedorQR4" class="logo__img"></div>
-                <p class="idPago">{{$pago->id}}</p>
+                <p class="idPago">{{ $transaccion->id }}</p>
             </div>
         </div>
-
-    </div>
+        
+        </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {

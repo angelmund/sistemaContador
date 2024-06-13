@@ -66,12 +66,20 @@ class ProyectosController extends Controller
         if (Auth::check()) {
             $proyecto = Proyecto::with('inscripciones')->find($id);
 
-            //recorre cada uno de los pagos 
+            // Recorre cada una de las inscripciones
             foreach ($proyecto->inscripciones as $inscripcion) {
+                // Suma los pagos activos del cliente
                 $totalPagos = Pago::where('id_cliente', $inscripcion->id)
-                    ->where('estado', 1) //devulve solo los que tengan un estado =1
-                    ->sum('monto'); //hace la suma de los montos de los pagos 
-                $inscripcion->totalPagos = $totalPagos;
+                    ->where('estado', 1) // Devuelve solo los que tengan un estado = 1
+                    ->sum('monto'); // Hace la suma de los montos de los pagos
+
+                // Suma los cheques activos del cliente
+                $totalCheques = Cheque::where('id_cliente', $inscripcion->id)
+                    ->where('estado', 1) // Devuelve solo los que tengan un estado = 1
+                    ->sum('monto'); // Hace la suma de los montos de los cheques
+
+                // Restar la suma de los cheques activos del total de pagos
+                $inscripcion->totalPagos = $totalPagos - $totalCheques;
             }
 
             return view('proyectos.proyectosTable', compact('proyecto'));
@@ -79,6 +87,7 @@ class ProyectosController extends Controller
             return redirect()->to('/');
         }
     }
+
     public function createProyecto(Request $request)
     {
         if (Auth::check()) {
@@ -90,7 +99,7 @@ class ProyectosController extends Controller
 
 
             try {
-               
+
                 $validator = Validator::make($request->all(), [
                     'claveProyecto_new' => 'required|unique:proyectos,clave_proyecto|max:20',
                 ], ['claveProyecto_new.unique' => 'La clave del proyecto ya existe']);
@@ -169,10 +178,10 @@ class ProyectosController extends Controller
                 // DB::beginTransaction();
                 $proyectos =  proyecto::find($id);
 
-                
 
-                 // Verificamos si el nombre ha sido modificado
-                 if ($request->input('claveProyecto_edit') !== $proyectos->clave_proyecto) {
+
+                // Verificamos si el nombre ha sido modificado
+                if ($request->input('claveProyecto_edit') !== $proyectos->clave_proyecto) {
                     // Si ha sido modificado, validamos que el nuevo nombre sea único
                     $validator = Validator::make($request->all(), [
                         'claveProyecto_edit' => [
