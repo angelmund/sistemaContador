@@ -70,7 +70,7 @@
                 <tbody>
                     @foreach ($cheques as $cheque)
                     <tr>
-                        <td>{{$cheque->id}}</td>
+                        <td>{{$cheque->numero_cheque}}</td>
                         <td>{{$cheque->inscripcione->id }}</td>
                         <td>{{$cheque->inscripcione->nombre_completo}}</td>
                         
