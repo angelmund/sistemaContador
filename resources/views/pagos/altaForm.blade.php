@@ -122,7 +122,7 @@
                             <input type="text" class="form-control" id="montLetra" name="montLetra" readonly required>
                         </div>
 
-                        <div class="mb-3 observaciones">
+                        <div class="mb-3">
                             <label for="observaciones" class="form-label">Observaciones:</label>
                             <textarea type="text" class="form-control" id="observaciones" name="observaciones"
                                 required></textarea>
