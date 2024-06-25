@@ -57,7 +57,7 @@
                         </div>
                         <div class="mb-3">
                             <label for="noSolicitud" class="form-label">Número solicitud Ingreso:</label>
-                            <input type="text" class="form-control" id="noSolicitud" name="noSolicitud" >
+                            <input type="text" class="form-control" id="noSolicitud" name="noSolicitud" value="Ninguno">
                         </div>
                         <div class="mb-3">
                             <label for="fechaDeposito" class="form-label">Fecha de Depósito:</label>

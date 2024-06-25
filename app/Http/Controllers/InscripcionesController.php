@@ -199,17 +199,23 @@ class InscripcionesController extends Controller
         // Instanciar con NumeroALetras para pasar del número a como se escribe
         $formatter = new NumeroALetras();
 
-        // Convertir el número a palabras
-        $importeEnPalabras = $formatter->toWords($inscripcion->importe);
+        // Verificar si el importe está en el rango de 1000 a 1999
+        if ($inscripcion->importe >= 1000 && $inscripcion->importe < 2000) {
+            // Agregar "un" antes de "mil" para el rango especificado
+            $importeEnPalabras = "un " . $formatter->toWords($inscripcion->importe - 1000);
+            // Asegurar que si el importe es exactamente 1000, solo se diga "un mil"
+            if ($inscripcion->importe == 1000) {
+                $importeEnPalabras = "un mil";
+            }
+        } else {
+            // Convertir el número a palabras normalmente
+            $importeEnPalabras = $formatter->toWords($inscripcion->importe);
+        }
 
         // Convertir la fecha a un objeto Carbon
         $fecha_deposito = Carbon::parse($inscripcion->fecha_deposito);
-
         $fecha_regist = Carbon::parse($inscripcion->fecha_registro);
-
         $fecha_regis = $fecha_regist->isoFormat('dddd, D [de] MMMM [del] YYYY');
-
-        // Formatea la fecha en D-m-y
         $fecha_formateada = $fecha_deposito->isoFormat('dddd, D [de] MMMM [del] YYYY');
 
         // Pasar ambas variables a la vista
@@ -378,7 +384,7 @@ class InscripcionesController extends Controller
 
         if (Auth::check()) {
             // dd($request->all());
-            
+
             try {
                 DB::beginTransaction();
                 // dd($request->all());

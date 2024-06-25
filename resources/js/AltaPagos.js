@@ -93,6 +93,10 @@ function handleResponse(data, tipo) {
         case 1:
             const url = $('#url').val();
             if (tipo === 'pago') {
+                setTimeout(function () {
+                    document.getElementById('formAlta-pagos').reset();
+                    window.location.reload();
+                }, 1000); // Espera 1 segundo
                 // Abre la URL de la vista en una nueva pestaña
                 const vistaUrl = url + '/formatoPago/' + data.pagoId;
                 window.open(vistaUrl, '_blank');

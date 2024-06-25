@@ -352,9 +352,9 @@
             </div>
             <div class="info__item">
                 <div class="item__datos">
-                    <p class="datos__negrita">La cantidad de $: </p>
+                    <p class="datos__negrita">La cantidad de: </p>
                     <div class="datos__linea">
-                        <p>{{ $transaccion->monto }}<span>.00</span></p>
+                        <p>${{ number_format($transaccion->monto , 0, '.', ',') }}<span>.00</span></p>
                     </div>
                 </div>
                 <div class="item__datos">
@@ -469,9 +469,9 @@
             <div class="info__item">
                 <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">La cantidad de $: </p>
+                    <p class="datos__negrita">La cantidad de:</p>
                     <div class="datos__linea">
-                        <p>{{ $transaccion->monto }}<span>.00</span></p>
+                        <p>${{ number_format($transaccion->monto , 0, '.', ',') }}<span>.00</span></p>
                     </div>
                 </div>
                 <!--fin datos item-->

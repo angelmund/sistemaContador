@@ -27,7 +27,7 @@ $(document).ready(function () {
                 $('#numeroChequePago').val('').removeClass('is-invalid is-valid');
                 $('#NumeroCuentaBancaria').val('').removeClass('is-invalid is-valid');
             }
-            
+
         }
 
         const nCuenta = document.querySelector('#NumeroCuentaBancaria');
@@ -169,13 +169,22 @@ $(document).ready(function () {
         }
 
         function unidadesdemillar(unimill, centena, decena, unidad) {
-            var numero = unidades(unimill) + " MIL " + centenas(centena, decena, unidad);
-            numero = numero.replace("UN  MIL ", "MIL ");
-            if (unidad == 0) {
-                return numero.replace(" Y ", " ");
-            } else {
-                return numero;
+            // Primero, verifica si el número completo es 1000.
+            if (unimill == 1 && centena == 0 && decena == 0 && unidad == 0) {
+                return 'MIL';
             }
+
+            var numero = unidades(unimill) + " MIL " + centenas(centena, decena, unidad);
+            // Asegúrate de que la sustitución de "UN MIL" por "MIL" se maneje correctamente.
+            numero = numero.replace("UN MIL ", "MIL ").trim();
+
+            // La condición para eliminar " Y " parece estar fuera de lugar, ya que no se relaciona con el problema de "UN MIL".
+            // Ajusta según sea necesario para tu lógica específica.
+            if (unidad == 0) {
+                numero = numero.replace(" Y ", " ");
+            }
+
+            return numero;
         }
 
         function decenasdemillar(decemill, unimill, centena, decena, unidad) {

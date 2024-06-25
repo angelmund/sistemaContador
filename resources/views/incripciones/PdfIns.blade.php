@@ -344,7 +344,7 @@
                 <div class="item__datos">
                     <p class="datos__negrita">Importe: </p>
                     <div class="datos__linea">
-                        <p>{{ $inscripcion->importe }}</p>
+                        <p> ${{ number_format($inscripcion->importe , 0, '.', ',') }}</p>
                     </div>
                 </div>
                 <!--fin datos item-->
@@ -352,7 +352,7 @@
                 <div class="item__datos">
                     <p class="datos__negrita">No. Solicitud: </p>
                     <div class="datos__linea">
-                        <p>{{ $inscripcion->numero_solicitud }}</p>
+                        <p>{{ $inscripcion->numero_solicitud }} </p>
                     </div>
                 </div>
                 <!--fin datos item-->
@@ -515,7 +515,7 @@
                 <div class="item__datos">
                     <p class="datos__negrita">Importe: </p>
                     <div class="datos__linea">
-                        <p>{{ $inscripcion->importe }}</p>
+                        <p>${{ number_format($inscripcion->importe , 0, '.', ',') }}</p>
                     </div>
                 </div>
                 <!--fin datos item-->

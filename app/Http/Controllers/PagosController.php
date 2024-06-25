@@ -249,7 +249,19 @@ class PagosController extends Controller
         $formatter = new NumeroALetras();
 
         // Convertir el número a palabras
-        $importeEnPalabras = $transaccion->monto == 0 ? 'Monto no especificado' : $formatter->toWords($transaccion->monto);
+        if ($transaccion->monto >= 1000 && $transaccion->monto < 2000) {
+            // Agregar "un" antes de "mil" para el rango especificado
+            $importeEnPalabras = "un " . $formatter->toWords($transaccion->monto - 1000);
+            // Asegurar que si el monto es exactamente 1000, solo se diga "un mil"
+            if ($transaccion->monto == 1000) {
+                $importeEnPalabras = "un mil";
+            }
+        } elseif ($transaccion->monto == 0) {
+            $importeEnPalabras = 'Monto no especificado';
+        } else {
+            // Convertir el número a palabras normalmente
+            $importeEnPalabras = $formatter->toWords($transaccion->monto);
+        }
 
         // Convertir la fecha a un objeto Carbon
         $fecha_deposito = Carbon::parse($transaccion->fecha);

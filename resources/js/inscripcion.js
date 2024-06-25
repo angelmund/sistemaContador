@@ -255,11 +255,13 @@ if ($('#form-inscripciones').length > 0) {
         function inicializarValoresInscripcion() {
             inscripcion.concepto = conceptoN.value.trim();
             inscripcion.importeInscripcion = importeinscripcionN.value.trim();
+            inscripcion.noSolicitud = nosolicitudN.value.trim();
 
 
             // Disparar manualmente el evento input en los campos que ya tienen valores
             validarFormulario({ target: conceptoN });
             validarFormulario({ target: importeinscripcionN });
+            validarFormulario({ target: nosolicitudN });
 
             comprobarFormulario(); // Verificar el estado del formulario
         }
@@ -303,6 +305,11 @@ if ($('#form-inscripciones').length > 0) {
 
         nosolicitudN.addEventListener('input', function (e) {
             let valor = this.value.trim(); // Obtener el valor actual del campo y eliminar espacios en blanco
+        
+            // Verificar si el valor es "Ninguno" y, en ese caso, salir de la función
+            if (valor.toLowerCase() === 'ninguno') {
+                return;
+            }
         
             // Eliminar caracteres no deseados (todo excepto números y letras)
             valor = valor.replace(/[^a-zA-Z0-9]/g, '');

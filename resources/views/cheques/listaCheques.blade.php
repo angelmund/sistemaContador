@@ -77,7 +77,7 @@
                         <td>
                             <span style="color: {{ $cheque->estado == 1 ? 'red' : 'green' }};">
                                 @if($cheque->estado == 1)
-                                - ${{$cheque->monto}}
+                                - ${{ number_format($cheque->monto, 0, '.', ',') }}
                                 @else
                                 $0
                                 @endif
@@ -121,7 +121,7 @@
                         <td>
                             <span style="color: {{ $pago->estado == 1 ? 'green' : 'blue' }};">
                                 @if($pago->estado == 1)
-                                ${{$pago->monto}}
+                                 ${{ number_format($pago->monto, 0, '.', ',') }}
                                 @else
                                 $0
                                 @endif
