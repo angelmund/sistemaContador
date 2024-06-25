@@ -1,4 +1,4 @@
-import { confirSave } from "./alertas";
+import { confirSave, alertaInfo} from "./alertas";
 import Swal from 'sweetalert2';
 // Verifica si hay elementos que requieren form-proyecto en la página actual
 if ($('#form-proyecto').length > 0) {
@@ -104,17 +104,36 @@ if ($('#form-proyecto').length > 0) {
                 alerta.remove();
             }
         }
+         // Función para inicializar los valores de inscripcion con los del formulario
+         function inicializarValoresProyecto() {
+            proyecto.cantParticipantes_new = cantParticipantesN.value.trim();
+            
+
+
+            // Disparar manualmente el evento input en los campos que ya tienen valores
+            validarFormulario({ target: cantParticipantesN });
+
+            comprobarFormulario(); // Verificar el estado del formulario
+        }
+        inicializarValoresProyecto(); 
 
         presupuestoNew.addEventListener('input', function (e) {
             // Obtener el valor actual del campo
             let valor = e.target.value;
-
+        
             // Quitar cualquier coma existente
             valor = valor.replace(/,/g, '');
-
+        
+            // Verificar si el valor es un número
+            if (isNaN(valor) || valor.trim() === '') {
+                alertaInfo("Solo se admiten números");
+                e.target.value = ''; // Dejar el campo vacío si no es un número
+                return; // Salir de la función para no seguir procesando
+            }
+        
             // Formatear el número con comas cada 3 dígitos
             valor = Number(valor).toLocaleString();
-
+        
             // Actualizar el valor del campo
             e.target.value = valor;
         });
@@ -184,6 +203,7 @@ if ($('#form-proyecto').length > 0) {
                             timerProgressBar: true
                         });
                         setTimeout(function () {
+                            document.getElementById('form-proyecto').reset();
                             window.location.reload();
                         }, 1000);
                         break;

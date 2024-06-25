@@ -13,41 +13,41 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="claveProyecto_new" class="form-label">Clave Proyecto:</label>
-                                <input type="text" class="form-control" id="claveProyecto_new" name="claveProyecto_new" value="">
+                                <input type="text" class="form-control" id="claveProyecto_new" name="claveProyecto_new" value="" placeholder="Ingrese la clave del proyecto">
                                 
                             </div>
                             <div class="mb-3">
                                 <label for="nombre_new" class="form-label">Nombre Completo:</label>
-                                <input type="text" class="form-control @error ('nombre_new') border-red-500 @enderror" id="nombre_new" name="nombre_new" value="" >
+                                <input type="text" class="form-control @error ('nombre_new') border-red-500 @enderror" id="nombre_new" name="nombre_new" value="" placeholder="Ingres eel nombre del proyecto">
                                 @error('nombre_new')
                                    <p class="bg-red-500 text-white my-2 rounded-lg text-sm p-2 text-center"> {{$message}} </p> 
                                 @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="descripcion_new" class="form-label">Descripción:</label>
-                                <input type="text" class="form-control" id="descripcion_new" name="descripcion_new" value="">
+                                <input type="text" class="form-control" id="descripcion_new" name="descripcion_new" value="" placeholder="Ingrese una descripción">
                                 
                             </div>
                             <div class="mb-3">
                                 <label for="nombreEncargado_new" class="form-label">Nombre Encargado:</label>
-                                <input type="text" class="form-control" id="nombreEncargado_new" name="nombreEncargado_new" value="">
+                                <input type="text" class="form-control" id="nombreEncargado_new" name="nombreEncargado_new" value="" placeholder="Ingrese el nombre del encargado">
                                 
                             </div>
                             <div class="mb-3">
                                 <label for="ubicacion_new" class="form-label">Ubicación:</label>
-                                <input type="text" class="form-control" id="ubicacion_new" name="ubicacion_new" value="">
+                                <input type="text" class="form-control" id="ubicacion_new" name="ubicacion_new" value="" placeholder="Ingrese la ubicación">
                                 
                             </div>
                             <div class="mb-3">
                                 <label for="cantParticipantes_new" class="form-label">Cantidad Máxima Participantes:</label>
-                                <input type="number" class="form-control" id="cantParticipantes_new" name="cantParticipantes_new" value="1">
+                                <input type="number" class="form-control" id="cantParticipantes_new" name="cantParticipantes_new" value="1" placeholder="Ingrese la cantidad máxima de participantes">
                                 
                                 
                             </div>
                             
                             <div class="mb-3">
                                 <label for="presupuestoN" class="form-label">Presupuesto:</label>
-                                <input type="text" class="form-control" id="presupuestoN" name="presupuestoN" placeholder="Ingrese números decimales">
+                                <input type="text" class="form-control" id="presupuestoN" name="presupuestoN" placeholder="Ingrese el presupuesto">
                                 
                             </div>
                             
