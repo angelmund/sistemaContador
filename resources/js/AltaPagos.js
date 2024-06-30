@@ -48,7 +48,7 @@ async function saveCheque() {
     const url = $('#url').val();
     const formData = new FormData($('#formAlta-pagos')[0]);
     formData.append('id_proyecto', $('#id_proyecto').val());
-    // console.log(formData);
+    //console.log(formData);
     try {
         const response = await fetch(url + '/listaPagos/ingreso', {
             method: 'POST',
@@ -72,7 +72,7 @@ async function savePago() {
     formData.append('observaciones', $('#observaciones').val());
     formData.append('id_cliente', $('#id_cliente').val());
     formData.append('id_proyecto', $('#id_proyecto').val());
-    // console.log(formData);
+    //  console.log(formData);
     try {
         const response = await fetch(url + '/listaPagos/ingreso', {
             method: 'POST',

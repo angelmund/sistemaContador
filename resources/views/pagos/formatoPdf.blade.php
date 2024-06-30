@@ -360,7 +360,7 @@
                 <div class="item__datos">
                     <p class="datos__negrita">Por concepto de: </p>
                     <div class="datos__linea">
-                        <p>{{ ucfirst($tipo) }}</p>
+                        <p>{{ $transaccion->tipo_concepto }}</p>
                     </div>
                 </div>
             </div>
@@ -479,7 +479,7 @@
                 <div class="item__datos">
                     <p class="datos__negrita">Por concepto de: </p>
                     <div class="datos__linea">
-                        <p>{{ ucfirst($tipo) }}</p>
+                        <p>{{ $transaccion->tipo_concepto }}</p>
                     </div>
                 </div>
                 <!--fin datos item-->

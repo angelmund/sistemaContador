@@ -17,12 +17,17 @@ $(document).ready(function () {
             var conceptoPago = $('#concepto_pago').val();
             if (conceptoPago === 'cheque') {
                 $('.cheque').removeClass('d-none'); // Mostrar los elementos
+                $('.pago').addClass('d-none'); //BNo Mostrar los elementos
                 $('#numeroChequePago').prop('required', true); // Hacer obligatorio el campo
+                $('#referencia').prop('required', false); // Hacer obligatorio el campo
                 $('#NumeroCuentaBancaria').prop('required', true); // Hacer obligatorio el campo
+                $('#referencia').val('').removeClass('is-invalid is-valid');
             } else {
                 $('.cheque').addClass('d-none'); // Ocultar los elementos
+                $('.pago').removeClass('d-none');
                 $('#numeroChequePago').prop('required', false); // No hacer obligatorio el campo
                 $('#NumeroCuentaBancaria').prop('required', false); // No hacer obligatorio el campo
+                $('#referencia').prop('required', true); // Hacer obligatorio el campo
                 // Limpiar y quitar clases de validación
                 $('#numeroChequePago').val('').removeClass('is-invalid is-valid');
                 $('#NumeroCuentaBancaria').val('').removeClass('is-invalid is-valid');
@@ -30,7 +35,7 @@ $(document).ready(function () {
 
         }
 
-        const nCuenta = document.querySelector('#NumeroCuentaBancaria');
+        // const nCuenta = document.querySelector('#NumeroCuentaBancaria');
 
 
         document.getElementById('monto').addEventListener('input', function () {
@@ -220,15 +225,15 @@ $(document).ready(function () {
             return contenido;
         }
 
-        nCuenta.addEventListener('input', function (e) {
-            // Obtener el valor actual del campo
-            let valor = this.value.trim();
+        // nCuenta.addEventListener('input', function (e) {
+        //     // Obtener el valor actual del campo
+        //     let valor = this.value.trim();
 
-            if (!/^[0-9,]+$/.test(valor)) {
-                alertaInfo('Solo puede ingresar números');
-                this.value = valor.replace(/[^0-9,]/g, ''); // Elimina caracteres no numéricos
-            }
-        });
+        //     if (!/^[0-9,]+$/.test(valor)) {
+        //         alertaInfo('Solo puede ingresar números');
+        //         this.value = valor.replace(/[^0-9,]/g, ''); // Elimina caracteres no numéricos
+        //     }
+        // });
 
 
 

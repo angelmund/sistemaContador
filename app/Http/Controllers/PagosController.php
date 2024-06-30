@@ -16,6 +16,8 @@ use App\Models\Proyecto;
 use App\Models\User;
 use Exception;
 use Luecano\NumeroALetras\NumeroALetras;
+use Illuminate\Validation\Rule;
+use Illuminate\Support\Facades\Validator;
 
 class PagosController extends Controller
 {
@@ -75,21 +77,22 @@ class PagosController extends Controller
     public function nuevoIngreso(Request $request)
     {
         if (Auth::check()) {
-            $request->validate([
-                'numeroChequePago' => 'required_if:conceptoPago,cheque',
-                'NumeroCuentaBancaria' => 'required_if:conceptoPago,cheque',
-                'referencia' => 'required',
-                'monto' => 'required|numeric',
-            ], [
-                'numeroChequePago.required_if' => 'El campo es requerido',
-                'NumeroCuentaBancaria.required_if' => 'El campo es requerido',
-                'referencia.required' => 'El campo es requerido',
-                'monto.required' => 'El campo es requerido',
-                'monto.numeric' => 'El campo debe ser numérico',
-            ]);
+
 
             try {
-                // dd($request->all());
+                $validator = Validator::make($request->all(), [
+                    'numeroChequePago' => 'required|string|max:100',
+                    'tipo_concepto' => 'required|string|max:20',
+                    'monto' => 'required|numeric|regex:/^\d{1,8}(\.\d{1,2})?$/',
+                    'observaciones' => 'required|string|max:100',
+                ],);
+    
+                if ($validator->fails()) {
+                    return response()->json([
+                        'mensaje' => $validator->errors()->first(),
+                        'idnotificacion' => 3
+                    ]);
+                }
                 DB::beginTransaction();
 
                 $conceptoPago = $request->input('conceptoPago');
@@ -106,11 +109,12 @@ class PagosController extends Controller
                     $pago->monto = $request->input('monto');
                     $pago->referencia_pago  = $request->input('referencia');
                     $pago->descripcion = $request->input('observaciones');
+                    $pago->tipo_concepto = $request->input('tipo_concepto');
                     $pago->id_cliente = $id_cliente;
                     $pago->id_proyecto = $request->input('id_proyecto');
                     $pago->id_usuario = Auth::id();
                     $pago->estado = 1;
-
+                    // dd($pago);
                     $pago->save();
 
                     DB::commit();
@@ -149,10 +153,12 @@ class PagosController extends Controller
                         $cheque->hora = \Carbon\Carbon::now()->format('H:i:s');
                         $cheque->numero_cheque = $request->input('numeroChequePago');
                         $cheque->monto = $request->input('monto');
-                        $cheque->numero_cuentabancaria = $request->input('NumeroCuentaBancaria');
+                        $cheque->tipo_concepto = $request->input('tipo_concepto');
+                        $cheque->observaciones = $request->input('observaciones');
                         $cheque->id_cliente = $id_cliente;
                         $cheque->id_proyecto = $request->input('id_proyecto');
                         $cheque->id_usuario = Auth::id();
+                        // dd($cheque);
                         $cheque->save();
                         DB::commit();
 

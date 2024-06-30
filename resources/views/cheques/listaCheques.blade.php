@@ -56,9 +56,12 @@
                 <thead>
                     <tr>
                         <th class="centrar">N&uacute;mero</th>
+                        
                         <th class="centrar">Folio del cliente</th>
                         <th class="centrar">Cliente</th>
                         <th class="centrar">Monto</th>
+                        <th class="centrar">Concepto tipo</th>
+                        <th class="centrar">Concepto</th>
                         <th class="centrar">Clave de proyecto</th>
                         <th class="centrar">Fecha del pago</th>
                         <th class="centrar">Nombre de proyecto</th>
@@ -71,6 +74,7 @@
                     @foreach ($cheques as $cheque)
                     <tr>
                         <td>{{$cheque->numero_cheque}}</td>
+                        
                         <td>{{$cheque->inscripcione->id }}</td>
                         <td>{{$cheque->inscripcione->nombre_completo}}</td>
                         
@@ -83,9 +87,12 @@
                                 @endif
                             </span>
                         </td>
+                        <td>{{$cheque->tipo_concepto}}</td>
+                        <td>Cheque</td>
                         <td>{{$cheque->proyecto->clave_proyecto ?? 'No aplica'}}</td>
                         <td>{{ \Carbon\Carbon::parse($cheque->fecha)->format('d/m/Y') }}</td>
                         <td> {{$cheque->proyecto->nombre ?? 'No aplica'}}</td>
+                        
                         <td>
                             <span class="badge rounded-pill"
                                 style="background-color: {{ $cheque->estado == 1 ? 'green' : 'red' }}; color: white;">
@@ -95,7 +102,7 @@
                         <td>{{ $cheque->user->name ?? 'Usuario no encontrado' }}</td>
                         <td>
                             <!-- Para los cheques -->
-                            <a href="{{ route('pagos.formato', $cheque->id) }}" class="btn btn-warning"><i class="fas fa-download"></i></a>
+                            {{--  <a href="{{ route('pagos.formato', $cheque->id) }}" class="btn btn-warning"><i class="fas fa-download"></i></a>  --}}
                             <a href="{{ route('personaPagos.inscripcion', ['id' => $cheque->inscripcione->id]) }}" class="btn btn-success">
                                 <i class="fas fa-dollar-sign"></i>
                             </a>
@@ -115,6 +122,7 @@
                     @foreach ($pagos as $pago)
                     <tr>
                         <td>{{$pago->id}}</td>
+                        
                         <td>{{$pago->inscripcione->id}}</td>
                         <td>{{$pago->inscripcione->nombre_completo}}</td>
                         
@@ -128,9 +136,12 @@
                             </span>
 
                         </td>
+                        <td>{{$pago->tipo_concepto ?? 'No aplica'}}</td>
+                        <td>Pago</td>
                         <td>{{$pago->proyecto->clave_proyecto ?? 'No aplica'}}</td>
                         <td>{{ \Carbon\Carbon::parse($pago->fecha)->format('d/m/Y') }}</td>
                         <td>{{$pago->proyecto->nombre ?? 'No aplica'}}</td>
+                        
                         <td>
                             <span class="badge rounded-pill"
                                 style="background-color: {{ $pago->estado == 1 ? 'green' : 'red' }}; color: white;">

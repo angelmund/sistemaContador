@@ -92,7 +92,7 @@
                             </div>
 
                         </div>
-                        <div class="mb-3 cheque d-none">
+                        {{--  <div class="mb-3 cheque d-none">
                             <label for="NumeroCuentaBancaria" class="form-label">Numero Cuenta Bancaria:</label>
                             <input type="text" class="form-control" id="NumeroCuentaBancaria"
                                 name="NumeroCuentaBancaria" required>
@@ -100,13 +100,21 @@
                             <div class="invalid-feedback">
                                 Por favor agregue un número de cuenta.
                             </div>
-                        </div>
-                        <div class="mb-3">
+                        </div>  --}}
+                        <div class="mb-3 pago d-none">
                             <label for="referencia" class="form-label">Referencia Pago:</label>
                             <input type="text" class="form-control" id="referencia" name="referencia" required>
                             <div class="valid-feedback"></div>
                             <div class="invalid-feedback">
                                 Por favor ingrese una referencia de pago.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tipo_concepto" class="form-label">Tipo de concepto:</label>
+                            <input type="text" class="form-control" id="tipo_concepto" name="tipo_concepto" required>
+                            <div class="valid-feedback"></div>
+                            <div class="invalid-feedback">
+                                Por favor ingrese un tipo de concepto.
                             </div>
                         </div>
                         <div class="mb-3">
