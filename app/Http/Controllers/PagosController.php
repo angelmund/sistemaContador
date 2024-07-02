@@ -80,20 +80,7 @@ class PagosController extends Controller
 
 
             try {
-                $validator = Validator::make($request->all(), [
-                    'numeroChequePago' => 'required|string|max:100',
-                    'tipo_concepto' => 'required|string|max:20',
-                    'monto' => 'required|numeric|regex:/^\d{1,8}(\.\d{1,2})?$/',
-                    'observaciones' => 'required|string|max:100',
-                ],);
-    
-                if ($validator->fails()) {
-                    return response()->json([
-                        'mensaje' => $validator->errors()->first(),
-                        'idnotificacion' => 3
-                    ]);
-                }
-                DB::beginTransaction();
+                
 
                 $conceptoPago = $request->input('conceptoPago');
                 $id_cliente = $request->input('id_cliente');
@@ -102,6 +89,20 @@ class PagosController extends Controller
                 $sumaPagos = Pago::where('id_cliente', $id_cliente)->sum('monto');
 
                 if ($conceptoPago === 'pago') {
+                    $validator = Validator::make($request->all(), [
+                        // 'numeroChequePago' => 'required|string|max:100',
+                        'tipo_concepto' => 'required|string|max:20',
+                        'monto' => 'required|numeric|regex:/^\d{1,8}(\.\d{1,2})?$/',
+                        'observaciones' => 'required|string|max:100',
+                    ],);
+        
+                    if ($validator->fails()) {
+                        return response()->json([
+                            'mensaje' => $validator->errors()->first(),
+                            'idnotificacion' => 3
+                        ]);
+                    }
+                    DB::beginTransaction();
                     // Guardar en la tabla de pagos 
                     $pago = new Pago();
                     $pago->fecha = \Carbon\Carbon::now();
@@ -147,6 +148,20 @@ class PagosController extends Controller
                             'idnotificacion' => 2
                         ]);
                     } else {
+                        $validator = Validator::make($request->all(), [
+                            'numeroChequePago' => 'required|string|max:100',
+                            'tipo_concepto' => 'required|string|max:20',
+                            'monto' => 'required|numeric|regex:/^\d{1,8}(\.\d{1,2})?$/',
+                            'observaciones' => 'required|string|max:100',
+                        ],);
+            
+                        if ($validator->fails()) {
+                            return response()->json([
+                                'mensaje' => $validator->errors()->first(),
+                                'idnotificacion' => 3
+                            ]);
+                        }
+                        DB::beginTransaction();
                         // Guardar el cheque
                         $cheque = new Cheque();
                         $cheque->fecha = \Carbon\Carbon::today();
