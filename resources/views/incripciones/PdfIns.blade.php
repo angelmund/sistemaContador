@@ -89,7 +89,7 @@
         }
 
         .separador {
-            margin: 2.5rem 0;
+            margin-top: 4rem;
             border: 1px dashed #000;
         }
 
@@ -236,7 +236,6 @@
 
         .recibo-terminos {
             margin: 2rem;
-            0;
             text-align: center;
             font-size: 1rem;
         }
@@ -256,6 +255,14 @@
         .letras-grandes {
             text-transform: uppercase;
         }
+
+        .margin-bajo {
+            margin-bottom: 2rem;
+        }
+
+        .margin-arriba {
+            margin-top: 2.5rem;
+        }
     </style>
 
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
@@ -273,10 +280,10 @@
             </div>
 
             <div class="header-recibo__info">
-                <h1 class="info__titulo">Unión Popular Benita Galeana, A C.</h1>
-                <h5>R.C.F UPB-981</h5>
-                <p class="info__texto">Holbein No. 75 Col San Juan C.P. 03730 Alcaldia Benito Juarez. Ciudad Mexico</p>
-                <p class="info__texto">Horarios de Atencion 5:00 pm - 8:00 pm Tel: 55 8952 8891</p>
+                <h1 class="info__titulo">Unión Popular Benita Galeana, A.C.</h1>
+                <p class="info__texto">CANELA No. 423 COL. GRANJAS MEXICO C.P. 08400</p>
+                <p class="info__texto">ALCALDIA IZTACALCO, CIUDAD DE MEXICO</p>
+                <p class="info__texto">TELEFONO.: 55-8940-7651</p>
             </div>
 
             <div class="header-recibo__QR">
@@ -287,7 +294,7 @@
 
         <div class="recibo__info">
             <!-- info item -->
-            <div class="info__item">
+            <div class="info__item-fechas">
                 <!--datos item-->
                 <div class="item__datos">
                     <p class="datos__negrita">Nombre: </p>
@@ -296,6 +303,12 @@
                     </div>
                 </div>
                 <!--fin datos item-->
+                <div class="item__datos">
+                    <p class="datos__negrita">No. Solicitud: </p>
+                    <div class="datos__linea">
+                        <p>{{ $inscripcion->numero_solicitud }} </p>
+                    </div>
+                </div>
             </div>
             <!-- Fin datos -->
 
@@ -349,15 +362,22 @@
                 </div>
                 <!--fin datos item-->
                 <!--datos item-->
+                
+                <!--fin datos item-->
+            </div>
+            <!-- Fin datos -->
+            <!-- Fin datos -->
+            <!-- info item -->
+            <div class="info__item">
+                <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">No. Solicitud: </p>
+                    <p class="datos__negrita">Importe en texto: </p>
                     <div class="datos__linea">
-                        <p>{{ $inscripcion->numero_solicitud }} </p>
+                        <p class="texto-centrar letras-grandes">{{ $importeEnPalabras}} PESOS</p>
                     </div>
                 </div>
                 <!--fin datos item-->
             </div>
-            <!-- Fin datos -->
             <!-- info item -->
             <div class="info__item-fechas ">
                 <!--datos item-->
@@ -377,19 +397,6 @@
                 </div>
                 <!--fin datos item-->
             </div>
-            <!-- Fin datos -->
-            <!-- info item -->
-            <div class="info__item">
-                <!--datos item-->
-                <div class="item__datos">
-                    <p class="datos__negrita">Importe en texto: </p>
-                    <div class="datos__linea">
-                        <p class="texto-centrar letras-grandes">{{ $importeEnPalabras}} PESOS</p>
-                    </div>
-                </div>
-                <!--fin datos item-->
-            </div>
-
             <!-- info item -->
             <div class="info__item">
                 <!--datos item-->
@@ -438,16 +445,16 @@
         <div class="separador"></div>
 
         <!--Contenedor 2-->
-        <header class="header-recibo">
+        <header class="header-recibo margin-arriba">
             <div class="header-recibo__logo">
                 <img class="logo__img" src="{{asset('img/logoB.png')}}" alt="logo benita galeana">
             </div>
 
             <div class="header-recibo__info">
-                <h1 class="info__titulo">Unión Popular Benita Galeana, A C.</h1>
-                <h5>R.C.F UPB-981</h5>
-                <p class="info__texto">Holbein No. 75 Col San Juan C.P. 03730 Alcaldia Benito Juarez. Ciudad Mexico</p>
-                <p class="info__texto">Horarios de Atencion 5:00 pm - 8:00 pm Tel: 55 8952 8891</p>
+                <h1 class="info__titulo">Unión Popular Benita Galeana, A.C.</h1>
+                <p class="info__texto">CANELA No. 423 COL. GRANJAS MEXICO C.P. 08400</p>
+                <p class="info__texto">ALCALDIA IZTACALCO, CIUDAD DE MEXICO</p>
+                <p class="info__texto">TELEFONO.: 55-8940-7651</p>
             </div>
 
             <div class="header-recibo__QR">
@@ -458,7 +465,8 @@
 
         <div class="recibo__info">
             <!-- info item -->
-            <div class="info__item">
+            <!-- info item -->
+            <div class="info__item-fechas">
                 <!--datos item-->
                 <div class="item__datos">
                     <p class="datos__negrita">Nombre: </p>
@@ -467,7 +475,14 @@
                     </div>
                 </div>
                 <!--fin datos item-->
+                <div class="item__datos">
+                    <p class="datos__negrita">No. Solicitud: </p>
+                    <div class="datos__linea">
+                        <p>{{ $inscripcion->numero_solicitud }} </p>
+                    </div>
+                </div>
             </div>
+            <!-- Fin datos -->
             <!-- Fin datos -->
 
             <!-- info item -->
@@ -519,16 +534,20 @@
                     </div>
                 </div>
                 <!--fin datos item-->
+            </div>
+            <!-- Fin datos -->
+            <!-- info item -->
+            <div class="info__item">
                 <!--datos item-->
                 <div class="item__datos">
-                    <p class="datos__negrita">No. Solicitud: </p>
+                    <p class="datos__negrita">Importe en texto: </p>
                     <div class="datos__linea">
-                        <p>{{ $inscripcion->numero_solicitud }}</p>
+                        <p class="texto-centrar letras-grandes">{{ $importeEnPalabras }} PESOS</p>
                     </div>
                 </div>
                 <!--fin datos item-->
             </div>
-            <!-- Fin datos -->
+
             <!-- info item -->
             <div class="info__item-fechas ">
                 <!--datos item-->
@@ -549,17 +568,6 @@
                 <!--fin datos item-->
             </div>
             <!-- Fin datos -->
-            <!-- info item -->
-            <div class="info__item">
-                <!--datos item-->
-                <div class="item__datos">
-                    <p class="datos__negrita">Importe en texto: </p>
-                    <div class="datos__linea">
-                        <p class="texto-centrar letras-grandes">{{ $importeEnPalabras }} PESOS</p>
-                    </div>
-                </div>
-                <!--fin datos item-->
-            </div>
 
             <!-- info item -->
             <div class="info__item">
@@ -590,7 +598,7 @@
             </div>
         </div>
 
-        <div class="recibo-terminos">
+        <div class="recibo-terminos margin-bajo">
             <h3>Nota: </h3>
             <p>
                 EL IMPORTE DE ESTE RECIBO NO ES REEMBOLSABLE, NI TRANSFERIBLE EN CASO DE RETIRO DEL PROYECTO

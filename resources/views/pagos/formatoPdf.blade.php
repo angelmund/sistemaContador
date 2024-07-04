@@ -75,7 +75,8 @@
         #boton-imprimir:hover {
             background-color: #08A0C5;
         }
-
+         
+        /*
         .texto-centrar {
             text-align: center;
         }
@@ -88,21 +89,25 @@
         .separador {
             margin: 2.5rem 0;
             border: 1px dashed #000;
-        }
+        }*/
 
         .contenedor-recibo {
-            margin-top: 2rem;
-            width: 73.3rem;
+            width: 21.59cm; /* 8.5 inches */
+            height: 27.94cm; /* 11 inches */
+            display: grid;
+            place-items: center;
+            grid-template-rows: 150px 380px 30px 150px 380px;
         }
 
         .header-recibo {
             display: grid;
+            width: 21.59cm;
             grid-template-columns: 1fr 33.3rem 1fr;
             align-items: center;
-
-            gap: 2rem;
-
+            font-size: 1rem;
             text-align: center;
+            place-items: center;
+            margin: 4rem 0;
         }
 
         .header-recibo__QR {
@@ -123,6 +128,7 @@
             height: 7.5rem;
         }
 
+        /*
         .info__titulo {
             font-size: 1.8rem;
         }
@@ -131,9 +137,15 @@
             font-size: 1rem;
         }
 
-        /**/
+        */
         .recibo__info {
-            padding: 2rem 4rem;
+            padding: 1rem;
+            font-size: 1.5rem;
+            width: 90%;
+        }
+
+        .recibo__info:nth-child(1) {
+            margin-bottom: 2rem;
         }
 
         .recibo__numero {
@@ -143,10 +155,11 @@
         }
 
         .numero__datos {
-            padding: 1rem;
+            padding: .5rem;
             border-radius: 1rem;
             border: 1px solid black;
             text-align: center;
+            width: 90%;
         }
 
         .info__item {
@@ -208,7 +221,7 @@
         .recibo__firmas {
             display: flex;
             margin: 0 auto;
-            margin-top: 2rem;
+            margin: 6rem 0;
             width: 100%;
         }
 
@@ -226,7 +239,6 @@
 
         .recibo-terminos {
             margin: 2rem;
-            0;
             text-align: center;
             font-size: 1.2rem;
         }
@@ -240,7 +252,7 @@
         }
 
         .info__titulo {
-            font-size: 2.1rem;
+            font-size: 2rem;
         }
 
         .header-recibo__info h5 {
@@ -264,7 +276,15 @@
             flex: 1;
         }
 
-        .numero__datos p:nth-child(1) {
+        .numero_datos__titulo {
+            font-size: 2rem;
+        }
+
+        .numero_datos__titulo {
+            font-size: 1.8rem;
+        }
+
+        .numero__datos p {
             font-weight: bold;
             margin-bottom: .5rem;
         }
@@ -274,7 +294,8 @@
         }
 
         .separador {
-            margin: 2.5rem 0;
+            border: 1px dashed #000;
+            width: 100%;
         }
 
         .espacio-qr {
@@ -298,6 +319,17 @@
         .firmas__QR p:nth-child(2) {
             margin-top: .5rem;
         }
+
+        .texto-centrar {
+            text-align: center;
+        }
+
+        .contenedor {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
     </style>
 
 
@@ -309,21 +341,25 @@
 
 <body>
     <button id="boton-imprimir" onclick="imprimir()">Imprimir</button>
-    <div class="contenedor-recibo">
+    <div class="contenedor">
 
-        <header class="header-recibo">
+        <header class="header-recibo header-margin-1">
             <div class="header-recibo__logo">
                 <img class="logo__img" src="{{asset('img/logoB.png')}}" alt="logo benita galeana">
             </div>
+
             <div class="header-recibo__info">
-                <h1 class="info__titulo">Unión Popular Benita Galeana, A C.</h1>
-                <h5>R.C.F UPB-981</h5>
-                <p class="info__texto">Holbein No. 75 Col San Juan C.P. 03730 Alcaldia Benito Juarez. Ciudad Mexico</p>
-                <p class="info__texto">Horarios de Atencion 5:00 pm - 8:00 pm Tel: 55 8952 8891</p>
+                <h1 class="info__titulo">Unión Popular Benita Galeana, A.C.</h1>
+                <p class="info__texto">CANELA No. 423 COL. GRANJAS MEXICO C.P. 08400</p>
+                <p class="info__texto">ALCALDIA IZTACALCO, CIUDAD DE MEXICO</p>
+                <p class="info__texto">TELEFONO.: 55-8940-7651</p>
             </div>
+
             <div class="numero__datos">
-                <p>Sucursal Bancaria</p>
-                <p>{{ $transaccion->referencia_pago ?? $transaccion->numero_cheque }}</p>
+                <p class="numero_datos__titulo">Referencia Bancaria</p>
+                <p class="numero_datos__texto"> 
+                    {{ $transaccion->referencia_pago ?? $transaccion->numero_cheque }}                
+                </p>
             </div>
         </header>
         
@@ -349,14 +385,24 @@
                         <p>{{ $transaccion->inscripcione->nombre_completo }}</p>
                     </div>
                 </div>
-            </div>
-            <div class="info__item">
                 <div class="item__datos">
                     <p class="datos__negrita">La cantidad de: </p>
                     <div class="datos__linea">
                         <p>${{ number_format($transaccion->monto , 0, '.', ',') }}<span>.00</span></p>
                     </div>
                 </div>
+            </div>
+
+            <div class="info__item">
+                <div class="item__datos">
+                    <p class="datos__negrita">Importe en texto:</p>
+                    <div class="datos__linea">
+                        <p class="texto-centrar texto-grande">{{ $importeEnPalabras }}<span> PESOS</span></p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info__item">
                 <div class="item__datos">
                     <p class="datos__negrita">Por concepto de: </p>
                     <div class="datos__linea">
@@ -364,13 +410,7 @@
                     </div>
                 </div>
             </div>
-            <div class="info__item">
-                <div class="item__datos">
-                    <div class="datos__linea">
-                        <p class="texto-centrar texto-grande">{{ $importeEnPalabras }}<span> PESOS</span></p>
-                    </div>
-                </div>
-            </div>
+           
             <div class="info__item fecha__item">
                 <div class="item__datos">
                     <p class="datos__negrita">Fecha recibo: </p>
@@ -393,46 +433,48 @@
                     </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="recibo__firmas centrarQR">
-            <div class="header-recibo__QR firmas__QR">
-                <p>Folio</p>
-                <div id="contenedorQR1" class="logo__img"></div>
-                <p class="idFolio">{{ $transaccion->id_cliente }}</p>
-            </div>
-        
-            <div class="firmas_firma">
-                <div class="firma__texto">
-                    <p class="datos__negrita">C.P. Jose Javier Hernandez Perales</p>
-                    <p>Firma</p>
+
+            <div class="recibo__firmas centrarQR">
+                <div class="header-recibo__QR firmas__QR">
+                    <p>Folio</p>
+                    <div id="contenedorQR1" class="logo__img"></div>
+                    <p class="idFolio">{{ $transaccion->id_cliente }}</p>
                 </div>
-            </div>
         
-            <div class="header-recibo__QR firmas__QR">
-                <p>No. {{ ucfirst($tipo) }}</p>
-                <div id="contenedorQR2" class="logo__img"></div>
-                <p class="idPago">{{ $transaccion->id }}</p>
+                <div class="firmas_firma">
+                    <div class="firma__texto">
+                        <p class="datos__negrita">C.P. Jose Javier Hernandez Perales</p>
+                        <p>Firma</p>
+                    </div>
+                </div>
+        
+                <div class="header-recibo__QR firmas__QR" style="margin-bottom: 1rem; ">
+                    <p>No. {{ ucfirst($tipo) }}</p>
+                    <div id="contenedorQR2" class="logo__img"></div>
+                    <p class="idPago">{{ $transaccion->id }}</p>
+                 </div>
             </div>
         </div>
-        
-        
+         
         <div class="separador"></div>
         
         <header class="header-recibo">
             <div class="header-recibo__logo">
+                <!--{{asset('img/logoB.png')}}-->
                 <img class="logo__img" src="{{asset('img/logoB.png')}}" alt="logo benita galeana">
             </div>
         
             <div class="header-recibo__info">
-                <h1 class="info__titulo">Unión Popular Benita Galeana, A C.</h1>
-                <h5>R.C.F UPB-981</h5>
-                <p class="info__texto">Holbein No. 75 Col San Juan C.P. 03730 Alcaldia Benito Juarez. Ciudad Mexico</p>
-                <p class="info__texto">Horarios de Atencion 5:00 pm - 8:00 pm Tel: 55 8952 8891</p>
+                <h1 class="info__titulo">Unión Popular Benita Galeana, A.C.</h1>
+                <p class="info__texto">CANELA No. 423 COL. GRANJAS MEXICO C.P. 08400</p>
+                <p class="info__texto">ALCALDIA IZTACALCO, CIUDAD DE MEXICO</p>
+                <p class="info__texto">TELEFONO.: 55-8940-7651</p>
             </div>
             <div class="numero__datos">
-                <p>Sucursal Bancaria</p>
-                <p>{{ $transaccion->referencia_pago ?? $transaccion->numero_cheque }}</p>
+                <p class="numero_datos__titulo">Referencia Bancaria </p>   
+                <p>
+                    {{ $transaccion->referencia_pago ?? $transaccion->numero_cheque }}
+                </p>
             </div>
         </header>
         
@@ -463,10 +505,7 @@
                         <p>{{ $transaccion->inscripcione->nombre_completo }}</p>
                     </div>
                 </div>
-            </div>
-        
-            <!-- info item -->
-            <div class="info__item">
+
                 <!--datos item-->
                 <div class="item__datos">
                     <p class="datos__negrita">La cantidad de:</p>
@@ -475,26 +514,28 @@
                     </div>
                 </div>
                 <!--fin datos item-->
-                <!--datos item-->
-                <div class="item__datos">
-                    <p class="datos__negrita">Por concepto de: </p>
-                    <div class="datos__linea">
-                        <p>{{ $transaccion->tipo_concepto }}</p>
-                    </div>
-                </div>
-                <!--fin datos item-->
             </div>
-        
-            <!-- info item -->
+
             <div class="info__item">
                 <!--datos item-->
                 <div class="item__datos">
+                    <p class="datos__negrita">Importe en texto:</p>
                     <div class="datos__linea">
                         <p class="texto-centrar texto-grande">{{ $importeEnPalabras }}<span> PESOS</span></p>
                     </div>
                 </div>
                 <!--fin datos item-->
             </div>
+
+            <div class="info__item">
+                <div class="item__datos">
+                    <p class="datos__negrita">Por concepto de: </p>
+                    <div class="datos__linea">
+                        <p>{{ $transaccion->tipo_concepto }}</p>
+                    </div>
+                </div>
+            </div>
+            <!-- info item -->
         
             <!-- info item -->
             <div class="info__item fecha__item">
@@ -525,30 +566,30 @@
                 </div>
                 <!--fin datos item-->
             </div>
-        </div>
+
+            <div class="recibo__firmas centrarQR">
+                <div class="header-recibo__QR firmas__QR">
+                    <p>Folio</p>
+                    <div id="contenedorQR3" class="logo__img"></div>
+                    <p class="idFolio">{{ $transaccion->id_cliente }}</p>
+                </div>
         
-        <div class="recibo__firmas centrarQR">
-            <div class="header-recibo__QR firmas__QR">
-                <p>Folio</p>
-                <div id="contenedorQR3" class="logo__img"></div>
-                <p class="idFolio">{{ $transaccion->id_cliente }}</p>
-            </div>
+                <div class="firmas_firma">
+                    <div class="firma__texto">
+                        <p class="datos__negrita">C.P. Jose Javier Hernandez Perales</p>
+                        <p>Firma</p>
+                    </div>
+                </div>
         
-            <div class="firmas_firma">
-                <div class="firma__texto">
-                    <p class="datos__negrita">C.P. Jose Javier Hernandez Perales</p>
-                    <p>Firma</p>
+                <div class="header-recibo__QR firmas__QR">
+                    <p>No. {{ ucfirst($tipo) }}</p>
+                    <div id="contenedorQR4" class="logo__img"></div>
+                    <p class="idPago">{{ $transaccion->id }}</p>
                 </div>
             </div>
-        
-            <div class="header-recibo__QR firmas__QR">
-                <p>No. {{ ucfirst($tipo) }}</p>
-                <div id="contenedorQR4" class="logo__img"></div>
-                <p class="idPago">{{ $transaccion->id }}</p>
-            </div>
         </div>
-        
-        </div>
+            
+    </div>
 
     <script>
         document.addEventListener("DOMContentLoaded", function() {
